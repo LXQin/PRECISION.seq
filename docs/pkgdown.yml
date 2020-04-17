@@ -1,0 +1,7 @@
+pandoc: 2.7.3
+pkgdown: 1.4.1
+pkgdown_sha: ~
+articles:
+  Intro_Data: Intro_Data.html
+  Intro_Functions: Intro_Functions.html
+

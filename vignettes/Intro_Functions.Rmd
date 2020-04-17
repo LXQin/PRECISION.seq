@@ -1,0 +1,68 @@
+---
+title: "Introduction to DepthNorm Functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning = FALSE, message = FALSE}
+library(DepthNorm)
+library(DESeq)
+```
+
+One critical aspect of RNA sequencing data normalization is the sequencing depth. We prepared nine commonly used depth normalization methods and a pair of well-designed datasets used for statistical evaluations in this package.
+
+## Functions for Depth Normalization
+In this section, we will present how to use the normalization functions in this package. The raw count data in the format of data frame or matrix (with columns for samples and rows for markers/genes) and the vector of characters indicating the group of each sample are needed as input. The output depends on the normalization methods. If the normalization methods are re-scalling based, normalized dataset and scalling factor will be provided as output; if the normalization methods are regression based, normalized dataset, which only used for exploration and the adjusting factor will be provided as output.
+```{r warning = FALSE, message = FALSE}
+emp.group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
+test.TC = norm.TC(test, emp.group)
+test.UQ = norm.UQ(test, emp.group)
+test.med = norm.med(test, emp.group)
+test.TMM = norm.TMM(test, emp.group)
+test.DESeq = norm.DESeq(test, emp.group)
+test.PoissonSeq = norm.PoissonSeq(test)
+test.QN = norm.QN(test)
+test.SVA = norm.SVA(test, emp.group)
+test.RUVg =  norm.RUV(test, emp.group, method = "RUVg")
+test.RUVs =  norm.RUV(test, emp.group, method = "RUVs")
+test.RUVr =  norm.RUV(test, emp.group, method = "RUVr")
+
+head(test.TMM$scaling.factor)
+head(test.TMM$dat.normed[,1:5])
+
+head(test.SVA$adjust.factor)
+head(test.SVA$dat.normed[,1:5])
+```
+
+## Functions for Differential Expression Analysis
+We pack two DEA functions, edgeR and voom-limma, in this package. The input could be either the normalized dataset (always from re-scalling methods) or the non-normalized dataset with adjusting factor (always from regression-based methods). Names of DE markers/genes (p = 0.01 as cut-off point by default), p-values for each marker/gene, and log2 fold change are provided in output.
+```{r}
+edgeR.benchmark = DE.edgeR(benchmark, emp.group)
+voom.benchmark = DE.voom(benchmark, emp.group)
+
+edgeR.test.TMM = DE.edgeR(test.TMM$dat.normed, emp.group)
+voom.test.TMM = DE.voom(test.TMM$dat.normed, emp.group)
+
+edgeR.test.RUVr = DE.edgeR(test, emp.group, 
+                           normalized = FALSE,
+                           adjust = test.RUVr$adjust.factor)
+voom.test.RUVr = DE.voom(test, emp.group, 
+                         normalized = FALSE,
+                         adjust = test.RUVr$adjust.factor)
+
+head(voom.benchmark$id.list)
+head(voom.benchmark$p.val)
+
+head(voom.test.RUVr$id.list)
+head(voom.test.RUVr$p.val)
+```

@@ -1,0 +1,33 @@
+Package: DepthNorm
+Title: Depth Normalization Methods
+Version: 0.1.0
+Date: 2019-04-27
+Authors@R: as.person(c( 
+    "Li-Xuan Qin <qinl@mskcc.org> [aut, ths]",
+    "Jian Zou <jian.zou@pitt.edu> [aut, cre]"
+  ))
+Description: We propose the well-prepared datasets and pack commonly used normalization methods/functions in this package. The workflow of this package is: (1) Input dataset in the format of data frame or matrix with with columns for samples and raws for genes; (2) Indicate the group for each sample using a vector of characters; (3) Ensure the normalization and DEA method; (4) Obtain the output including the DE genes and p values for each gene.
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Imports: 
+    PoissonSeq,
+    DescTools,
+    DESeq,
+    edgeR,
+    affy,
+    sva,
+    RUVSeq,
+    readr,
+    EDASeq,
+    limma,
+    preprocessCore,
+    ffpe,
+    Biobase,
+    magrittr,
+    vsn
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
