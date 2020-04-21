@@ -135,7 +135,7 @@ abline(0,1)
 ## Simulation
 In this section, we will present how to use `simu()` function to generate desired simulated dataset. We will simulate all the possible datasets with proportion of DE between 0.0175 and 0.0225 and median of mean differences between -0.5 and 0.5.
 ```{r warning=FALSE, message=FALSE}
-simulated = simu(proportion_L = 0.0175, proportion_R = 0.0225, median_L = -0.5, median_R = 0.5)
+simulated = simu(proportion_L = 0.0175, proportion_R = 0.0225, median_L = -0.5, median_R = 0.5, numsets = 100)
 
 head(simulated$simulated_benchmark[[1]])[,1:5]
 head(simulated$simulated_test[[1]])[,1:5]

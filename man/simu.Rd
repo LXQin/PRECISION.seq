@@ -4,7 +4,7 @@
 \alias{simu}
 \title{Simulated Data Generation}
 \usage{
-simu(proportion_L, proportion_R, median_L, median_R)
+simu(proportion_L, proportion_R, median_L, median_R, numsets)
 }
 \arguments{
 \item{proportion_L}{the lowest proportion of DE for simulated dataset filtering}
@@ -14,13 +14,16 @@ simu(proportion_L, proportion_R, median_L, median_R)
 \item{median_L}{the lowest median of mean difference for simulated dataset filtering}
 
 \item{median_R}{the highest median of mean difference for simulated dataset filtering}
+
+\item{numsets}{number of simulated datasets requested for returning (randomly drawn from the available sets). If it exceeds the maximum of availiable datasets, all the availiable sets will be returned.}
 }
 \value{
 list containing list of simulated benchmark data and test data
 }
 \description{
-Function for generating simulated datasets according to different proportions of DE and medians of mean difference
+Function for generating simulated datasets according to different proportions of DE and medians of mean difference.
+The range of DE proportion availiable is between 0 and 0.387, and the range of median of mean difference is between -2.52 and 4.59.
 }
 \examples{
-simulated = simu(0.0175, 0.0225, -0.5, 0.5)
+simulated = simu(0.0175, 0.0225, -0.5, 0.5, 10)
 }

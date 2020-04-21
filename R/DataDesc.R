@@ -41,12 +41,14 @@
 
 #' Simulated Data Generation
 #'
-#' Function for generating simulated datasets according to different proportions of DE and medians of mean difference
+#' Function for generating simulated datasets according to different proportions of DE and medians of mean difference.
+#' The range of DE proportion availiable is between 0 and 0.387, and the range of median of mean difference is between -2.52 and 4.59.
 #'
 #' @param proportion_L the lowest proportion of DE for simulated dataset filtering
 #' @param proportion_R the highest proportion of DE for simulated dataset filtering
 #' @param median_L the lowest median of mean difference for simulated dataset filtering
 #' @param median_R the highest median of mean difference for simulated dataset filtering
+#' @param numsets number of simulated datasets requested for returning (randomly drawn from the available sets). If it exceeds the maximum of availiable datasets, all the availiable sets will be returned.
 #'
 #' @return list containing list of simulated benchmark data and test data
 #' @import magrittr
@@ -54,8 +56,8 @@
 #' @export
 #'
 #' @examples
-#' simulated = simu(0.0175, 0.0225, -0.5, 0.5)
-simu = function(proportion_L, proportion_R, median_L, median_R){
+#' simulated = simu(0.0175, 0.0225, -0.5, 0.5, 10)
+simu = function(proportion_L, proportion_R, median_L, median_R, numsets){
   benchmark_simu = benchmark
   test_simu = test
   colnames(benchmark_simu) = sub(".*_", "", colnames(benchmark_simu))
@@ -63,7 +65,8 @@ simu = function(proportion_L, proportion_R, median_L, median_R){
   s =  simulation %>%
     filter(proportion > proportion_L & proportion < proportion_R) %>%
     filter(median > median_L & median < median_R)
-  s = as.matrix(s[,1:54])
+  rowselect = if(nrow(s) > numsets){sample(nrow(s), numsets)}else{1:nrow(s)}
+  s = as.matrix(s[rowselect, 1:54])
   benchmark_simued = test_simued = list()
   for (i in 1:nrow(s)) {
     benchmark_simued[[i]] = benchmark_simu[, s[i,]]
@@ -72,3 +75,5 @@ simu = function(proportion_L, proportion_R, median_L, median_R){
   return(list(simulated_benchmark = benchmark_simued,
               simulated_test = test_simued))
 }
+
+
