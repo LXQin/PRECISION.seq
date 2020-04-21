@@ -72,7 +72,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="Intro_Functions_files/header-attrs-2.1/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Introduction to DepthNorm Functions</h1>
@@ -111,44 +111,37 @@
 <span id="cb2-17"><a href="#cb2-17"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(test.TMM<span class="op">$</span>scaling.factor)</span>
 <span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt; [1] 1.1988963 0.4295173 1.2377190 1.3487078 1.1959610 1.8503994</span></span>
 <span id="cb2-19"><a href="#cb2-19"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(test.TMM<span class="op">$</span>dat.normed[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</span>
-<span id="cb2-20"><a href="#cb2-20"></a><span class="co">#&gt;                    MXF2516      MXF742      MXF772       MXF832</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a><span class="co">#&gt; hsa-let-7a-2*      0.00000     0.00000     0.00000     1.482901</span></span>
-<span id="cb2-22"><a href="#cb2-22"></a><span class="co">#&gt; hsa-let-7a(3)  70709.20148 14821.28856 48696.83516 53595.004767</span></span>
-<span id="cb2-23"><a href="#cb2-23"></a><span class="co">#&gt; hsa-let-7a*(2)  2829.26889    34.92292   126.84623   269.146516</span></span>
-<span id="cb2-24"><a href="#cb2-24"></a><span class="co">#&gt; hsa-let-7b      7376.78480 10437.29762 20702.59825 20564.869850</span></span>
-<span id="cb2-25"><a href="#cb2-25"></a><span class="co">#&gt; hsa-let-7b*       24.18891    32.59473    58.97946    83.042451</span></span>
-<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt; hsa-let-7c     23107.92019  1008.10838 13457.01204  5153.822120</span></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt;                      MXF836</span></span>
-<span id="cb2-28"><a href="#cb2-28"></a><span class="co">#&gt; hsa-let-7a-2*      1.672295</span></span>
-<span id="cb2-29"><a href="#cb2-29"></a><span class="co">#&gt; hsa-let-7a(3)  39640.925166</span></span>
-<span id="cb2-30"><a href="#cb2-30"></a><span class="co">#&gt; hsa-let-7a*(2)   102.846164</span></span>
-<span id="cb2-31"><a href="#cb2-31"></a><span class="co">#&gt; hsa-let-7b     14440.270362</span></span>
-<span id="cb2-32"><a href="#cb2-32"></a><span class="co">#&gt; hsa-let-7b*       71.072552</span></span>
-<span id="cb2-33"><a href="#cb2-33"></a><span class="co">#&gt; hsa-let-7c     11593.187526</span></span>
-<span id="cb2-34"><a href="#cb2-34"></a></span>
-<span id="cb2-35"><a href="#cb2-35"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(test.SVA<span class="op">$</span>adjust.factor)</span>
-<span id="cb2-36"><a href="#cb2-36"></a><span class="co">#&gt;             [,1]</span></span>
-<span id="cb2-37"><a href="#cb2-37"></a><span class="co">#&gt; [1,]  0.28535304</span></span>
-<span id="cb2-38"><a href="#cb2-38"></a><span class="co">#&gt; [2,]  0.03121055</span></span>
-<span id="cb2-39"><a href="#cb2-39"></a><span class="co">#&gt; [3,] -0.07462108</span></span>
-<span id="cb2-40"><a href="#cb2-40"></a><span class="co">#&gt; [4,] -0.06139403</span></span>
-<span id="cb2-41"><a href="#cb2-41"></a><span class="co">#&gt; [5,] -0.07546172</span></span>
-<span id="cb2-42"><a href="#cb2-42"></a><span class="co">#&gt; [6,] -0.12748833</span></span>
-<span id="cb2-43"><a href="#cb2-43"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(test.SVA<span class="op">$</span>dat.normed[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</span>
-<span id="cb2-44"><a href="#cb2-44"></a><span class="co">#&gt;                     MXF2516       MXF742        MXF772       MXF832</span></span>
-<span id="cb2-45"><a href="#cb2-45"></a><span class="co">#&gt; hsa-let-7a-2*  3.126439e+00    0.3419549    -0.8175775     1.327343</span></span>
-<span id="cb2-46"><a href="#cb2-46"></a><span class="co">#&gt; hsa-let-7a(3)  1.143937e+05 9605.7728904 52527.0508087 65911.068255</span></span>
-<span id="cb2-47"><a href="#cb2-47"></a><span class="co">#&gt; hsa-let-7a*(2) 3.041342e+03  -23.3533362   248.6987096   438.444546</span></span>
-<span id="cb2-48"><a href="#cb2-48"></a><span class="co">#&gt; hsa-let-7b     2.310206e+04 6042.4781503 21895.4551525 24668.362809</span></span>
-<span id="cb2-49"><a href="#cb2-49"></a><span class="co">#&gt; hsa-let-7b*    6.650161e+01   18.1017473    63.1931625   103.931485</span></span>
-<span id="cb2-50"><a href="#cb2-50"></a><span class="co">#&gt; hsa-let-7c     3.792122e+04 1550.5108226 13984.1515878  4752.753259</span></span>
-<span id="cb2-51"><a href="#cb2-51"></a><span class="co">#&gt;                      MXF836</span></span>
-<span id="cb2-52"><a href="#cb2-52"></a><span class="co">#&gt; hsa-let-7a-2*      1.173212</span></span>
-<span id="cb2-53"><a href="#cb2-53"></a><span class="co">#&gt; hsa-let-7a(3)  39575.789137</span></span>
-<span id="cb2-54"><a href="#cb2-54"></a><span class="co">#&gt; hsa-let-7a*(2)   215.731738</span></span>
-<span id="cb2-55"><a href="#cb2-55"></a><span class="co">#&gt; hsa-let-7b     13499.451384</span></span>
-<span id="cb2-56"><a href="#cb2-56"></a><span class="co">#&gt; hsa-let-7b*       75.082684</span></span>
-<span id="cb2-57"><a href="#cb2-57"></a><span class="co">#&gt; hsa-let-7c     11163.051990</span></span></code></pre></div>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="co">#&gt;                    MXF2516      MXF742      MXF772       MXF832       MXF836</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="co">#&gt; hsa-let-7a-2*      0.00000     0.00000     0.00000     1.482901     1.672295</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a><span class="co">#&gt; hsa-let-7a(3)  70709.20148 14821.28856 48696.83516 53595.004767 39640.925166</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a><span class="co">#&gt; hsa-let-7a*(2)  2829.26889    34.92292   126.84623   269.146516   102.846164</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a><span class="co">#&gt; hsa-let-7b      7376.78480 10437.29762 20702.59825 20564.869850 14440.270362</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a><span class="co">#&gt; hsa-let-7b*       24.18891    32.59473    58.97946    83.042451    71.072552</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt; hsa-let-7c     23107.92019  1008.10838 13457.01204  5153.822120 11593.187526</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a></span>
+<span id="cb2-28"><a href="#cb2-28"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(test.SVA<span class="op">$</span>adjust.factor)</span>
+<span id="cb2-29"><a href="#cb2-29"></a><span class="co">#&gt;             [,1]</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a><span class="co">#&gt; [1,]  0.28535304</span></span>
+<span id="cb2-31"><a href="#cb2-31"></a><span class="co">#&gt; [2,]  0.03121055</span></span>
+<span id="cb2-32"><a href="#cb2-32"></a><span class="co">#&gt; [3,] -0.07462108</span></span>
+<span id="cb2-33"><a href="#cb2-33"></a><span class="co">#&gt; [4,] -0.06139403</span></span>
+<span id="cb2-34"><a href="#cb2-34"></a><span class="co">#&gt; [5,] -0.07546172</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a><span class="co">#&gt; [6,] -0.12748833</span></span>
+<span id="cb2-36"><a href="#cb2-36"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(test.SVA<span class="op">$</span>dat.normed[,<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>])</span>
+<span id="cb2-37"><a href="#cb2-37"></a><span class="co">#&gt;                     MXF2516       MXF742        MXF772       MXF832</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a><span class="co">#&gt; hsa-let-7a-2*  3.126439e+00    0.3419549    -0.8175775     1.327343</span></span>
+<span id="cb2-39"><a href="#cb2-39"></a><span class="co">#&gt; hsa-let-7a(3)  1.143937e+05 9605.7728904 52527.0508087 65911.068255</span></span>
+<span id="cb2-40"><a href="#cb2-40"></a><span class="co">#&gt; hsa-let-7a*(2) 3.041342e+03  -23.3533362   248.6987096   438.444546</span></span>
+<span id="cb2-41"><a href="#cb2-41"></a><span class="co">#&gt; hsa-let-7b     2.310206e+04 6042.4781503 21895.4551525 24668.362809</span></span>
+<span id="cb2-42"><a href="#cb2-42"></a><span class="co">#&gt; hsa-let-7b*    6.650161e+01   18.1017473    63.1931625   103.931485</span></span>
+<span id="cb2-43"><a href="#cb2-43"></a><span class="co">#&gt; hsa-let-7c     3.792122e+04 1550.5108226 13984.1515878  4752.753259</span></span>
+<span id="cb2-44"><a href="#cb2-44"></a><span class="co">#&gt;                      MXF836</span></span>
+<span id="cb2-45"><a href="#cb2-45"></a><span class="co">#&gt; hsa-let-7a-2*      1.173212</span></span>
+<span id="cb2-46"><a href="#cb2-46"></a><span class="co">#&gt; hsa-let-7a(3)  39575.789137</span></span>
+<span id="cb2-47"><a href="#cb2-47"></a><span class="co">#&gt; hsa-let-7a*(2)   215.731738</span></span>
+<span id="cb2-48"><a href="#cb2-48"></a><span class="co">#&gt; hsa-let-7b     13499.451384</span></span>
+<span id="cb2-49"><a href="#cb2-49"></a><span class="co">#&gt; hsa-let-7b*       75.082684</span></span>
+<span id="cb2-50"><a href="#cb2-50"></a><span class="co">#&gt; hsa-let-7c     11163.051990</span></span></code></pre></div>
 </div>
 <div id="functions-for-differential-expression-analysis" class="section level2">
 <h2 class="hasAnchor">
