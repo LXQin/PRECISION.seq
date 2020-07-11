@@ -1,4 +1,4 @@
-# DepthNorm: An R Package for Comparsion of Depth Normalization Methods
+# precision.seq: An R Package for Comparsion of Depth Normalization Methods
 
 We propose the well-prepared datasets and pack commonly used normalization methods/functions in this package. This package is based on R 4.0.2. The general workflow of this package is: 
 * Input dataset in the format of data frame or matrix with with columns for samples and raws for genes;

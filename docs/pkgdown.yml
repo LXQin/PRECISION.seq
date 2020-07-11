@@ -1,7 +1,8 @@
 pandoc: 2.9.2.1
-pkgdown: 1.4.1
+pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   Intro_Data: Intro_Data.html
   Intro_Functions: Intro_Functions.html
+last_built: 2020-07-11T16:52Z
 

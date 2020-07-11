@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, warning = FALSE, message = FALSE}
-library(DepthNorm)
+library(precision.seq)
 library(DESeq)
 library(limma)
 ```
