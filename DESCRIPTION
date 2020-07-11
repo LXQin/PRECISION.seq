@@ -1,7 +1,7 @@
-Package: DepthNorm
-Title: Depth Normalization Methods
-Version: 0.1.0
-Date: 2019-04-27
+Package: precision.seq
+Title: Comparison of Depth Normalization Methods
+Version: 0.1.1
+Date: 2020-07-11
 Authors@R: as.person(c( 
     "Li-Xuan Qin <qinl@mskcc.org> [aut, ths]",
     "Jian Zou <jian.zou@pitt.edu> [aut, cre]"
