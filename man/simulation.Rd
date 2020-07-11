@@ -4,7 +4,9 @@
 \name{simulation}
 \alias{simulation}
 \title{Simulation Plan}
-\format{A dataframe including information of allocation about 20,000 simulation datasets, which contains the proportion of differential expression and median of mean difference for each dataset.}
+\format{
+A dataframe including information of allocation about 20,000 simulation datasets, which contains the proportion of differential expression and median of mean difference for each dataset.
+}
 \usage{
 simulation
 }

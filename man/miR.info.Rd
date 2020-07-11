@@ -4,7 +4,9 @@
 \name{miR.info}
 \alias{miR.info}
 \title{MiRNA Information}
-\format{Information of the microRNAs in test and benchmark dataset, including their names, exact sequence, length and GC content.}
+\format{
+Information of the microRNAs in test and benchmark dataset, including their names, exact sequence, length and GC content.
+}
 \usage{
 miR.info
 }

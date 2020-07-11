@@ -4,11 +4,13 @@
 \name{benchmark}
 \alias{benchmark}
 \title{MiRNA Sequencing Benchmark Data}
-\format{A data frame with 1033 rows and 54 columns. Here are the examples of the column and row naming rule:
+\format{
+A data frame with 1033 rows and 54 columns. Here are the examples of the column and row naming rule:
 \describe{
   \item{MXF2516_D13}{One sample belonging to MXF and library D with sample ID MXF2516 and library ID D13.}
   \item{hsa-let-7a-2*}{Gene ID.}
-}}
+}
+}
 \usage{
 benchmark
 }

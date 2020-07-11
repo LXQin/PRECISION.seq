@@ -4,11 +4,13 @@
 \name{test}
 \alias{test}
 \title{MiRNA Sequencing Test Data}
-\format{A dataframe with 1033 rows and 54 columns. Here are the examples of the column and row naming rule:
+\format{
+A dataframe with 1033 rows and 54 columns. Here are the examples of the column and row naming rule:
 \describe{
   \item{MXF2516}{One sample belonging to MXF sample ID MXF2516.}
   \item{hsa-let-7a-2*}{Gene ID.}
-}}
+}
+}
 \usage{
 test
 }
