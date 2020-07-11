@@ -26,4 +26,4 @@ Bioconductor.packages <- function(pkg){
 Bioconductor.packages(c("DESeq", "edgeR", "affy", "sva", "RUVSeq", "EDASeq", "limma", "preprocessCore", "ffpe", "Biobase", "vsn"))
 ```
 
-The original R code and figures for the paper [*Statistical Assessment of Depth Normalization for Small RNA Sequencing. JCO Clin Cancer Inform. 2020;4:567-582. doi:10.1200/CCI.19.00118*](https://pubmed.ncbi.nlm.nih.gov/32598180/) is 
+The original R code and figures for the paper [*Statistical Assessment of Depth Normalization for Small RNA Sequencing*](https://pubmed.ncbi.nlm.nih.gov/32598180/) is inclueded in for reference.
