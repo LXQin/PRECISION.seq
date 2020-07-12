@@ -1,3 +1,37 @@
+
+#' Volcano Plot
+#'
+#' Function for generating volcano figures with log fold change as x-axis and -log10(p-value) as y-axis.
+#'
+#' @param normtest normalized data using the method which the researchers desire to compare with the other methods, or it could be the raw data if the adjusting parameters available.
+#' @param groups vector of characters indicating the group for each sample.
+#' @param adjust adjusting parameters for each sample.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
+#' plot.volcano(benchmark, group)
+plot.volcano = function(normtest, groups, adjust = NULL){
+   dat.voom = ifelse(is.null(adjust),
+                           DE.voom(RC = normtest, groups = groups, P = 0.01),
+                           DE.voom(RC = normtest, groups = groups, P = 0.01, adjust = adjust))
+   DE.list = dat.voom$id.list
+   dat.voom.frame = data.frame(dm = dat.voom$p.val[,2],
+                               p.value = dat.voom$p.val[,1])
+   mask <- with(dat.voom.frame, p.value < .01)
+   cols <- ifelse(mask,"red", "black")
+
+   with(dat.voom.frame, plot(dm, -log10(p.value), cex = .5, pch = 16,
+                             col = cols, xlim = c(-3.6, 3.6),
+                             ylim = c(0, 6),
+                             xlab = "Mean Difference: PMFH - MXF",
+                             main = "Volcano Plot"))
+   abline(h = 2, lty = 2)
+}
+
+
 #' Relative Log Expression Plot
 #'
 #' Function for generating relative log expression plot using the normalized test data as the input.
@@ -104,3 +138,5 @@ plot.CAT = function(MethodType, MethodName, pvalues){
           col = c(color1[1], color2[2:8]), lwd = 2, lty=c(1, rep(3,6)))
  }
 }
+
+

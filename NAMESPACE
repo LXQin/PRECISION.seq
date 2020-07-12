@@ -2,6 +2,7 @@
 
 S3method(plot,CAT)
 S3method(plot,RLE)
+S3method(plot,volcano)
 export(DE.edgeR)
 export(DE.voom)
 export(norm.DESeq)

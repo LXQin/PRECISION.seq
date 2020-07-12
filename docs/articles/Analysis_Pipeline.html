@@ -88,6 +88,7 @@
 
     
     
+<p>This is the original code of analysis pipeline for the paper <a href="https://pubmed.ncbi.nlm.nih.gov/32598180/"><em>Statistical Assessment of Depth Normalization for Small RNA Sequencing</em></a>, and the original data is included in the folder <em>PaperData</em>.</p>
 <div id="package-loading" class="section level1">
 <h1 class="hasAnchor">
 <a href="#package-loading" class="anchor"></a>Package Loading</h1>
@@ -329,7 +330,7 @@
 
   <span class="no">out</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/cbind.html">cbind</a></span>(<span class="no">P.value</span>,<span class="no">fc.log2</span>)
   <span class="no">out</span> <span class="kw">=</span> <span class="no">out</span>[<span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span>(<span class="no">out</span>[,<span class="fl">1</span>]),]
-  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">out</span>) <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Pvalue"</span>,<span class="st">"log2.FC(MXF/PMFH)"</span>)
+  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">out</span>) <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Pvalue"</span>,<span class="st">"log2.FC(PMFH/MXF)"</span>)
   <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">id.list</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">out</span>[<span class="no">out</span>[,<span class="fl">1</span>] <span class="kw">&lt;</span> <span class="no">P</span>,]),
               <span class="kw">p.val</span> <span class="kw">=</span> <span class="no">out</span>))
 }
@@ -383,7 +384,7 @@
   <span class="no">DE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/exactTest.html">exactTest</a></span>(<span class="no">d</span>, <span class="kw">pair</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span>(<span class="no">d</span>$<span class="no">samples</span>$<span class="no">group</span>)[<span class="fl">1</span>:<span class="fl">2</span>])
   <span class="no">out</span> <span class="kw">=</span> <span class="no">DE</span>$<span class="no">table</span>[,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3</span>,<span class="fl">1</span>)]
   <span class="no">out</span> <span class="kw">=</span> <span class="no">out</span>[<span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span>(<span class="no">out</span>[,<span class="fl">1</span>]),]
-  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">out</span>) <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Pvalue"</span>,<span class="st">"log2.FC(MXF/PMFH)"</span>)
+  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">out</span>) <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Pvalue"</span>,<span class="st">"log2.FC(PMFH/MXF)"</span>)
   <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">id.list</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">out</span>[<span class="no">out</span>[,<span class="fl">1</span>] <span class="kw">&lt;</span> <span class="no">P</span>,]),
               <span class="kw">p.val</span> <span class="kw">=</span> <span class="no">out</span>))
 }
@@ -566,7 +567,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">benchmark.voom.dat</span>, <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">dm</span>, -<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span>(<span class="no">p.value</span>), <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">.5</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">16</span>,
                           <span class="kw">col</span> <span class="kw">=</span> <span class="no">cols</span>, <span class="kw">xlim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">3.6</span>, <span class="fl">3.6</span>),
                           <span class="kw">ylim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">6</span>),
-                          <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Mean Difference: MXF - PMFH"</span>,
+                          <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Mean Difference: PMFH - MXF"</span>,
                           <span class="kw">main</span> <span class="kw">=</span> <span class="st">"Volcano Plot"</span>))
 <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span>(<span class="kw">h</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">lty</span> <span class="kw">=</span> <span class="fl">2</span>)</pre></body></html></div>
 <p><img src="Analysis_Pipeline_files/figure-html/unnamed-chunk-21-1.png" width="864"></p>
@@ -634,7 +635,7 @@
 
 <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">test.voom.dat</span>, <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">dm</span>, -<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span>(<span class="no">p.value</span>), <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">.5</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">16</span>,
                          <span class="kw">ylim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">6</span>), <span class="kw">xlim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">3.6</span>, <span class="fl">3.6</span>),
-                         <span class="kw">col</span> <span class="kw">=</span> <span class="no">cols</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Mean Difference: MXF - PMFH"</span>,
+                         <span class="kw">col</span> <span class="kw">=</span> <span class="no">cols</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Mean Difference: PMFH - MXF"</span>,
                          <span class="kw">main</span> <span class="kw">=</span> <span class="st">"Volcano Plot"</span>))
 <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span>(<span class="kw">h</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">lty</span> <span class="kw">=</span> <span class="fl">2</span>)</pre></body></html></div>
 <p><img src="Analysis_Pipeline_files/figure-html/unnamed-chunk-26-1.png" width="864"></p>

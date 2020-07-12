@@ -7,6 +7,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+This is the original code of analysis pipeline for the paper [*Statistical Assessment of Depth Normalization for Small RNA Sequencing*](https://pubmed.ncbi.nlm.nih.gov/32598180/), and the original data is included in the folder *PaperData*.
+
 ```{r include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -252,7 +254,7 @@ DE.voom = function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
   
   out = cbind(P.value,fc.log2)
   out = out[order(out[,1]),]
-  colnames(out) = c("Pvalue","log2.FC(MXF/PMFH)")
+  colnames(out) = c("Pvalue","log2.FC(PMFH/MXF)")
   return(list(id.list = rownames(out[out[,1] < P,]),
               p.val = out))
 }
@@ -306,7 +308,7 @@ DE.edgeR = function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
   DE = exactTest(d, pair = levels(d$samples$group)[1:2])
   out = DE$table[,c(3,1)]
   out = out[order(out[,1]),]
-  colnames(out) = c("Pvalue","log2.FC(MXF/PMFH)")
+  colnames(out) = c("Pvalue","log2.FC(PMFH/MXF)")
   return(list(id.list = rownames(out[out[,1] < P,]),
               p.val = out))
 }
@@ -475,7 +477,7 @@ cols <- ifelse(mask,"red", "black")
 with(benchmark.voom.dat, plot(dm, -log10(p.value), cex = .5, pch = 16,
                           col = cols, xlim = c(-3.6, 3.6),
                           ylim = c(0, 6),
-                          xlab = "Mean Difference: MXF - PMFH",
+                          xlab = "Mean Difference: PMFH - MXF",
                           main = "Volcano Plot"))
 abline(h = 2, lty = 2)
 ```
@@ -536,7 +538,7 @@ cols = ifelse(mask,"red", "black")
 
 with(test.voom.dat, plot(dm, -log10(p.value), cex = .5, pch = 16,
                          ylim = c(0, 6), xlim = c(-3.6, 3.6),
-                         col = cols, xlab = "Mean Difference: MXF - PMFH",
+                         col = cols, xlab = "Mean Difference: PMFH - MXF",
                          main = "Volcano Plot"))
 abline(h = 2, lty = 2)
 ```

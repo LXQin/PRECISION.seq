@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • precision.seq</title>
+<title>Volcano Plot — plot.volcano • precision.seq</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Volcano Plot — plot.volcano" />
+<meta property="og:description" content="Function for generating volcano figures with log fold change as x-axis and -log10(p-value) as y-axis." />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -118,150 +119,47 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Volcano Plot</h1>
+    
+    <div class="hidden name"><code>plot.volcano.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Function for generating volcano figures with log fold change as x-axis and -log10(p-value) as y-axis.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='co'># S3 method for volcano</span>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>normtest</span>, <span class='no'>groups</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="DE.edgeR.html">DE.edgeR()</a></code> </p>
-        </td>
-        <td><p>Differential Expression Analysis Using EdgeR</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="DE.voom.html">DE.voom()</a></code> </p>
-        </td>
-        <td><p>Differential Expression Analysis Using Voom-limma Pipeline</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="benchmark.html">benchmark</a></code> </p>
-        </td>
-        <td><p>MiRNA Sequencing Benchmark Data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="miR.info.html">miR.info</a></code> </p>
-        </td>
-        <td><p>MiRNA Information</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="norm.DESeq.html">norm.DESeq()</a></code> </p>
-        </td>
-        <td><p>Normalization By DESeq (DESeq)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="norm.PoissonSeq.html">norm.PoissonSeq()</a></code> </p>
-        </td>
-        <td><p>Normalization By PoissonSeq (PoissonSeq)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="norm.QN.html">norm.QN()</a></code> </p>
-        </td>
-        <td><p>Normalization By Quantile Normalization (QN)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="norm.RUV.html">norm.RUV()</a></code> </p>
-        </td>
-        <td><p>Normalization By Remove Unwanted Variation (RUV)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="norm.SVA.html">norm.SVA()</a></code> </p>
-        </td>
-        <td><p>Normalization By Surrogate Variable Analysis for Sequencing Data (SVA)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="norm.TC.html">norm.TC()</a></code> </p>
-        </td>
-        <td><p>Normalization By Total Count (TC)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="norm.TMM.html">norm.TMM()</a></code> </p>
-        </td>
-        <td><p>Normalization By Trimmed Mean of M-values (TMM)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="norm.UQ.html">norm.UQ()</a></code> </p>
-        </td>
-        <td><p>Normalization By Upper Quantile (UQ)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="norm.med.html">norm.med()</a></code> </p>
-        </td>
-        <td><p>Normalization By Median (Med)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.CAT.html">plot(<i>&lt;CAT&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Concordance At The Top Plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.RLE.html">plot(<i>&lt;RLE&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Relative Log Expression Plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.volcano.html">plot(<i>&lt;volcano&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Volcano Plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="simu.html">simu()</a></code> </p>
-        </td>
-        <td><p>Simulated Data Generation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="simulation.html">simulation</a></code> </p>
-        </td>
-        <td><p>Simulation Plan</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="test.html">test</a></code> </p>
-        </td>
-        <td><p>MiRNA Sequencing Test Data</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>normtest</th>
+      <td><p>normalized data using the method which the researchers desire to compare with the other methods, or it could be the raw data if the adjusting parameters available.</p></td>
+    </tr>
+    <tr>
+      <th>groups</th>
+      <td><p>vector of characters indicating the group for each sample.</p></td>
+    </tr>
+    <tr>
+      <th>adjust</th>
+      <td><p>adjusting parameters for each sample.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    
+
+
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>group</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>'MXF'</span>,<span class='fl'>9</span>),<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>'PMFH'</span>,<span class='fl'>9</span>)),<span class='fl'>3</span>))
+<span class='fu'>plot.volcano</span>(<span class='no'>benchmark</span>, <span class='no'>group</span>)</div><div class='output co'>#&gt; <span class='error'>Error in plot.volcano(benchmark, group): could not find function "plot.volcano"</span></div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
