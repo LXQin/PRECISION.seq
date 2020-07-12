@@ -76,4 +76,3 @@ simu = function(proportion_L, proportion_R, median_L, median_R, numsets){
               simulated_test = test_simued))
 }
 
-

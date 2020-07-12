@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, warning = FALSE, message = FALSE}
+rm(list = ls())
 library(precision.seq)
 library(DESeq)
 ```

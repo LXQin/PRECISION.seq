@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Analysis_Pipeline.html">Pipeline of the Paper</a>
+    </li>
+    <li>
       <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
     </li>
     <li>
@@ -85,7 +88,8 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">precision.seq</span>)
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span>(<span class="kw">list</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span>())
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">precision.seq</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DESeq</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">limma</span>)</pre></body></html></div>
 <p>The unique pair of miRNA sequencing data is collected from two of the most common and aggressive soft tissue sarcoma subtypes: myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH). Collected at MSK between 2002 and 2012, 27 MXF samples and 27 PMFH samples including 1033 miRNA markers are extracted from newly diagnosed untreated tumors with sufficient quality and quantity. These samples are then measured twice separately. One of the obtained miRNA sequencing data (named as <code>benchmark</code> data in this package) is prepared by uniform handling and balanced sample-to-library-assignment minimizing artifact effects, which needs no normalization in the downstream analysis, while the other one (named as <code>test</code> data in this package) is collected in the usual way, which requires normalization for removing obscuring variability.</p>
@@ -218,21 +222,21 @@
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">simulated</span> <span class="kw">=</span> <span class="fu"><a href="../reference/simu.html">simu</a></span>(<span class="kw">proportion_L</span> <span class="kw">=</span> <span class="fl">0.0175</span>, <span class="kw">proportion_R</span> <span class="kw">=</span> <span class="fl">0.0225</span>, <span class="kw">median_L</span> <span class="kw">=</span> -<span class="fl">0.5</span>, <span class="kw">median_R</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">numsets</span> <span class="kw">=</span> <span class="fl">100</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">simulated</span>$<span class="no">simulated_benchmark</span><span class="kw">[[</span><span class="fl">1</span>]])[,<span class="fl">1</span>:<span class="fl">5</span>]
-<span class="co">#&gt;                  D13    D9    D8    E3   E19</span>
-<span class="co">#&gt; hsa-let-7a-2*      4     2     6     5    12</span>
-<span class="co">#&gt; hsa-let-7a(3)  61856 57395 18756 69704 74964</span>
-<span class="co">#&gt; hsa-let-7a*(2)   486   142   154   353   373</span>
-<span class="co">#&gt; hsa-let-7b     17117 14939  3001 17920 15081</span>
-<span class="co">#&gt; hsa-let-7b*       96    74    23    92    82</span>
-<span class="co">#&gt; hsa-let-7c     43551 12911  5961 13838 11911</span>
+<span class="co">#&gt;                  D17    D7   D19    E3     E5</span>
+<span class="co">#&gt; hsa-let-7a-2*      4     2     2     5     11</span>
+<span class="co">#&gt; hsa-let-7a(3)  61589 30934 40506 69704 268842</span>
+<span class="co">#&gt; hsa-let-7a*(2)   436   216   196   353   1517</span>
+<span class="co">#&gt; hsa-let-7b     29023  8395 25772 17920  77765</span>
+<span class="co">#&gt; hsa-let-7b*      125    50   106    92    607</span>
+<span class="co">#&gt; hsa-let-7c      9774  5633 17112 13838  65477</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">simulated</span>$<span class="no">simulated_test</span><span class="kw">[[</span><span class="fl">1</span>]])[,<span class="fl">1</span>:<span class="fl">5</span>]
-<span class="co">#&gt;                  D13     D9    D8    E3   E19</span>
-<span class="co">#&gt; hsa-let-7a-2*      0      0     0     0     2</span>
-<span class="co">#&gt; hsa-let-7a(3)  84773 127231 62888 21107 21420</span>
-<span class="co">#&gt; hsa-let-7a*(2)  3392    240   593   137    80</span>
-<span class="co">#&gt; hsa-let-7b      8844  25940  4863  4744  2966</span>
-<span class="co">#&gt; hsa-let-7b*       29     59    46    15    23</span>
-<span class="co">#&gt; hsa-let-7c     27704  28152 20689  4445  2609</span></pre></body></html></div>
+<span class="co">#&gt;                  D17    D7   D19    E3     E5</span>
+<span class="co">#&gt; hsa-let-7a-2*      1     2     0     0      2</span>
+<span class="co">#&gt; hsa-let-7a(3)  53958 89726 60273 21107 253696</span>
+<span class="co">#&gt; hsa-let-7a*(2)   113   368   157   137   1162</span>
+<span class="co">#&gt; hsa-let-7b     15832 17546 25624  4744  93419</span>
+<span class="co">#&gt; hsa-let-7b*       32    48    73    15    258</span>
+<span class="co">#&gt; hsa-let-7c      8156 11921 16656  4445  71733</span></pre></body></html></div>
 </div>
   </div>
 

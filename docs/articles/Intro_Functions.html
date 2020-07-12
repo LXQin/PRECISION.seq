@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Analysis_Pipeline.html">Pipeline of the Paper</a>
+    </li>
+    <li>
       <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
     </li>
     <li>
@@ -85,7 +88,8 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">precision.seq</span>)
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span>(<span class="kw">list</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span>())
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">precision.seq</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DESeq</span>)</pre></body></html></div>
 <p>One critical aspect of RNA sequencing data normalization is the sequencing depth. We prepared nine commonly used depth normalization methods and a pair of well-designed datasets used for statistical evaluations in this package.</p>
 <div id="functions-for-depth-normalization" class="section level2">
