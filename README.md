@@ -7,7 +7,13 @@ We propose the well-prepared datasets and pack commonly used normalization metho
 * Obtain the output including the DE genes and p values for each gene;
 * Visualize the outputs for methods comparision.
 
-Before installing this package, please ensure that the dependency packages installed. This package is based on R 4.0.2, and the R codes for installing these packages are:
+The package can be installed in R.
+
+```R
+devtools::install_github("LXQin/precision.seq")
+```
+
+If the package cannot be installed successfully, please ensure that the dependency packages installed. This package is based on R 4.0.2, and the R codes for installing the dependent packages are:
 
 ```R
 ## from CRAN

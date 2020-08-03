@@ -244,7 +244,6 @@ norm.SVA = function(raw, groups) {
 #' @import DESeq
 #' @import edgeR
 #' @import RUVSeq
-#' @import Biobase
 #' @export
 #'
 #' @references \href{http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf}{RUVSeq Tutorial}
@@ -260,7 +259,8 @@ norm.RUV = function(raw, groups, method = c("RUVg", "RUVs", "RUVr")) {
   set = newSeqExpressionSet(as.matrix(dat.ruv),
                             phenoData = data.frame(condition,
                                                    row.names = colnames(dat.ruv)))
-  design = model.matrix(~ condition, data = pData(set))
+  design = model.matrix(~ condition, data = data.frame(condition,
+                                                       row.names = colnames(dat.ruv)))
   y = DGEList(counts = counts(set), group = condition)
   y = calcNormFactors(y, method = "upperquartile")
   y = estimateGLMCommonDisp(y, design)

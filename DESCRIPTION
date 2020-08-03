@@ -25,7 +25,6 @@ Imports:
     limma,
     preprocessCore,
     ffpe,
-    Biobase,
     magrittr,
     vsn
 Suggests: 
