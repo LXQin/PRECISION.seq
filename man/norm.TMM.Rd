@@ -18,8 +18,7 @@ list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor
 Normalize the dataset using TMM, and return the normalized dataset with scaling factor.
 }
 \examples{
-group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-test.TMM = norm.TMM(test, group)
+test.TMM <-  norm.TMM(data.test, data.group)
 }
 \references{
 \href{https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf}{edgeR User Guide}

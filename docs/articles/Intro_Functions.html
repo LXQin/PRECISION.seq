@@ -96,21 +96,20 @@
 <h2 class="hasAnchor">
 <a href="#functions-for-depth-normalization" class="anchor"></a>Functions for Depth Normalization</h2>
 <p>In this section, we will present how to use the normalization functions in this package. The raw count data in the format of data frame or matrix (with columns for samples and rows for markers/genes) and the vector of characters indicating the group of each sample are needed as input. The output depends on the normalization methods. If the normalization methods are re-scalling based, normalized dataset and scalling factor will be provided as output; if the normalization methods are regression based, normalized dataset, which only used for exploration and the adjusting factor will be provided as output.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">emp.group</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">'MXF'</span>,<span class="fl">9</span>),<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">'PMFH'</span>,<span class="fl">9</span>)),<span class="fl">3</span>))
-<span class="no">test.TC</span> <span class="kw">=</span> <span class="fu"><a href="../reference/norm.TC.html">norm.TC</a></span>(<span class="no">test</span>, <span class="no">emp.group</span>)
-<span class="no">test.UQ</span> <span class="kw">=</span> <span class="fu"><a href="../reference/norm.UQ.html">norm.UQ</a></span>(<span class="no">test</span>, <span class="no">emp.group</span>)
-<span class="no">test.med</span> <span class="kw">=</span> <span class="fu"><a href="../reference/norm.med.html">norm.med</a></span>(<span class="no">test</span>, <span class="no">emp.group</span>)
-<span class="no">test.TMM</span> <span class="kw">=</span> <span class="fu"><a href="../reference/norm.TMM.html">norm.TMM</a></span>(<span class="no">test</span>, <span class="no">emp.group</span>)
-<span class="no">test.DESeq</span> <span class="kw">=</span> <span class="fu"><a href="../reference/norm.DESeq.html">norm.DESeq</a></span>(<span class="no">test</span>, <span class="no">emp.group</span>)
-<span class="no">test.PoissonSeq</span> <span class="kw">=</span> <span class="fu"><a href="../reference/norm.PoissonSeq.html">norm.PoissonSeq</a></span>(<span class="no">test</span>)
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">test.TC</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/norm.TC.html">norm.TC</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>)
+<span class="no">test.UQ</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/norm.UQ.html">norm.UQ</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>)
+<span class="no">test.med</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/norm.med.html">norm.med</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>)
+<span class="no">test.TMM</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/norm.TMM.html">norm.TMM</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>)
+<span class="no">test.DESeq</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/norm.DESeq.html">norm.DESeq</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>)
+<span class="no">test.PoissonSeq</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/norm.PoissonSeq.html">norm.PoissonSeq</a></span>(<span class="no">data.test</span>)
 <span class="co">#&gt; 328 genes has been filtered because they contains too small number of reads across the experiments.</span>
-<span class="no">test.QN</span> <span class="kw">=</span> <span class="fu"><a href="../reference/norm.QN.html">norm.QN</a></span>(<span class="no">test</span>)
-<span class="no">test.SVA</span> <span class="kw">=</span> <span class="fu"><a href="../reference/norm.SVA.html">norm.SVA</a></span>(<span class="no">test</span>, <span class="no">emp.group</span>)
+<span class="no">test.QN</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/norm.QN.html">norm.QN</a></span>(<span class="no">data.test</span>)
+<span class="no">test.SVA</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/norm.SVA.html">norm.SVA</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>)
 <span class="co">#&gt; Number of significant surrogate variables is:  1 </span>
 <span class="co">#&gt; Iteration (out of 5 ):1  2  3  4  5</span>
-<span class="no">test.RUVg</span> <span class="kw">=</span>  <span class="fu"><a href="../reference/norm.RUV.html">norm.RUV</a></span>(<span class="no">test</span>, <span class="no">emp.group</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"RUVg"</span>)
-<span class="no">test.RUVs</span> <span class="kw">=</span>  <span class="fu"><a href="../reference/norm.RUV.html">norm.RUV</a></span>(<span class="no">test</span>, <span class="no">emp.group</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"RUVs"</span>)
-<span class="no">test.RUVr</span> <span class="kw">=</span>  <span class="fu"><a href="../reference/norm.RUV.html">norm.RUV</a></span>(<span class="no">test</span>, <span class="no">emp.group</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"RUVr"</span>)
+<span class="no">test.RUVg</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/norm.RUV.html">norm.RUV</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"RUVg"</span>)
+<span class="no">test.RUVs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/norm.RUV.html">norm.RUV</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"RUVs"</span>)
+<span class="no">test.RUVr</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/norm.RUV.html">norm.RUV</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"RUVr"</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">test.TMM</span>$<span class="no">scaling.factor</span>)
 <span class="co">#&gt; [1] 1.1988963 0.4295173 1.2377190 1.3487078 1.1959610 1.8503994</span>
@@ -151,18 +150,18 @@
 <h2 class="hasAnchor">
 <a href="#functions-for-differential-expression-analysis" class="anchor"></a>Functions for Differential Expression Analysis</h2>
 <p>We pack two DEA functions, edgeR and voom-limma, in this package. The input could be either the normalized dataset (always from re-scalling methods) or the non-normalized dataset with adjusting factor (always from regression-based methods). Names of DE markers/genes (p = 0.01 as cut-off point by default), p-values for each marker/gene, and log2 fold change are provided in output.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">edgeR.benchmark</span> <span class="kw">=</span> <span class="fu"><a href="../reference/DE.edgeR.html">DE.edgeR</a></span>(<span class="no">benchmark</span>, <span class="no">emp.group</span>)
-<span class="no">voom.benchmark</span> <span class="kw">=</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="no">benchmark</span>, <span class="no">emp.group</span>)
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">edgeR.benchmark</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/DE.edgeR.html">DE.edgeR</a></span>(<span class="no">data.benchmark</span>, <span class="no">data.group</span>)
+<span class="no">voom.benchmark</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="no">data.benchmark</span>, <span class="no">data.group</span>)
 
-<span class="no">edgeR.test.TMM</span> <span class="kw">=</span> <span class="fu"><a href="../reference/DE.edgeR.html">DE.edgeR</a></span>(<span class="no">test.TMM</span>$<span class="no">dat.normed</span>, <span class="no">emp.group</span>)
-<span class="no">voom.test.TMM</span> <span class="kw">=</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="no">test.TMM</span>$<span class="no">dat.normed</span>, <span class="no">emp.group</span>)
+<span class="no">edgeR.test.TMM</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/DE.edgeR.html">DE.edgeR</a></span>(<span class="no">test.TMM</span>$<span class="no">dat.normed</span>, <span class="no">data.group</span>)
+<span class="no">voom.test.TMM</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="no">test.TMM</span>$<span class="no">dat.normed</span>, <span class="no">data.group</span>)
 
-<span class="no">edgeR.test.RUVr</span> <span class="kw">=</span> <span class="fu"><a href="../reference/DE.edgeR.html">DE.edgeR</a></span>(<span class="no">test</span>, <span class="no">emp.group</span>,
-                           <span class="kw">normalized</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                           <span class="kw">adjust</span> <span class="kw">=</span> <span class="no">test.RUVr</span>$<span class="no">adjust.factor</span>)
-<span class="no">voom.test.RUVr</span> <span class="kw">=</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="no">test</span>, <span class="no">emp.group</span>,
-                         <span class="kw">normalized</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-                         <span class="kw">adjust</span> <span class="kw">=</span> <span class="no">test.RUVr</span>$<span class="no">adjust.factor</span>)
+<span class="no">edgeR.test.RUVr</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/DE.edgeR.html">DE.edgeR</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>,
+                            <span class="kw">normalized</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
+                            <span class="kw">adjust</span> <span class="kw">=</span> <span class="no">test.RUVr</span>$<span class="no">adjust.factor</span>)
+<span class="no">voom.test.RUVr</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>,
+                          <span class="kw">normalized</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
+                          <span class="kw">adjust</span> <span class="kw">=</span> <span class="no">test.RUVr</span>$<span class="no">adjust.factor</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">voom.benchmark</span>$<span class="no">id.list</span>)
 <span class="co">#&gt; [1] "hsa-miR-99a*"   "hsa-miR-26a-2*" "hsa-miR-146b"   "hsa-miR-7(3)"  </span>

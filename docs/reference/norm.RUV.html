@@ -157,8 +157,7 @@
     <p><a href='http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf'>RUVSeq Tutorial</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>group</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>'MXF'</span>,<span class='fl'>9</span>),<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='st'>'PMFH'</span>,<span class='fl'>9</span>)),<span class='fl'>3</span>))
-<span class='no'>test.RUVr</span> <span class='kw'>=</span> <span class='fu'>norm.RUV</span>(<span class='no'>test</span>, <span class='no'>group</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"RUVr"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'annotatedDataFrameFrom': could not find function "counts"</span></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>test.RUVr</span> <span class='kw'>&lt;-</span> <span class='fu'>norm.RUV</span>(<span class='no'>data.test</span>, <span class='no'>data.group</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"RUVr"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in pData(set): could not find function "pData"</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

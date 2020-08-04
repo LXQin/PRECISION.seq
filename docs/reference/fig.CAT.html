@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Normalization By DESeq (DESeq) — norm.DESeq • precision.seq</title>
+<title>Concordance At The Top Plot — fig.CAT • precision.seq</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Normalization By DESeq (DESeq) — norm.DESeq" />
-<meta property="og:description" content="Normalize the dataset using DESeq, and return the normalized dataset with scaling factor." />
+<meta property="og:title" content="Concordance At The Top Plot — fig.CAT" />
+<meta property="og:description" content="Function for generating concordance at the top plot, which compares concordance of the p-values obtained
+from benchmark data without normalization and normalized test data." />
 
 
 
@@ -121,39 +122,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Normalization By DESeq (DESeq)</h1>
+    <h1>Concordance At The Top Plot</h1>
     
-    <div class="hidden name"><code>norm.DESeq.Rd</code></div>
+    <div class="hidden name"><code>fig.CAT.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Normalize the dataset using DESeq, and return the normalized dataset with scaling factor.</p>
+    <p>Function for generating concordance at the top plot, which compares concordance of the p-values obtained
+from benchmark data without normalization and normalized test data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>norm.DESeq</span>(<span class='no'>raw</span>, <span class='no'>groups</span>)</pre>
+    <pre class="usage"><span class='fu'>fig.CAT</span>(<span class='no'>MethodType</span>, <span class='no'>MethodName</span>, <span class='no'>pvalues</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>raw</th>
-      <td><p>raw count data in the format of data frame or matrix, with columns for samples and raws for genes.</p></td>
+      <th>MethodType</th>
+      <td><p>the type of method that researchers would like to compare with, either "Scale" or "Regression"</p></td>
     </tr>
     <tr>
-      <th>groups</th>
-      <td><p>vector of characters indicating the group for each sample.</p></td>
+      <th>MethodName</th>
+      <td><p>the name of the new method which will be presented in the legend</p></td>
+    </tr>
+    <tr>
+      <th>pvalues</th>
+      <td><p>a vector of p values computed from DE analysis using the normalized data</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list, containing <code>dat.normed</code> (normalized dataset) and <code>scaling.factor</code> (scaling factor) for each sample.</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    
 
-    <p><a href='https://bioconductor.org/packages/release/bioc/vignettes/DESeq/inst/doc/DESeq.pdf'>DESeq Package</a></p>
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>test.DESeq</span> <span class='kw'>&lt;-</span> <span class='fu'>norm.DESeq</span>(<span class='no'>data.test</span>, <span class='no'>data.group</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>t</span> <span class='kw'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>1033</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>t</span>) <span class='kw'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>data.test</span>)
+<span class='fu'>fig.CAT</span>(<span class='st'>"Scale"</span>, <span class='st'>"Example"</span>, <span class='no'>t</span>)</div><div class='img'><img src='fig.CAT-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

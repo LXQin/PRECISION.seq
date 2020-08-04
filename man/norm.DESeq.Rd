@@ -18,8 +18,7 @@ list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor
 Normalize the dataset using DESeq, and return the normalized dataset with scaling factor.
 }
 \examples{
-group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-test.DESeq = norm.DESeq(test, group)
+test.DESeq <- norm.DESeq(data.test, data.group)
 }
 \references{
 \href{https://bioconductor.org/packages/release/bioc/vignettes/DESeq/inst/doc/DESeq.pdf}{DESeq Package}

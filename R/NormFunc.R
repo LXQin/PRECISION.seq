@@ -13,15 +13,14 @@
 #' @references \href{https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf}{edgeR User Guide}
 #'
 #' @examples
-#' group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-#' test.TMM = norm.TMM(test, group)
-norm.TMM = function(raw, groups) {
-  dat.DGE = DGEList(counts = matrix(raw, ncol = length(groups)),
-                    group = factor(groups),
-                    genes = rownames(raw))
-  d = calcNormFactors(dat.DGE, method = "TMM")
-  scaling.factor = d$samples$norm.factors * d$samples$lib.size / 1e6
-  dat.normed = t(t(raw)/scaling.factor)
+#' test.TMM <-  norm.TMM(data.test, data.group)
+norm.TMM <- function(raw, groups) {
+  dat.DGE <- DGEList(counts = matrix(raw, ncol = length(groups)),
+                     group = factor(groups),
+                     genes = rownames(raw))
+  d <- calcNormFactors(dat.DGE, method = "TMM")
+  scaling.factor <- d$samples$norm.factors * d$samples$lib.size / 1e6
+  dat.normed <- t(t(raw)/scaling.factor)
   return(list(dat.normed = dat.normed,
               scaling.factor = scaling.factor))
 }
@@ -42,14 +41,13 @@ norm.TMM = function(raw, groups) {
 #' @references Dillies, Marie-Agnès, et al. "A comprehensive evaluation of normalization methods for Illumina high-throughput RNA sequencing data analysis." \emph{Briefings in bioinformatics} 14.6 (2013): 671-683.
 #'
 #' @examples
-#' group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-#' test.TC = norm.TC(test, group)
-norm.TC = function(raw, groups) {
-  dat.DGE = DGEList(counts = matrix(raw, ncol = length(groups)),
-                    group = factor(groups),
-                    genes = rownames(raw))
-  scaling.factor = dat.DGE$samples$lib.size/1e6
-  dat.normed = t(t(raw)/scaling.factor)
+#' test.TC <-  norm.TC(data.test, data.group)
+norm.TC <- function(raw, groups) {
+  dat.DGE <- DGEList(counts = matrix(raw, ncol = length(groups)),
+                     group = factor(groups),
+                     genes = rownames(raw))
+  scaling.factor <- dat.DGE$samples$lib.size/1e6
+  dat.normed <- t(t(raw)/scaling.factor)
   return(list(dat.normed = dat.normed,
               scaling.factor = scaling.factor))
 }
@@ -70,15 +68,14 @@ norm.TC = function(raw, groups) {
 #' @references Dillies, Marie-Agnès, et al. "A comprehensive evaluation of normalization methods for Illumina high-throughput RNA sequencing data analysis." \emph{Briefings in bioinformatics} 14.6 (2013): 671-683.
 #'
 #' @examples
-#' group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-#' test.UQ = norm.UQ(test, group)
-norm.UQ = function(raw, groups) {
-  dat.DGE = DGEList(counts = matrix(raw, ncol = length(groups)),
-                    group = factor(groups),
-                    genes = rownames(raw))
-  q.factor = apply(dat.DGE$counts, 2, function(x) quantile(x[x != 0], probs = 0.75))
-  scaling.factor = q.factor/1e6
-  dat.normed = t(t(raw)/scaling.factor)
+#' test.UQ <- norm.UQ(data.test, data.group)
+norm.UQ <- function(raw, groups) {
+  dat.DGE <- DGEList(counts = matrix(raw, ncol = length(groups)),
+                     group = factor(groups),
+                     genes = rownames(raw))
+  q.factor <- apply(dat.DGE$counts, 2, function(x) quantile(x[x != 0], probs = 0.75))
+  scaling.factor <- q.factor/1e6
+  dat.normed <- t(t(raw)/scaling.factor)
   return(list(dat.normed = dat.normed,
               scaling.factor = scaling.factor))
 }
@@ -99,15 +96,14 @@ norm.UQ = function(raw, groups) {
 #' @references Dillies, Marie-Agnès, et al. "A comprehensive evaluation of normalization methods for Illumina high-throughput RNA sequencing data analysis." \emph{Briefings in bioinformatics} 14.6 (2013): 671-683.
 #'
 #' @examples
-#' group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-#' test.med = norm.med(test, group)
-norm.med = function(raw, groups) {
-  dat.DGE = DGEList(counts = matrix(raw, ncol = length(groups)),
-                    group = factor(groups),
-                    genes = rownames(raw))
-  m.factor = apply(dat.DGE$counts, 2, function(x) median(x[x != 0]))
-  scaling.factor = m.factor/1e6
-  dat.normed = t(t(raw)/scaling.factor)
+#' test.med <- norm.med(data.test, data.group)
+norm.med <- function(raw, groups) {
+  dat.DGE <- DGEList(counts = matrix(raw, ncol = length(groups)),
+                     group = factor(groups),
+                     genes = rownames(raw))
+  m.factor <- apply(dat.DGE$counts, 2, function(x) median(x[x != 0]))
+  scaling.factor <- m.factor/1e6
+  dat.normed <- t(t(raw)/scaling.factor)
   return(list(dat.normed = dat.normed,
               scaling.factor = scaling.factor))
 }
@@ -128,13 +124,12 @@ norm.med = function(raw, groups) {
 #' @references \href{https://bioconductor.org/packages/release/bioc/vignettes/DESeq/inst/doc/DESeq.pdf}{DESeq Package}
 #'
 #' @examples
-#' group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-#' test.DESeq = norm.DESeq(test, group)
-norm.DESeq = function(raw, groups) {
-  condition = factor(groups)
-  dat.DGE = estimateSizeFactors(newCountDataSet(raw, condition))
-  scaling.factor = sizeFactors(dat.DGE)
-  dat.normed = counts(dat.DGE, normalized = T)
+#' test.DESeq <- norm.DESeq(data.test, data.group)
+norm.DESeq <- function(raw, groups) {
+  condition <- factor(groups)
+  dat.DGE <- estimateSizeFactors(newCountDataSet(raw, condition))
+  scaling.factor <- sizeFactors(dat.DGE)
+  dat.normed <- counts(dat.DGE, normalized = T)
   return(list(dat.normed = dat.normed,
               scaling.factor = scaling.factor))
 }
@@ -154,10 +149,10 @@ norm.DESeq = function(raw, groups) {
 #' @references \href{https://cran.r-project.org/web/packages/PoissonSeq/PoissonSeq.pdf}{PossionSeq Package}
 #'
 #' @examples
-#' test.PoissonSeq = norm.PoissonSeq(test)
-norm.PoissonSeq = function(raw) {
-  scaling.factor = PS.Est.Depth(raw)
-  dat.normed = t(t(raw)/scaling.factor)
+#' test.PoissonSeq <- norm.PoissonSeq(data.test)
+norm.PoissonSeq <- function(raw) {
+  scaling.factor <- PS.Est.Depth(raw)
+  dat.normed <- t(t(raw)/scaling.factor)
   return(list(dat.normed = dat.normed,
               scaling.factor = scaling.factor))
 }
@@ -178,18 +173,18 @@ norm.PoissonSeq = function(raw) {
 #' @references \href{http://jtleek.com/genstats/inst/doc/02_05_normalization.html}{Quantile Normalization Tutorial}
 #'
 #' @examples
-#' test.QN = norm.QN(test)
-norm.QN = function(raw, filter = FALSE) {
+#' test.QN <- norm.QN(data.test)
+norm.QN <- function(raw, filter = FALSE) {
   if (filter == TRUE) {
-    raw = log2(raw + 1)
-    raw = raw[rowMeans(raw) > 2, ]
+    raw <- log2(raw + 1)
+    raw <- raw[rowMeans(raw) > 2, ]
   } else {
-    raw = log2(raw + 1)
+    raw <- log2(raw + 1)
   }
-  dat.log.normed = normalize.quantiles(as.matrix(raw))
-  dat.normed = 2^dat.log.normed - 1
-  colnames(dat.normed) = colnames(raw)
-  rownames(dat.normed) = rownames(raw)
+  dat.log.normed <- normalize.quantiles(as.matrix(raw))
+  dat.normed <- 2^dat.log.normed - 1
+  colnames(dat.normed) <- colnames(raw)
+  rownames(dat.normed) <- rownames(raw)
   return(list(dat.normed = dat.normed))
 }
 
@@ -210,21 +205,20 @@ norm.QN = function(raw, filter = FALSE) {
 #' @references \href{https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf}{SVA Package}
 #'
 #' @examples
-#' group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-#' test.SVA = norm.SVA(test, group)
-norm.SVA = function(raw, groups) {
-  filter = apply(raw, 1, function(x) length(x[x > 5]) >= 2)
-  dat.sva = raw[filter, ]
-  genes = rownames(dat.sva)
-  mod1 = model.matrix(~ groups)
-  mod0 = cbind(mod1[,1])
-  dat0 = as.matrix(dat.sva)
-  svseq = svaseq(dat0, mod1, mod0, n.sv = 1)$sv
-  adjust = cbind(mod1, svseq)
-  hat = solve(t(adjust) %*% adjust) %*% t(adjust)
-  beta = (hat %*% t(raw))
-  P = ncol(mod1)
-  dat.normed = raw - t(as.matrix(adjust[,-c(1:P)]) %*% beta[-c(1:P),])
+#' test.SVA <- norm.SVA(data.test, data.group)
+norm.SVA <- function(raw, groups) {
+  filter <- apply(raw, 1, function(x) length(x[x > 5]) >= 2)
+  dat.sva <- raw[filter, ]
+  genes <- rownames(dat.sva)
+  mod1 <- model.matrix(~ groups)
+  mod0 <- cbind(mod1[,1])
+  dat0 <- as.matrix(dat.sva)
+  svseq <- svaseq(dat0, mod1, mod0, n.sv = 1)$sv
+  adjust <- cbind(mod1, svseq)
+  hat <- solve(t(adjust) %*% adjust) %*% t(adjust)
+  beta <- (hat %*% t(raw))
+  P <- ncol(mod1)
+  dat.normed <- raw - t(as.matrix(adjust[,-c(1:P)]) %*% beta[-c(1:P),])
   return(list(dat.normed = dat.normed,
               adjust.factor = svseq))
 }
@@ -249,51 +243,50 @@ norm.SVA = function(raw, groups) {
 #' @references \href{http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf}{RUVSeq Tutorial}
 #'
 #' @examples
-#' group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-#' test.RUVr = norm.RUV(test, group, method = "RUVr")
-norm.RUV = function(raw, groups, method = c("RUVg", "RUVs", "RUVr")) {
-  filter = apply(raw, 1, function(x) length(x[x > 5]) >= 2)
-  dat.ruv = raw[filter, ]
-  genes = rownames(dat.ruv)
-  condition = factor(groups)
-  set = newSeqExpressionSet(as.matrix(dat.ruv),
+#' test.RUVr <- norm.RUV(data.test, data.group, method = "RUVr")
+norm.RUV <- function(raw, groups, method = c("RUVg", "RUVs", "RUVr")) {
+  filter <- apply(raw, 1, function(x) length(x[x > 5]) >= 2)
+  dat.ruv <- raw[filter, ]
+  genes <- rownames(dat.ruv)
+  condition <- factor(groups)
+  set <- newSeqExpressionSet(as.matrix(dat.ruv),
                             phenoData = data.frame(condition,
                                                    row.names = colnames(dat.ruv)))
-  design = model.matrix(~ condition, data = data.frame(condition,
+  design <- model.matrix(~ condition, data = data.frame(condition,
                                                        row.names = colnames(dat.ruv)))
-  y = DGEList(counts = counts(set), group = condition)
-  y = calcNormFactors(y, method = "upperquartile")
-  y = estimateGLMCommonDisp(y, design)
-  y = estimateGLMTagwiseDisp(y, design)
-  fit = glmFit(y, design)
-  lrt = glmLRT(fit, coef = 2)
-  top = topTags(lrt, n = nrow(set))$table
-  spikes = rownames(set)[which(!(rownames(set) %in% rownames(top)[1:0.15*nrow(raw)]))]
+  y <- DGEList(counts = counts(set), group = condition)
+  y <- calcNormFactors(y, method = "upperquartile")
+  y <- estimateGLMCommonDisp(y, design)
+  y <- estimateGLMTagwiseDisp(y, design)
+  fit <- glmFit(y, design)
+  lrt <- glmLRT(fit, coef = 2)
+  top <- topTags(lrt, n = nrow(set))$table
+  spikes <- rownames(set)[which(!(rownames(set) %in% rownames(top)[1:0.15*nrow(raw)]))]
 
   if (method == "RUVg") {
-    t = RUVg(set, spikes, k = 1)
-    dat.normed = normCounts(t)
-    return(list(dat.normed = dat.normed,
-                adjust.factor = t$W))
+    t <- RUVg(set, spikes, k = 1)
+    dat.normed <- normCounts(t)
+    return(list(dat.normed <- dat.normed,
+                adjust.factor <- t$W))
   }else if (method == "RUVs") {
-    differences = makeGroups(condition)
-    controls = rownames(dat.ruv)
-    t = RUVs(set, controls, k = 1, differences)
-    dat.normed = normCounts(t)
-    return(list(dat.normed = dat.normed,
-                adjust.factor = t$W))
+    differences <- makeGroups(condition)
+    controls <- rownames(dat.ruv)
+    t <- RUVs(set, controls, k = 1, differences)
+    dat.normed <- normCounts(t)
+    return(list(dat.normed <- dat.normed,
+                adjust.factor <- t$W))
   }else if (method == "RUVr") {
-    design = model.matrix(~ condition, data = pData(set))
-    y = DGEList(counts = counts(set), group = condition)
-    y = calcNormFactors(y, method = "upperquartile")
-    y = estimateGLMCommonDisp(y, design)
-    y = estimateGLMTagwiseDisp(y, design)
-    fit = glmFit(y, design)
-    res = residuals(fit, type = "deviance")
-    setUQ = betweenLaneNormalization(set, which = "upper")
-    controls = rownames(dat.ruv)
-    t = RUVr(setUQ, controls, k = 1, res)
-    dat.normed = normCounts(t)
+    design <- model.matrix(~ condition, data = pData(set))
+    y <- DGEList(counts = counts(set), group = condition)
+    y <- calcNormFactors(y, method = "upperquartile")
+    y <- estimateGLMCommonDisp(y, design)
+    y <- estimateGLMTagwiseDisp(y, design)
+    fit <- glmFit(y, design)
+    res <- residuals(fit, type = "deviance")
+    setUQ <- betweenLaneNormalization(set, which = "upper")
+    controls <- rownames(dat.ruv)
+    t <- RUVr(setUQ, controls, k = 1, res)
+    dat.normed <- normCounts(t)
 
     return(list(dat.normed = dat.normed,
                 adjust.factor = t$W))

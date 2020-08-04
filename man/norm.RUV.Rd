@@ -20,8 +20,7 @@ list, containing \code{dat.normed} (normalized dataset), and the \code{adjust.fa
 Normalize the dataset using RUV (including RUVg, RUVr and RUVs), and return the normalized dataset with adjusting factor.
 }
 \examples{
-group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-test.RUVr = norm.RUV(test, group, method = "RUVr")
+test.RUVr <- norm.RUV(data.test, data.group, method = "RUVr")
 }
 \references{
 \href{http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf}{RUVSeq Tutorial}

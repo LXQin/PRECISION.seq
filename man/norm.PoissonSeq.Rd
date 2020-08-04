@@ -16,7 +16,7 @@ list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor
 Normalize the dataset using PoissonSeq, and return the normalized dataset with scaling factor.
 }
 \examples{
-test.PoissonSeq = norm.PoissonSeq(test)
+test.PoissonSeq <- norm.PoissonSeq(data.test)
 }
 \references{
 \href{https://cran.r-project.org/web/packages/PoissonSeq/PoissonSeq.pdf}{PossionSeq Package}

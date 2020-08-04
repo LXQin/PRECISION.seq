@@ -25,5 +25,5 @@ Function for generating simulated datasets according to different proportions of
 The range of DE proportion availiable is between 0 and 0.387, and the range of median of mean difference is between -2.52 and 4.59.
 }
 \examples{
-simulated = simu(0.0175, 0.0225, -0.5, 0.5, 10)
+simulated <- simu(0.0175, 0.0225, -0.5, 0.5, 10)
 }

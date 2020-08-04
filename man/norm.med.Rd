@@ -18,8 +18,7 @@ list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor
 Normalize the dataset using Med, and return the normalized dataset with scaling factor.
 }
 \examples{
-group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-test.med = norm.med(test, group)
+test.med <- norm.med(data.test, data.group)
 }
 \references{
 Dillies, Marie-Agnès, et al. "A comprehensive evaluation of normalization methods for Illumina high-throughput RNA sequencing data analysis." \emph{Briefings in bioinformatics} 14.6 (2013): 671-683.

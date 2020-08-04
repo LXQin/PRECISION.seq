@@ -92,7 +92,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">precision.seq</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DESeq</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">limma</span>)</pre></body></html></div>
-<p>The unique pair of miRNA sequencing data is collected from two of the most common and aggressive soft tissue sarcoma subtypes: myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH). Collected at MSK between 2002 and 2012, 27 MXF samples and 27 PMFH samples including 1033 miRNA markers are extracted from newly diagnosed untreated tumors with sufficient quality and quantity. These samples are then measured twice separately. One of the obtained miRNA sequencing data (named as <code>benchmark</code> data in this package) is prepared by uniform handling and balanced sample-to-library-assignment minimizing artifact effects, which needs no normalization in the downstream analysis, while the other one (named as <code>test</code> data in this package) is collected in the usual way, which requires normalization for removing obscuring variability.</p>
+<p>The unique pair of miRNA sequencing data is collected from two of the most common and aggressive soft tissue sarcoma subtypes: myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH). Collected at MSK between 2002 and 2012, 27 MXF samples and 27 PMFH samples including 1033 miRNA markers are extracted from newly diagnosed untreated tumors with sufficient quality and quantity. These samples are then measured twice separately. One of the obtained miRNA sequencing data (named as <code>data.benchmark</code> data in this package) is prepared by uniform handling and balanced sample-to-library-assignment minimizing artifact effects, which needs no normalization in the downstream analysis, while the other one (named as <code>data.test</code> data in this package) is collected in the usual way, which requires normalization for removing obscuring variability.</p>
 <div id="benchmark-data-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#benchmark-data-analysis" class="anchor"></a>Benchmark Data Analysis</h2>
@@ -100,7 +100,7 @@
 <h3 class="hasAnchor">
 <a href="#overall-data-distribution" class="anchor"></a>Overall Data Distribution</h3>
 <p>We show the boxplot of the log2(benchmark+1) for each sample.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">benchmark.log</span> <span class="kw">=</span> <span class="no">benchmark.log</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span>(<span class="no">benchmark</span> + <span class="fl">1</span>)
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">benchmark.log</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span>(<span class="no">data.benchmark</span> + <span class="fl">1</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span>(<span class="no">benchmark.log</span>,
         <span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"MXF"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">benchmark.log</span>)),
                      <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">1</span>], <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">2</span>]),
@@ -114,11 +114,10 @@
 <h3 class="hasAnchor">
 <a href="#differential-expression-analysis" class="anchor"></a>Differential Expression Analysis</h3>
 <p>We continue to perform the DEA on benchmark data using voom-limma, and present the relationship between p-values and log fold change in volcano plot.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">emp.group</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">'MXF'</span>,<span class="fl">9</span>),<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">'PMFH'</span>,<span class="fl">9</span>)),<span class="fl">3</span>))
-<span class="no">benchmark.voom</span> <span class="kw">=</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="kw">RC</span> <span class="kw">=</span> <span class="no">benchmark</span>, <span class="kw">groups</span> <span class="kw">=</span> <span class="no">emp.group</span>, <span class="kw">P</span> <span class="kw">=</span> <span class="fl">0.01</span>)
-<span class="no">DE.bench</span> <span class="kw">=</span> <span class="no">benchmark.voom</span>$<span class="no">id.list</span>
-<span class="no">benchmark.voom.dat</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">dm</span> <span class="kw">=</span> <span class="no">benchmark.voom</span>$<span class="no">p.val</span>[,<span class="fl">2</span>],
-                            <span class="kw">p.value</span> <span class="kw">=</span> <span class="no">benchmark.voom</span>$<span class="no">p.val</span>[,<span class="fl">1</span>])
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">benchmark.voom</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="kw">RC</span> <span class="kw">=</span> <span class="no">data.benchmark</span>, <span class="kw">groups</span> <span class="kw">=</span> <span class="no">data.group</span>, <span class="kw">P</span> <span class="kw">=</span> <span class="fl">0.01</span>)
+<span class="no">DE.bench</span> <span class="kw">&lt;-</span> <span class="no">benchmark.voom</span>$<span class="no">id.list</span>
+<span class="no">benchmark.voom.dat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">dm</span> <span class="kw">=</span> <span class="no">benchmark.voom</span>$<span class="no">p.val</span>[,<span class="fl">2</span>],
+                                 <span class="kw">p.value</span> <span class="kw">=</span> <span class="no">benchmark.voom</span>$<span class="no">p.val</span>[,<span class="fl">1</span>])
 <span class="no">mask</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">benchmark.voom.dat</span>, <span class="no">p.value</span> <span class="kw">&lt;</span> <span class="fl">.01</span>)
 <span class="no">cols</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">mask</span>,<span class="st">"red"</span>, <span class="st">"black"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">benchmark.voom.dat</span>, <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">dm</span>, -<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span>(<span class="no">p.value</span>), <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">.5</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">16</span>,
@@ -132,7 +131,7 @@
 <h3 class="hasAnchor">
 <a href="#scatterplot-of-group-mean-averages-v-s--group-mean-differences" class="anchor"></a>Scatterplot of Group Mean Averages V.S. Group Mean Differences</h3>
 <p>In the below scatterplot in log scale, red dots indicates the DE markers with p &lt; 0.01 as cut-off point.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">cols</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">benchmark.log</span>) <span class="kw">%in%</span> <span class="no">DE.bench</span>, <span class="st">"red"</span>, <span class="st">"black"</span>)
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">cols</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">benchmark.log</span>) <span class="kw">%in%</span> <span class="no">DE.bench</span>, <span class="st">"red"</span>, <span class="st">"black"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowMeans</a></span>(<span class="no">benchmark.log</span>),
      <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="no">benchmark.log</span>[,<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"MXF"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">benchmark.log</span>))], <span class="fl">1</span>, <span class="no">mean</span>) -
        <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="no">benchmark.log</span>[,<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"PMFH"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">benchmark.log</span>))], <span class="fl">1</span>, <span class="no">mean</span>),
@@ -150,7 +149,7 @@
 <h3 class="hasAnchor">
 <a href="#overall-data-distribution-1" class="anchor"></a>Overall Data Distribution</h3>
 <p>We show the boxplot of the log2(test+1) for each sample.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">test.log</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span>(<span class="no">test</span> + <span class="fl">1</span>)
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">test.log</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span>(<span class="no">data.test</span> + <span class="fl">1</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span>(<span class="no">test.log</span>,
         <span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"MXF"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">benchmark.log</span>)),
                      <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">1</span>], <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">2</span>]),
@@ -163,11 +162,11 @@
 <h3 class="hasAnchor">
 <a href="#differential-expression-analysis-1" class="anchor"></a>Differential Expression Analysis</h3>
 <p>We continue to perform the DEA on test data using voom-limma without any normalization, and present the relationship between p-values and log fold change in volcano plot.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">test.voom</span> <span class="kw">=</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="kw">RC</span> <span class="kw">=</span> <span class="no">test</span>, <span class="kw">groups</span> <span class="kw">=</span> <span class="no">emp.group</span>, <span class="kw">P</span> <span class="kw">=</span> <span class="fl">0.01</span>)
-<span class="no">test.voom.dat</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">dm</span> <span class="kw">=</span> <span class="no">test.voom</span>$<span class="no">p.val</span>[,<span class="fl">2</span>],
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">test.voom</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="kw">RC</span> <span class="kw">=</span> <span class="no">data.test</span>, <span class="kw">groups</span> <span class="kw">=</span> <span class="no">data.group</span>, <span class="kw">P</span> <span class="kw">=</span> <span class="fl">0.01</span>)
+<span class="no">test.voom.dat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">dm</span> <span class="kw">=</span> <span class="no">test.voom</span>$<span class="no">p.val</span>[,<span class="fl">2</span>],
                             <span class="kw">p.value</span> <span class="kw">=</span> <span class="no">test.voom</span>$<span class="no">p.val</span>[,<span class="fl">1</span>])
-<span class="no">mask</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">test.voom.dat</span>, <span class="no">p.value</span> <span class="kw">&lt;</span> <span class="fl">.01</span>)
-<span class="no">cols</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">mask</span>,<span class="st">"red"</span>, <span class="st">"black"</span>)
+<span class="no">mask</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">test.voom.dat</span>, <span class="no">p.value</span> <span class="kw">&lt;</span> <span class="fl">.01</span>)
+<span class="no">cols</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="no">mask</span>,<span class="st">"red"</span>, <span class="st">"black"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="no">test.voom.dat</span>, <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">dm</span>, -<span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span>(<span class="no">p.value</span>), <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">.5</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">16</span>,
                          <span class="kw">ylim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">6</span>), <span class="kw">xlim</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(-<span class="fl">3.6</span>, <span class="fl">3.6</span>),
                          <span class="kw">col</span> <span class="kw">=</span> <span class="no">cols</span>, <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Mean Difference: PMFH - MXF"</span>))
@@ -177,8 +176,8 @@
 <div id="venn-diagram-between-benchmark-and-test" class="section level3">
 <h3 class="hasAnchor">
 <a href="#venn-diagram-between-benchmark-and-test" class="anchor"></a>Venn Diagram Between Benchmark and Test</h3>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">pval.bench.test</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/limma/man/cbind.html">cbind</a></span>(<span class="kw">bench.pval</span> <span class="kw">=</span> <span class="no">benchmark.voom</span>$<span class="no">p.val</span>[,<span class="fl">1</span>],
-                        <span class="kw">test.pval</span> <span class="kw">=</span> <span class="no">test.voom</span>$<span class="no">p.val</span>[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">benchmark.voom</span>$<span class="no">p.val</span>),<span class="fl">1</span>]))
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">pval.bench.test</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/limma/man/cbind.html">cbind</a></span>(<span class="kw">bench.pval</span> <span class="kw">=</span> <span class="no">benchmark.voom</span>$<span class="no">p.val</span>[,<span class="fl">1</span>],
+                                    <span class="kw">test.pval</span> <span class="kw">=</span> <span class="no">test.voom</span>$<span class="no">p.val</span>[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">benchmark.voom</span>$<span class="no">p.val</span>),<span class="fl">1</span>]))
 <span class="fu"><a href="https://rdrr.io/r/base/attach.html">attach</a></span>(<span class="no">pval.bench.test</span>)
 <span class="no">bench.sig</span> <span class="kw">&lt;-</span> (<span class="no">bench.pval</span> <span class="kw">&lt;</span> <span class="fl">0.01</span>)
 <span class="no">test.sig</span> <span class="kw">&lt;-</span> (<span class="no">test.pval</span> <span class="kw">&lt;</span> <span class="fl">0.01</span>)
@@ -192,7 +191,7 @@
 <h3 class="hasAnchor">
 <a href="#group-means-of-mxf" class="anchor"></a>Group Means of MXF</h3>
 <p>Scatterplot for the relationship between group means of benchmark and test data for MXF.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">benchmark.log.MXF.mean</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowMeans</a></span>(<span class="no">benchmark.log</span>[, <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"MXF"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">benchmark.log</span>))])
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">benchmark.log.MXF.mean</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowMeans</a></span>(<span class="no">benchmark.log</span>[, <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"MXF"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">benchmark.log</span>))])
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">benchmark.log.MXF.mean</span>,
      <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowMeans</a></span>(<span class="no">test.log</span>[,<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"MXF"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">test.log</span>))]), <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">16</span>, <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">0.5</span>,
      <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Group Mean Average of Log2 Count in Benchmark"</span>,
@@ -205,7 +204,7 @@
 <h3 class="hasAnchor">
 <a href="#group-means-of-pmfh" class="anchor"></a>Group Means of PMFH</h3>
 <p>Scatterplot for the relationship between group means of benchmark and test data for PMFH.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">benchmark.log.PMFH.mean</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowMeans</a></span>(<span class="no">benchmark.log</span>[, <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"PMFH"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">benchmark.log</span>))])
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">benchmark.log.PMFH.mean</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowMeans</a></span>(<span class="no">benchmark.log</span>[, <span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"PMFH"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">benchmark.log</span>))])
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">benchmark.log.PMFH.mean</span>,
      <span class="fu"><a href="https://rdrr.io/r/base/colSums.html">rowMeans</a></span>(<span class="no">test.log</span>[,<span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"PMFH"</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">test.log</span>))]), <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">16</span>, <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">0.5</span>,
      <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Group Mean Average of Log2 Count in Benchmark"</span>,
@@ -219,24 +218,24 @@
 <h2 class="hasAnchor">
 <a href="#simulation" class="anchor"></a>Simulation</h2>
 <p>In this section, we will present how to use <code><a href="../reference/simu.html">simu()</a></code> function to generate desired simulated dataset. We will simulate all the possible datasets with proportion of DE between 0.0175 and 0.0225 and median of mean differences between -0.5 and 0.5.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">simulated</span> <span class="kw">=</span> <span class="fu"><a href="../reference/simu.html">simu</a></span>(<span class="kw">proportion_L</span> <span class="kw">=</span> <span class="fl">0.0175</span>, <span class="kw">proportion_R</span> <span class="kw">=</span> <span class="fl">0.0225</span>, <span class="kw">median_L</span> <span class="kw">=</span> -<span class="fl">0.5</span>, <span class="kw">median_R</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">numsets</span> <span class="kw">=</span> <span class="fl">100</span>)
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">simulated</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/simu.html">simu</a></span>(<span class="kw">proportion_L</span> <span class="kw">=</span> <span class="fl">0.0175</span>, <span class="kw">proportion_R</span> <span class="kw">=</span> <span class="fl">0.0225</span>, <span class="kw">median_L</span> <span class="kw">=</span> -<span class="fl">0.5</span>, <span class="kw">median_R</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">numsets</span> <span class="kw">=</span> <span class="fl">100</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">simulated</span>$<span class="no">simulated_benchmark</span><span class="kw">[[</span><span class="fl">1</span>]])[,<span class="fl">1</span>:<span class="fl">5</span>]
-<span class="co">#&gt;                   D8    D7   D19    E7   E17</span>
-<span class="co">#&gt; hsa-let-7a-2*      6     2     2     6    21</span>
-<span class="co">#&gt; hsa-let-7a(3)  18756 30934 40506 44134 90362</span>
-<span class="co">#&gt; hsa-let-7a*(2)   154   216   196   320   938</span>
-<span class="co">#&gt; hsa-let-7b      3001  8395 25772 11211 30967</span>
-<span class="co">#&gt; hsa-let-7b*       23    50   106    91   170</span>
-<span class="co">#&gt; hsa-let-7c      5961  5633 17112 13305 16358</span>
+<span class="co">#&gt;                  D20   D13    D9     E5    E7</span>
+<span class="co">#&gt; hsa-let-7a-2*      6     4     2     11     6</span>
+<span class="co">#&gt; hsa-let-7a(3)  76141 61856 57395 268842 44134</span>
+<span class="co">#&gt; hsa-let-7a*(2)   811   486   142   1517   320</span>
+<span class="co">#&gt; hsa-let-7b     48305 17117 14939  77765 11211</span>
+<span class="co">#&gt; hsa-let-7b*      392    96    74    607    91</span>
+<span class="co">#&gt; hsa-let-7c     10827 43551 12911  65477 13305</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">simulated</span>$<span class="no">simulated_test</span><span class="kw">[[</span><span class="fl">1</span>]])[,<span class="fl">1</span>:<span class="fl">5</span>]
-<span class="co">#&gt;                   D8    D7   D19    E7   E17</span>
-<span class="co">#&gt; hsa-let-7a-2*      0     2     0     2     6</span>
-<span class="co">#&gt; hsa-let-7a(3)  62888 89726 60273 20525 30311</span>
-<span class="co">#&gt; hsa-let-7a*(2)   593   368   157   119   163</span>
-<span class="co">#&gt; hsa-let-7b      4863 17546 25624  4405  7626</span>
-<span class="co">#&gt; hsa-let-7b*       46    48    73    10    50</span>
-<span class="co">#&gt; hsa-let-7c     20689 11921 16656  5990  4349</span></pre></body></html></div>
+<span class="co">#&gt;                  D20   D13     D9     E5    E7</span>
+<span class="co">#&gt; hsa-let-7a-2*      2     0      0      2     2</span>
+<span class="co">#&gt; hsa-let-7a(3)  72284 84773 127231 253696 20525</span>
+<span class="co">#&gt; hsa-let-7a*(2)   363  3392    240   1162   119</span>
+<span class="co">#&gt; hsa-let-7b     27736  8844  25940  93419  4405</span>
+<span class="co">#&gt; hsa-let-7b*      112    29     59    258    10</span>
+<span class="co">#&gt; hsa-let-7c      6951 27704  28152  71733  5990</span></pre></body></html></div>
 </div>
   </div>
 

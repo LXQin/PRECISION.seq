@@ -24,8 +24,7 @@ list, containing \code{id.list} (names of DE genes) and \code{p.val} (correspond
 Perform DEA by EdgeR on normalized dataset or dataset with adjusting factor.
 }
 \examples{
-group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-edgeR.benchmark = DE.edgeR(benchmark, group)
+edgeR.benchmark <- DE.edgeR(data.benchmark, data.group)
 }
 \references{
 \url{https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html}

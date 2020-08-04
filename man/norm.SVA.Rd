@@ -20,8 +20,7 @@ list, containing \code{dat.normed} (normalized dataset) without the calibrators,
 Normalize the dataset using SVA, and return the normalized dataset with adjusting factor.
 }
 \examples{
-group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-test.SVA = norm.SVA(test, group)
+test.SVA <- norm.SVA(data.test, data.group)
 }
 \references{
 \href{https://bioconductor.org/packages/release/bioc/vignettes/sva/inst/doc/sva.pdf}{SVA Package}

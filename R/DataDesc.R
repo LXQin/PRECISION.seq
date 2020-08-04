@@ -9,8 +9,7 @@
 #'   \item{MXF2516_D13}{One sample belonging to MXF and library D with sample ID MXF2516 and library ID D13.}
 #'   \item{hsa-let-7a-2*}{Gene ID.}
 #' }
-"benchmark"
-
+"data.benchmark"
 
 #' MiRNA Sequencing Test Data
 #'
@@ -24,19 +23,22 @@
 #'   \item{MXF2516}{One sample belonging to MXF sample ID MXF2516.}
 #'   \item{hsa-let-7a-2*}{Gene ID.}
 #' }
-"test"
-
+"data.test"
 
 #' MiRNA Information
 #'
 #' @format Information of the microRNAs in test and benchmark dataset, including their names, exact sequence, length and GC content.
-"miR.info"
+"data.miR.info"
 
+#' Sample Labels of the test and benchmark data
+#'
+#' @format A set of labels for the test and benchmark samples, either "MXF" (myxofibrosarcoma) or "PMFH" (pleomorphic malignant fibrous histiocytoma).
+"data.group"
 
 #' Simulation Plan
 #'
 #' @format A dataframe including information of allocation about 20,000 simulation datasets, which contains the proportion of differential expression and median of mean difference for each dataset.
-"simulation"
+"data.simulation"
 
 
 #' Simulated Data Generation
@@ -56,21 +58,21 @@
 #' @export
 #'
 #' @examples
-#' simulated = simu(0.0175, 0.0225, -0.5, 0.5, 10)
-simu = function(proportion_L, proportion_R, median_L, median_R, numsets){
-  benchmark_simu = benchmark
-  test_simu = test
-  colnames(benchmark_simu) = sub(".*_", "", colnames(benchmark_simu))
-  colnames(test_simu) = colnames(benchmark_simu)
-  s =  simulation %>%
+#' simulated <- simu(0.0175, 0.0225, -0.5, 0.5, 10)
+simu <- function(proportion_L, proportion_R, median_L, median_R, numsets){
+  benchmark_simu <- data.benchmark
+  test_simu <- data.test
+  colnames(benchmark_simu) <- sub(".*_", "", colnames(benchmark_simu))
+  colnames(test_simu) <- colnames(benchmark_simu)
+  s <- data.simulation %>%
     filter(proportion > proportion_L & proportion < proportion_R) %>%
     filter(median > median_L & median < median_R)
-  rowselect = if(nrow(s) > numsets){sample(nrow(s), numsets)}else{1:nrow(s)}
-  s = as.matrix(s[rowselect, 1:54])
-  benchmark_simued = test_simued = list()
+  rowselect <- if(nrow(s) > numsets){sample(nrow(s), numsets)}else{1:nrow(s)}
+  s <- as.matrix(s[rowselect, 1:54])
+  benchmark_simued <- test_simued <- list()
   for (i in 1:nrow(s)) {
-    benchmark_simued[[i]] = benchmark_simu[, s[i,]]
-    test_simued[[i]] = test_simu[, s[i,]]
+    benchmark_simued[[i]] <- benchmark_simu[, s[i,]]
+    test_simued[[i]] <- test_simu[, s[i,]]
   }
   return(list(simulated_benchmark = benchmark_simued,
               simulated_test = test_simued))

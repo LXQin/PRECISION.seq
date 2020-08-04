@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Normalization By DESeq (DESeq) — norm.DESeq • precision.seq</title>
+<title>MiRNA Sequencing Test Data — data.test • precision.seq</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Normalization By DESeq (DESeq) — norm.DESeq" />
-<meta property="og:description" content="Normalize the dataset using DESeq, and return the normalized dataset with scaling factor." />
+<meta property="og:title" content="MiRNA Sequencing Test Data — data.test" />
+<meta property="og:description" content="Myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH) are the two most common and aggressive subtypes of genetically complex soft tissue sarcoma.
+MiRNAs for the same 54 tumors used for the benchmark data were re-sequenced using neither uniform handling nor balanced library assignment.
+In this study these samples were sequenced in the order of sample collection and processed in multiple runs." />
 
 
 
@@ -121,39 +123,29 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Normalization By DESeq (DESeq)</h1>
+    <h1>MiRNA Sequencing Test Data</h1>
     
-    <div class="hidden name"><code>norm.DESeq.Rd</code></div>
+    <div class="hidden name"><code>data.test.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Normalize the dataset using DESeq, and return the normalized dataset with scaling factor.</p>
+    <p>Myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH) are the two most common and aggressive subtypes of genetically complex soft tissue sarcoma.
+MiRNAs for the same 54 tumors used for the benchmark data were re-sequenced using neither uniform handling nor balanced library assignment.
+In this study these samples were sequenced in the order of sample collection and processed in multiple runs.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>norm.DESeq</span>(<span class='no'>raw</span>, <span class='no'>groups</span>)</pre>
+    <pre class="usage"><span class='no'>data.test</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>raw</th>
-      <td><p>raw count data in the format of data frame or matrix, with columns for samples and raws for genes.</p></td>
-    </tr>
-    <tr>
-      <th>groups</th>
-      <td><p>vector of characters indicating the group for each sample.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>list, containing <code>dat.normed</code> (normalized dataset) and <code>scaling.factor</code> (scaling factor) for each sample.</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <p>A dataframe with 1033 rows and 54 columns. Here are the examples of the column and row naming rule:</p><dl'>
+  <dt>MXF2516</dt><dd><p>One sample belonging to MXF sample ID MXF2516.</p></dd>
+  <dt>hsa-let-7a-2*</dt><dd><p>Gene ID.</p></dd>
 
-    <p><a href='https://bioconductor.org/packages/release/bioc/vignettes/DESeq/inst/doc/DESeq.pdf'>DESeq Package</a></p>
+</dl>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>test.DESeq</span> <span class='kw'>&lt;-</span> <span class='fu'>norm.DESeq</span>(<span class='no'>data.test</span>, <span class='no'>data.group</span>)</div></pre>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -18,7 +18,7 @@ list, containing \code{dat.normed} (normalized dataset).
 Normalize the dataset using QN, and return the normalized dataset with scaling factor.
 }
 \examples{
-test.QN = norm.QN(test)
+test.QN <- norm.QN(data.test)
 }
 \references{
 \href{http://jtleek.com/genstats/inst/doc/02_05_normalization.html}{Quantile Normalization Tutorial}

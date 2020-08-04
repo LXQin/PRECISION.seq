@@ -17,30 +17,29 @@
 #' @references \href{https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html}{Differential Expression with Limma-Voom}
 #'
 #' @examples
-#' group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-#' voom.benchmark = DE.voom(benchmark, group)
-DE.voom = function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
-  event = factor(groups)
+#' voom.benchmark <- DE.voom(data.benchmark, data.group)
+DE.voom <- function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
+  event <- factor(groups)
   if (normalized == TRUE) {
-    design = model.matrix(~ 0 + event)
-    colnames(design) = levels(event)
-  } else {
-    design = model.matrix(~ 0 + event + adjust)
-    colnames(design)[1:2] = levels(event)
+    design <- model.matrix(~ 0 + event)
+    colnames(design) <- levels(event)
+    } else {
+    design <- model.matrix(~ 0 + event + adjust)
+    colnames(design)[1:2] <- levels(event)
   }
-  contr = paste(levels(event)[2], "-", levels(event)[1])
-  contrast.mx = makeContrasts(contrasts = contr, levels = design)
-  d = DGEList(RC, genes = rownames(RC))
-  d.voom = voom(d, design)
-  fit = lmFit(d.voom, design)
-  fit.contr = contrasts.fit(fit, contrast.mx)
-  fit.eb = eBayes(fit.contr)
-  P.value = fit.eb$p.value
-  fc.log2 = fit.eb$coef
+  contr <- paste(levels(event)[2], "-", levels(event)[1])
+  contrast.mx <- makeContrasts(contrasts = contr, levels = design)
+  d <- DGEList(RC, genes = rownames(RC))
+  d.voom <- voom(d, design)
+  fit <- lmFit(d.voom, design)
+  fit.contr <- contrasts.fit(fit, contrast.mx)
+  fit.eb <- eBayes(fit.contr)
+  P.value <- fit.eb$p.value
+  fc.log2 <- fit.eb$coef
 
-  out = cbind(P.value,fc.log2)
-  out = out[order(out[,1]),]
-  colnames(out) = c("Pvalue","log2.FC")
+  out <- cbind(P.value,fc.log2)
+  out <- out[order(out[,1]),]
+  colnames(out) <- c("Pvalue","log2.FC")
   return(list(id.list = rownames(out[out[,1] < P,]),
               p.val = out))
 }
@@ -65,23 +64,22 @@ DE.voom = function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
 #' \url{https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html}
 #'
 #' @examples
-#' group = c(rep(c(rep('MXF',9),rep('PMFH',9)),3))
-#' edgeR.benchmark = DE.edgeR(benchmark, group)
-DE.edgeR = function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
-  event = factor(groups);
+#' edgeR.benchmark <- DE.edgeR(data.benchmark, data.group)
+DE.edgeR <- function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
+  event <- factor(groups);
   if (normalized == TRUE) {
-    design = model.matrix(~ 0 + event)
-    colnames(design) = levels(event)
+    design <- model.matrix(~ 0 + event)
+    colnames(design) <- levels(event)
   } else {
-    design = model.matrix(~ 0 + event + adjust)
-    colnames(design)[1:2] = levels(event)
+    design <- model.matrix(~ 0 + event + adjust)
+    colnames(design)[1:2] <- levels(event)
   }
-  d = DGEList(RC, group = event, genes = rownames(RC))
-  d = estimateDisp(d, design)
-  DE = exactTest(d, pair = levels(d$samples$group)[1:2])
-  out = DE$table[,c(3,1)]
-  out = out[order(out[,1]),]
-  colnames(out) = c("Pvalue","log2.FC")
+  d <- DGEList(RC, group = event, genes = rownames(RC))
+  d <- estimateDisp(d, design)
+  DE <- exactTest(d, pair = levels(d$samples$group)[1:2])
+  out <- DE$table[,c(3,1)]
+  out <- out[order(out[,1]),]
+  colnames(out) <- c("Pvalue","log2.FC")
   return(list(id.list = rownames(out[out[,1] < P,]),
               p.val = out))
 }
