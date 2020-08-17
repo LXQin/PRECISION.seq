@@ -118,7 +118,7 @@ norm.med <- function(raw, groups) {
 #'
 #' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) for each sample.
 #'
-#' @import DESeq
+#' @import DESeq2
 #' @export
 #'
 #' @references \href{https://bioconductor.org/packages/release/bioc/vignettes/DESeq/inst/doc/DESeq.pdf}{DESeq Package}
@@ -235,9 +235,10 @@ norm.SVA <- function(raw, groups) {
 #' @return list, containing \code{dat.normed} (normalized dataset), and the \code{adjust.factor} (adjusting factors) for the design matrix. The normalized dataset could only used for exploration, and adjusting factors are recommended as a covariate in the downstream analysis.
 #'
 #' @import EDASeq
-#' @import DESeq
+#' @import DESeq2
 #' @import edgeR
 #' @import RUVSeq
+#' @import Biobase
 #' @export
 #'
 #' @references \href{http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf}{RUVSeq Tutorial}
@@ -266,15 +267,15 @@ norm.RUV <- function(raw, groups, method = c("RUVg", "RUVs", "RUVr")) {
   if (method == "RUVg") {
     t <- RUVg(set, spikes, k = 1)
     dat.normed <- normCounts(t)
-    return(list(dat.normed <- dat.normed,
-                adjust.factor <- t$W))
+    return(list(dat.normed = dat.normed,
+                adjust.factor = t$W))
   }else if (method == "RUVs") {
     differences <- makeGroups(condition)
     controls <- rownames(dat.ruv)
     t <- RUVs(set, controls, k = 1, differences)
     dat.normed <- normCounts(t)
-    return(list(dat.normed <- dat.normed,
-                adjust.factor <- t$W))
+    return(list(dat.normed = dat.normed,
+                adjust.factor = t$W))
   }else if (method == "RUVr") {
     design <- model.matrix(~ condition, data = pData(set))
     y <- DGEList(counts = counts(set), group = condition)

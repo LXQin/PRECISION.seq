@@ -28,7 +28,7 @@ DE.voom <- function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
     colnames(design)[1:2] <- levels(event)
   }
   contr <- paste(levels(event)[2], "-", levels(event)[1])
-  contrast.mx <- makeContrasts(contrasts = contr, levels = design)
+  contrast.mx <- limma::makeContrasts(contrasts = contr, levels = design)
   d <- DGEList(RC, genes = rownames(RC))
   d.voom <- voom(d, design)
   fit <- lmFit(d.voom, design)

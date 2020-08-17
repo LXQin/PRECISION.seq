@@ -4,17 +4,36 @@
 \alias{fig.CAT}
 \title{Concordance At The Top Plot}
 \usage{
-fig.CAT(MethodType, MethodName, pvalues)
+fig.CAT(
+  MethodsCompare,
+  DE.method = "DE.voom",
+  RUV_method = NULL,
+  QN_filter = FALSE,
+  Pval = 0.01,
+  MethodNew,
+  pvalues,
+  Methods_visual = c(MethodsCompare, MethodNew)
+)
 }
 \arguments{
-\item{MethodType}{the type of method that researchers would like to compare with, either "Scale" or "Regression"}
+\item{MethodsCompare}{the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.}
 
-\item{MethodName}{the name of the new method which will be presented in the legend}
+\item{DE.method}{the DEA method selected from \code{DE.voom} and \code{DE.edgeR}, and default to be \code{DE.voom}.}
 
-\item{pvalues}{a vector of p values computed from DE analysis using the normalized data}
+\item{RUV_method}{the exact RUV method used from \code{RUVg}, \code{RUVr} and \code{RUVs} if \code{norm.RUV} is used.}
+
+\item{QN_filter}{whether the filtering is performed if \code{norm.QN} is used.}
+
+\item{Pval}{p-value for identifying DE genes, default to be 0.01.}
+
+\item{MethodNew}{the name of the new method which will be presented in the legend.}
+
+\item{pvalues}{a vector of p values computed from DE analysis using the new method normalized data.}
+
+\item{Methods_visual}{a vector of methods' names shown in the figure.}
 }
 \value{
-
+figure of concordance for comparison
 }
 \description{
 Function for generating concordance at the top plot, which compares concordance of the p-values obtained
@@ -23,5 +42,5 @@ from benchmark data without normalization and normalized test data.
 \examples{
 t <-  runif(1033)
 names(t) <-  rownames(data.test)
-fig.CAT("Scale", "Example", t)
+fig.CAT(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"), MethodNew = "Example", pvalues = t)
 }

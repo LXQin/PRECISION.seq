@@ -4,21 +4,23 @@
 \alias{fig.volcano}
 \title{Volcano Figure}
 \usage{
-fig.volcano(normtest, groups, adjust = NULL)
+fig.volcano(normtest, groups, adjust = NULL, main)
 }
 \arguments{
-\item{normtest}{normalized data using the method which the researchers desire to compare with the other methods, or it could be the raw data if the adjusting parameters available.}
+\item{normtest}{normalized data using the method which the researchers desire to compare with the other methods, or it could be the raw data if the adjusting parameters available. The rows are for genes/markers, and the columns are for samples.}
 
-\item{groups}{vector of characters indicating the group for each sample.}
+\item{groups}{vector of characters indicating the group for each sample (only 2 groups are allowed).}
 
-\item{adjust}{adjusting parameters for each sample.}
+\item{adjust}{vector of adjusting parameters for each sample.}
+
+\item{main}{the title of the figure}
 }
 \value{
-
+volcano plot
 }
 \description{
 Function for generating volcano figures with log fold change as x-axis and -log10(p-value) as y-axis.
 }
 \examples{
-fig.volcano(benchmark, group)
+fig.volcano(data.benchmark, data.group, main = "Volcano Plot")
 }

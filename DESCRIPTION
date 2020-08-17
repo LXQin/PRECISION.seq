@@ -15,7 +15,7 @@ biocViews:
 Imports: 
     PoissonSeq,
     DescTools,
-    DESeq,
+    DESeq2,
     edgeR,
     affy,
     sva,
@@ -26,7 +26,8 @@ Imports:
     preprocessCore,
     ffpe,
     magrittr,
-    vsn
+    vsn,
+    ggplot2
 Suggests: 
     knitr,
     rmarkdown
