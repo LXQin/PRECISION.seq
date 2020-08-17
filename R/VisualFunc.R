@@ -117,3 +117,44 @@ fig.CAT <- function(MethodsCompare, DE.method = "DE.voom", RUV_method = NULL, QN
     ggtitle("CATplot") +
     theme_bw()
 }
+
+#' Selection of normalization methods based on golden standards
+#'
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param groups vector of characters indicating the group for each sample (only 2 groups allowed).
+#' @param MethodsCompare the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.
+#' @param RUV_method the exact RUV method used from \code{RUVg}, \code{RUVr} and \code{RUVs} if \code{method = norm.RUV}
+#' @param QN_filter whether the filtering is performed if \code{method = norm.QN}.
+#' @param DE.method the method for differential expression analysis from \code{DE.voom} and \code{DE.edgeR}, default to be \code{DE.voom}.
+#' @param Pval p-value for identifying DE genes, default to be 0.01
+#' @param truth vector of genes that are truly differential expressed
+#' @param marker_selection whether selecting a subset of genes/markers for this analysis
+#' @param selected_marker vector of a subset of genes/markers for this analysis
+#'
+#'
+#' @return plotly figure for selection of normalization methods
+#'
+#' @import plotly
+#'
+#' @export
+#'
+#' @examples
+#' truthgene <- DE.voom(data.benchmark, data.group)$id.list
+#' fig.FDR_FNR(data.test, data.group, MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"), truth = truthgene)
+fig.FDR_FNR <- function(raw, groups, MethodsCompare,
+                        RUV_method = NULL, QN_filter = FALSE,
+                        DE.method = "DE.voom", Pval = 0.01, truth,
+                        marker_selection = FALSE, selected_marker = NULL) {
+  numMethods <- length(MethodsCompare)
+  FNR <- FDR <- c()
+  for (i in 1:numMethods){
+    temp <- pip.statistics(raw = raw, groups = groups, norm.method = MethodsCompare[i],
+                           RUV_method = RUV_method, QN_filter = QN_filter,
+                           DE.method = DE.method, Pval = Pval, truth = truth,
+                           marker_selection = marker_selection, selected_marker = selected_marker)
+    FNR <- c(FNR, temp$FNR)
+    FDR <- c(FDR, temp$FDR)
+  }
+  stat <- data.frame(FNR = FNR, FDR = FDR, names = MethodsCompare)
+  plot_ly(data = stat, x = ~FNR, y = ~FDR, text = ~paste('Method: ', names))
+}
