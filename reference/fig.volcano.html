@@ -127,33 +127,35 @@
     <p>Function for generating volcano figures with log fold change as x-axis and -log10(p-value) as y-axis.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fig.volcano</span>(<span class='kw'>normtest</span>, <span class='kw'>groups</span>, adjust = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>fig.volcano</span>(<span class='kw'>normtest</span>, <span class='kw'>groups</span>, adjust = <span class='kw'>NULL</span>, <span class='kw'>main</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>normtest</th>
-      <td><p>normalized data using the method which the researchers desire to compare with the other methods, or it could be the raw data if the adjusting parameters available.</p></td>
+      <td><p>normalized data using the method which the researchers desire to compare with the other methods, or it could be the raw data if the adjusting parameters available. The rows are for genes/markers, and the columns are for samples.</p></td>
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>vector of characters indicating the group for each sample.</p></td>
+      <td><p>vector of characters indicating the group for each sample (only 2 groups are allowed).</p></td>
     </tr>
     <tr>
       <th>adjust</th>
-      <td><p>adjusting parameters for each sample.</p></td>
+      <td><p>vector of adjusting parameters for each sample.</p></td>
+    </tr>
+    <tr>
+      <th>main</th>
+      <td><p>the title of the figure</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-
-
+    <p>volcano plot</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>fig.volcano</span>(<span class='kw'>benchmark</span>, <span class='kw'>group</span>)</div><div class='output co'>#&gt; <span class='error'>Error in factor(groups): object 'group' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>fig.volcano</span>(<span class='kw'>data.benchmark</span>, <span class='kw'>data.group</span>, main = <span class='st'>"Volcano Plot"</span>)</div><div class='img'><img src='fig.volcano-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

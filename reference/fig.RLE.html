@@ -40,8 +40,7 @@
 
 
 <meta property="og:title" content="Relative Log Expression Plot — fig.RLE" />
-<meta property="og:description" content="Function for generating relative log expression plot using the normalized test data as the input.
-The order of the columns in the normalized test data is transformed to be as same as the sorted benchmark data, which makes the figure comparable to the other methods." />
+<meta property="og:description" content="Function for generating relative log expression plot using the normalized test data as the input." />
 
 
 
@@ -125,11 +124,10 @@ The order of the columns in the normalized test data is transformed to be as sam
     </div>
 
     <div class="ref-description">
-    <p>Function for generating relative log expression plot using the normalized test data as the input.
-The order of the columns in the normalized test data is transformed to be as same as the sorted benchmark data, which makes the figure comparable to the other methods.</p>
+    <p>Function for generating relative log expression plot using the normalized test data as the input.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fig.RLE</span>(<span class='kw'>normtest</span>, <span class='kw'>main</span>)</pre>
+    <pre class="usage"><span class='fu'>fig.RLE</span>(<span class='kw'>normtest</span>, <span class='kw'>groups</span>, <span class='kw'>main</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,6 +135,10 @@ The order of the columns in the normalized test data is transformed to be as sam
     <tr>
       <th>normtest</th>
       <td><p>normalized testing using the method which the researchers desire to compare with the other methods</p></td>
+    </tr>
+    <tr>
+      <th>groups</th>
+      <td><p>vector of characters indicating the group for each sample (only 2 groups are allowed).</p></td>
     </tr>
     <tr>
       <th>main</th>
@@ -149,7 +151,7 @@ The order of the columns in the normalized test data is transformed to be as sam
     <p>boxplot for relative log expression</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>fig.RLE</span>(<span class='kw'>data.test</span>, <span class='st'>"test without normalization"</span>)</div><div class='img'><img src='fig.RLE-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>fig.RLE</span>(<span class='kw'>data.test</span>, <span class='kw'>data.group</span>, <span class='st'>"test without normalization"</span>)</div><div class='img'><img src='fig.RLE-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
