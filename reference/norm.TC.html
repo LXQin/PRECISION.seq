@@ -144,13 +144,14 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list, containing <code>dat.normed</code> (normalized dataset) and <code>scaling.factor</code> (scaling factor) for each sample.</p>
+    <p>list, containing <code>dat.normed</code> (normalized dataset) and <code>scaling.factor</code> (scaling factor) scaled by 1e6 for each sample.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Dillies, Marie-Agnès, et al. "A comprehensive evaluation of normalization methods for Illumina high-throughput RNA sequencing data analysis." <em>Briefings in bioinformatics</em> 14.6 (2013): 671-683.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>test.TC</span> <span class='op'>&lt;-</span>  <span class='fu'>norm.TC</span>(<span class='kw'>data.test</span>, <span class='kw'>data.group</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>test.TC</span> <span class='op'>&lt;-</span>  <span class='fu'>norm.TC</span>(<span class='kw'>data.test</span>, <span class='kw'>data.group</span>)
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

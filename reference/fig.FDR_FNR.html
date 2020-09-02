@@ -191,12 +191,9 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>truthgene</span> <span class='op'>&lt;-</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span>(<span class='kw'>data.benchmark</span>, <span class='kw'>data.group</span>)<span class='op'>$</span><span class='kw'>id.list</span>
-<span class='fu'>fig.FDR_FNR</span>(<span class='kw'>data.test</span>, <span class='kw'>data.group</span>, MethodsCompare = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"norm.none"</span>, <span class='st'>"norm.TMM"</span>, <span class='st'>"norm.SVA"</span>, <span class='st'>"norm.TC"</span>), truth = <span class='kw'>truthgene</span>)</div><div class='output co'>#&gt; Number of significant surrogate variables is:  1 
-#&gt; Iteration (out of 5 ):1  2  3  4  5  </div><div class='output co'>#&gt; <span class='message'>No trace type specified:</span>
-#&gt; <span class='message'>  Based on info supplied, a 'scatter' trace seems appropriate.</span>
-#&gt; <span class='message'>  Read more about this trace type -&gt; https://plot.ly/r/reference/#scatter</span></div><div class='output co'>#&gt; <span class='message'>No scatter mode specifed:</span>
-#&gt; <span class='message'>  Setting the mode to markers</span>
-#&gt; <span class='message'>  Read more about this attribute -&gt; https://plot.ly/r/reference/#scatter-mode</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `arrange_()` is deprecated as of dplyr 0.7.0.</span>
+<span class='fu'>fig.FDR_FNR</span>(<span class='kw'>data.test</span>, <span class='kw'>data.group</span>, MethodsCompare = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"norm.none"</span>, <span class='st'>"norm.TMM"</span>, <span class='st'>"norm.SVA"</span>, <span class='st'>"norm.TC"</span>), truth = <span class='kw'>truthgene</span>)
+</div><div class='output co'>#&gt; Number of significant surrogate variables is:  1 
+#&gt; Iteration (out of 5 ):1  2  3  4  5  </div><div class='output co'>#&gt; <span class='warning'>Warning: `arrange_()` is deprecated as of dplyr 0.7.0.</span>
 #&gt; <span class='warning'>Please use `arrange()` instead.</span>
 #&gt; <span class='warning'>See vignette('programming') for more help</span>
 #&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>

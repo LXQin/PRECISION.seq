@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Normalization By Trimmed Mean of M-values (TMM) — norm.TMM" />
-<meta property="og:description" content="Normalize the dataset using TMM, and return the normalized dataset with scaling factor." />
+<meta property="og:description" content="Normalize the dataset using TMM, and return the normalized dataset with scaling factor scaled by 1e6." />
 
 
 
@@ -124,7 +124,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Normalize the dataset using TMM, and return the normalized dataset with scaling factor.</p>
+    <p>Normalize the dataset using TMM, and return the normalized dataset with scaling factor scaled by 1e6.</p>
     </div>
 
     <pre class="usage"><span class='fu'>norm.TMM</span>(<span class='kw'>raw</span>, <span class='kw'>groups</span>)</pre>
@@ -150,7 +150,8 @@
     <p><a href='https://www.bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf'>edgeR User Guide</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>test.TMM</span> <span class='op'>&lt;-</span>  <span class='fu'>norm.TMM</span>(<span class='kw'>data.test</span>, <span class='kw'>data.group</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>test.TMM</span> <span class='op'>&lt;-</span>  <span class='fu'>norm.TMM</span>(<span class='kw'>data.test</span>, <span class='kw'>data.group</span>)
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

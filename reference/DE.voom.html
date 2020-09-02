@@ -127,7 +127,7 @@
     <p>Perform DEA by voom-limma pipeline on normalized dataset or dataset with adjusting factor.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>DE.voom</span>(<span class='kw'>RC</span>, <span class='kw'>groups</span>, P = <span class='fl'>0.01</span>, normalized = <span class='fl'>TRUE</span>, adjust = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>DE.voom</span>(<span class='kw'>RC</span>, <span class='kw'>groups</span>, Pval = <span class='fl'>0.01</span>, normalized = <span class='fl'>TRUE</span>, adjust = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,7 +141,7 @@
       <td><p>vector of characters indicating the group for each sample.</p></td>
     </tr>
     <tr>
-      <th>P</th>
+      <th>Pval</th>
       <td><p>cut-off point for p-values to identify DE genes.</p></td>
     </tr>
     <tr>
@@ -162,7 +162,8 @@
     <p><a href='https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html'>Differential Expression with Limma-Voom</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>voom.benchmark</span> <span class='op'>&lt;-</span> <span class='fu'>DE.voom</span>(<span class='kw'>data.benchmark</span>, <span class='kw'>data.group</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='kw'>voom.benchmark</span> <span class='op'>&lt;-</span> <span class='fu'>DE.voom</span>(<span class='kw'>data.benchmark</span>, <span class='kw'>data.group</span>)
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
