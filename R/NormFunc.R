@@ -1,6 +1,6 @@
 #' Normalization By Trimmed Mean of M-values (TMM)
 #'
-#' Normalize the dataset using TMM, and return the normalized dataset with scaling factor.
+#' Normalize the dataset using TMM, and return the normalized dataset with scaling factor scaled by 1e6.
 #'
 #' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample.
@@ -33,7 +33,7 @@ norm.TMM <- function(raw, groups) {
 #' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample.
 #'
-#' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) for each sample.
+#' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) scaled by 1e6 for each sample.
 #'
 #' @import edgeR
 #' @export
@@ -60,7 +60,7 @@ norm.TC <- function(raw, groups) {
 #' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample.
 #'
-#' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) for each sample.
+#' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) scaled by 1e6 for each sample.
 #'
 #' @import edgeR
 #' @export
@@ -88,7 +88,7 @@ norm.UQ <- function(raw, groups) {
 #' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample.
 #'
-#' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) for each sample.
+#' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) scaled by 1e6 for each sample.
 #'
 #' @import edgeR
 #' @export

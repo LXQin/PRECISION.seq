@@ -24,7 +24,7 @@ fig.CAT(
 
 \item{QN_filter}{whether the filtering is performed if \code{norm.QN} is used.}
 
-\item{Pval}{p-value for identifying DE genes, default to be 0.01.}
+\item{Pval}{p-value cut-off point for identifying DE genes, default to be 0.01.}
 
 \item{MethodNew}{the name of the new method which will be presented in the legend.}
 

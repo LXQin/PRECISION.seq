@@ -4,20 +4,20 @@
 \alias{fig.RLE}
 \title{Relative Log Expression Plot}
 \usage{
-fig.RLE(normtest, groups, main)
+fig.RLE(data, groups, title)
 }
 \arguments{
-\item{normtest}{normalized testing using the method which the researchers desire to compare with the other methods}
+\item{data}{normalized testing using the method which the researchers desire to compare with the other methods}
 
 \item{groups}{vector of characters indicating the group for each sample (only 2 groups are allowed).}
 
-\item{main}{the title of the figure}
+\item{title}{the title of the figure}
 }
 \value{
 boxplot for relative log expression
 }
 \description{
-Function for generating relative log expression plot using the normalized test data as the input.
+Function for generating relative log expression plot using the read count data as the input.
 }
 \examples{
 fig.RLE(data.test, data.group, "test without normalization")

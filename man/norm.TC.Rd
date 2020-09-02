@@ -12,7 +12,7 @@ norm.TC(raw, groups)
 \item{groups}{vector of characters indicating the group for each sample.}
 }
 \value{
-list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) for each sample.
+list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) scaled by 1e6 for each sample.
 }
 \description{
 Normalize the dataset using TC, and return the normalized dataset with scaling factor.

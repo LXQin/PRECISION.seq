@@ -4,7 +4,7 @@
 #'
 #' @param RC data in the format of data frame or matrix, with columns for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample.
-#' @param P cut-off point for p-values to identify DE genes.
+#' @param Pval cut-off point for p-values to identify DE genes.
 #' @param normalized whether the dataset is normalized (by scaling method)
 #' @param adjust the adjusting factor if the dataset itself is not normalized
 #'
@@ -18,7 +18,7 @@
 #'
 #' @examples
 #' voom.benchmark <- DE.voom(data.benchmark, data.group)
-DE.voom <- function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
+DE.voom <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) {
   event <- factor(groups)
   if (normalized == TRUE) {
     design <- model.matrix(~ 0 + event)
@@ -40,7 +40,7 @@ DE.voom <- function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
   out <- cbind(P.value,fc.log2)
   out <- out[order(out[,1]),]
   colnames(out) <- c("Pvalue","log2.FC")
-  return(list(id.list = rownames(out[out[,1] < P,]),
+  return(list(id.list = rownames(out[out[,1] < Pval,]),
               p.val = out))
 }
 
@@ -50,7 +50,7 @@ DE.voom <- function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
 #'
 #' @param RC data in the format of data frame or matrix, with columns for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample.
-#' @param P cut-off point for p-values to identify DE genes.
+#' @param Pval cut-off point for p-values to identify DE genes.
 #' @param normalized whether the dataset is normalized (by scaling method)
 #' @param adjust the adjusting factor if the dataset itself is not normalized
 #'
@@ -65,7 +65,7 @@ DE.voom <- function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
 #'
 #' @examples
 #' edgeR.benchmark <- DE.edgeR(data.benchmark, data.group)
-DE.edgeR <- function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
+DE.edgeR <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) {
   event <- factor(groups);
   if (normalized == TRUE) {
     design <- model.matrix(~ 0 + event)
@@ -80,6 +80,6 @@ DE.edgeR <- function(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL) {
   out <- DE$table[,c(3,1)]
   out <- out[order(out[,1]),]
   colnames(out) <- c("Pvalue","log2.FC")
-  return(list(id.list = rownames(out[out[,1] < P,]),
+  return(list(id.list = rownames(out[out[,1] < Pval,]),
               p.val = out))
 }

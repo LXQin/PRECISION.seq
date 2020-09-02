@@ -4,14 +4,14 @@
 \alias{DE.voom}
 \title{Differential Expression Analysis Using Voom-limma Pipeline}
 \usage{
-DE.voom(RC, groups, P = 0.01, normalized = TRUE, adjust = NULL)
+DE.voom(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL)
 }
 \arguments{
 \item{RC}{data in the format of data frame or matrix, with columns for samples and raws for genes.}
 
 \item{groups}{vector of characters indicating the group for each sample.}
 
-\item{P}{cut-off point for p-values to identify DE genes.}
+\item{Pval}{cut-off point for p-values to identify DE genes.}
 
 \item{normalized}{whether the dataset is normalized (by scaling method)}
 

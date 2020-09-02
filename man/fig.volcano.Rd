@@ -4,16 +4,12 @@
 \alias{fig.volcano}
 \title{Volcano Figure}
 \usage{
-fig.volcano(normtest, groups, adjust = NULL, main)
+fig.volcano(DEA.res, title)
 }
 \arguments{
-\item{normtest}{normalized data using the method which the researchers desire to compare with the other methods, or it could be the raw data if the adjusting parameters available. The rows are for genes/markers, and the columns are for samples.}
+\item{DEA.res}{the list of differential expression analysis results obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes).}
 
-\item{groups}{vector of characters indicating the group for each sample (only 2 groups are allowed).}
-
-\item{adjust}{vector of adjusting parameters for each sample.}
-
-\item{main}{the title of the figure}
+\item{title}{the title of the figure}
 }
 \value{
 volcano plot
@@ -22,5 +18,6 @@ volcano plot
 Function for generating volcano figures with log fold change as x-axis and -log10(p-value) as y-axis.
 }
 \examples{
-fig.volcano(data.benchmark, data.group, main = "Volcano Plot")
+voom.benchmark <- DE.voom(data.benchmark, data.group)
+fig.volcano(voom.benchmark, title = "Volcano Plot")
 }

@@ -19,7 +19,7 @@ pip.norm.DE <- function(raw, groups, norm.method,
                         DE.method = "DE.voom", Pval = 0.01) {
   DEA <- function(raw, DE.method, normalized = TRUE, adjust = NULL){
     FUN = match.fun(DE.method)
-    test.DE = FUN(RC = raw, groups = groups, P = Pval, normalized = normalized, adjust = adjust)
+    test.DE = FUN(RC = raw, groups = groups, Pval = Pval, normalized = normalized, adjust = adjust)
     return(test.DE = test.DE)
   }
 

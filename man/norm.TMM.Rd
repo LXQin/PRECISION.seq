@@ -15,7 +15,7 @@ norm.TMM(raw, groups)
 list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) for each sample.
 }
 \description{
-Normalize the dataset using TMM, and return the normalized dataset with scaling factor.
+Normalize the dataset using TMM, and return the normalized dataset with scaling factor scaled by 1e6.
 }
 \examples{
 test.TMM <-  norm.TMM(data.test, data.group)

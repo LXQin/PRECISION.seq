@@ -2,62 +2,55 @@
 #'
 #' Function for generating volcano figures with log fold change as x-axis and -log10(p-value) as y-axis.
 #'
-#' @param normtest normalized data using the method which the researchers desire to compare with the other methods, or it could be the raw data if the adjusting parameters available. The rows are for genes/markers, and the columns are for samples.
-#' @param groups vector of characters indicating the group for each sample (only 2 groups are allowed).
-#' @param adjust vector of adjusting parameters for each sample.
-#' @param main the title of the figure
+#' @param DEA.res the list of differential expression analysis results obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes).
+#' @param title the title of the figure
 #'
 #' @return volcano plot
 #' @export
 #'
 #' @examples
-#' fig.volcano(data.benchmark, data.group, main = "Volcano Plot")
-fig.volcano <- function(normtest, groups, adjust = NULL, main){
-  if (is.null(adjust)) {
-    dat.voom = DE.voom(RC = normtest, groups = groups, P = 0.01)
-  } else {
-      dat.voom = DE.voom(RC = normtest, groups = groups, P = 0.01, adjust = adjust)
-  }
-
-  DE.list <- dat.voom$id.list
-  dat.voom.frame <- data.frame(dm = dat.voom$p.val[,2],
-                               p.value = dat.voom$p.val[,1])
+#' voom.benchmark <- DE.voom(data.benchmark, data.group)
+#' fig.volcano(voom.benchmark, title = "Volcano Plot")
+fig.volcano <- function(DEA.res, title){
+  DE.list <- DEA.res$id.list
+  dat.DE.frame <- data.frame(dm = DEA.res$p.val[,2],
+                             p.value = DEA.res$p.val[,1])
   mask <- with(dat.voom.frame, p.value < .01)
   cols <- ifelse(mask, "red", "black")
 
-  xlim = round(1.15 * max(abs(dat.voom.frame$dm)), 1)
-  ylim = 1.15 * round(max(-log10(dat.voom.frame$p.value)), 1)
-  with(dat.voom.frame, plot(dm, -log10(p.value), cex = .5, pch = 16,
-                            col = cols, xlim = c(-xlim, xlim),
-                            ylim = c(0, ylim),
-                            xlab = "Mean Difference",
-                            main = main))
+  xlim = round(1.15 * max(abs(dat.DE.frame$dm)), 1)
+  ylim = 1.15 * round(max(-log10(dat.DE.frame$p.value)), 1)
+  with(dat.DE.frame, plot(dm, -log10(p.value), cex = .5, pch = 16,
+                          col = cols, xlim = c(-xlim, xlim),
+                          ylim = c(0, ylim),
+                          xlab = "Mean Difference",
+                          main = title))
   abline(h = 2, lty = 2)
 }
 
 
 #' Relative Log Expression Plot
 #'
-#' Function for generating relative log expression plot using the normalized test data as the input.
+#' Function for generating relative log expression plot using the read count data as the input.
 #'
-#' @param normtest normalized testing using the method which the researchers desire to compare with the other methods
+#' @param data normalized testing using the method which the researchers desire to compare with the other methods
 #' @param groups vector of characters indicating the group for each sample (only 2 groups are allowed).
-#' @param main the title of the figure
+#' @param title the title of the figure
 #'
 #' @return boxplot for relative log expression
 #' @export
 #'
 #' @examples
 #' fig.RLE(data.test, data.group, "test without normalization")
-fig.RLE = function(normtest, groups, main) {
-  raw.log <- log2(normtest + 1)
+fig.RLE = function(data, groups, title) {
+  raw.log <- log2(data + 1)
   rle <- t(apply(raw.log, 1, function(x) x - median(x)))
   color <- groups
   color[color == levels(factor(color))[1]] <- rainbow(2)[1]
   color[color == levels(factor(color))[2]] <- rainbow(2)[2]
   ylim = round(max(1.5*(apply(rle, 2, IQR)) + max(abs(apply(rle, 2, function(x) quantile(x, c(0.25, 0.75)))))), 1)
   boxplot(rle, col = color, ylab = "RLE", ylim = c(-ylim, ylim),
-          outline = FALSE, xaxt = "n", main = main)
+          outline = FALSE, xaxt = "n", main = title)
   legend("topright",levels(factor(groups)), bty = "n",
          pch = "x", cex = 1, col = c(rainbow(2)[1], rainbow(2)[2]))
 }
@@ -72,7 +65,7 @@ fig.RLE = function(normtest, groups, main) {
 #' @param DE.method the DEA method selected from \code{DE.voom} and \code{DE.edgeR}, and default to be \code{DE.voom}.
 #' @param RUV_method the exact RUV method used from \code{RUVg}, \code{RUVr} and \code{RUVs} if \code{norm.RUV} is used.
 #' @param QN_filter whether the filtering is performed if \code{norm.QN} is used.
-#' @param Pval p-value for identifying DE genes, default to be 0.01.
+#' @param Pval p-value cut-off point for identifying DE genes, default to be 0.01.
 #' @param MethodNew the name of the new method which will be presented in the legend.
 #' @param pvalues a vector of p values computed from DE analysis using the new method normalized data.
 #' @param Methods_visual a vector of methods' names shown in the figure.
@@ -110,12 +103,12 @@ fig.CAT <- function(MethodsCompare, DE.method = "DE.voom", RUV_method = NULL, QN
   }
   data_cat$curve = factor(data_cat$curve)
 
-  ggplot(data_cat, aes(x, y, color = curve)) +
-    geom_line() +
-    ylab("Rate of Agreement with Benchmark") +
-    xlab("Significance Rank") +
-    ggtitle("CATplot") +
-    theme_bw()
+  return(ggplot(data_cat, aes(x, y, color = curve)) +
+           geom_line() +
+           ylab("Rate of Agreement with Benchmark") +
+           xlab("Significance Rank") +
+           ggtitle("CATplot") +
+           theme_bw())
 }
 
 #' Selection of normalization methods based on golden standards
@@ -156,5 +149,6 @@ fig.FDR_FNR <- function(raw, groups, MethodsCompare,
     FDR <- c(FDR, temp$FDR)
   }
   stat <- data.frame(FNR = FNR, FDR = FDR, names = MethodsCompare)
-  plot_ly(data = stat, x = ~FNR, y = ~FDR, text = ~paste('Method: ', names))
+  return(plot_ly(data = stat, x = ~FNR, y = ~FDR,
+                 text = ~paste('Method: ', names), type = "scatter",  mode = "markers"))
 }
