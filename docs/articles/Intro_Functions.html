@@ -57,6 +57,9 @@
       <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
     </li>
     <li>
+      <a href="../articles/Intro_Figure.html">Introduction to DepthNorm Figure Functions</a>
+    </li>
+    <li>
       <a href="../articles/Intro_Functions.html">Introduction to DepthNorm Functions</a>
     </li>
   </ul>
@@ -183,6 +186,33 @@
 <span class="co">#&gt; hsa-miR-99a     6.603158e-07 -1.904275</span>
 <span class="co">#&gt; hsa-miR-125a    2.243507e-06 -1.374217</span>
 <span class="co">#&gt; hsa-miR-146b    3.071453e-06  1.909280</span></pre></body></html></div>
+</div>
+<div id="functions-for-combininig-normalization-and-differential-expression-analysis" class="section level2">
+<h2 class="hasAnchor">
+<a href="#functions-for-combininig-normalization-and-differential-expression-analysis" class="anchor"></a>Functions for Combininig Normalization and Differential Expression Analysis</h2>
+<p>We combine normalization and DEA functions together, so that users could start from raw read counts and directly obtain the DE genes and the corresponding p-values (as same as the output of DE functions). In addition, we prepare a function for computing the true positive rate, false positive rate, false discovery rate, and false negative rate based on given golden standards.</p>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">res</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/pip.norm.DE.html">pip.norm.DE</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>, <span class="st">"norm.TMM"</span>)
+
+<span class="no">truthgene</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="no">data.benchmark</span>, <span class="no">data.group</span>)$<span class="no">id.list</span>
+<span class="no">stat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/pip.statistics.html">pip.statistics</a></span>(<span class="no">data.test</span>, <span class="no">data.group</span>, <span class="st">"norm.TMM"</span>, <span class="kw">truth</span> <span class="kw">=</span> <span class="no">truthgene</span>)
+<span class="no">stat</span>
+<span class="co">#&gt; $table</span>
+<span class="co">#&gt;           truth</span>
+<span class="co">#&gt; prediction  DE non-DE</span>
+<span class="co">#&gt;     DE      20     19</span>
+<span class="co">#&gt;     non-DE  39    955</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $TPR</span>
+<span class="co">#&gt; [1] 0.3389831</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $FPR</span>
+<span class="co">#&gt; [1] 0.01950719</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $FDR</span>
+<span class="co">#&gt; [1] 0.4871795</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $FNR</span>
+<span class="co">#&gt; [1] 0.6610169</span></pre></body></html></div>
 </div>
   </div>
 

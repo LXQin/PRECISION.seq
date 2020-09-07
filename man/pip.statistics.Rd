@@ -42,7 +42,7 @@ pip.statistics(
 a list of values about TPR, FPR, FDR, FNR
 }
 \description{
-Computing the true positive rate, false postive rate, false discovery rate, and false negative rate based on given golden standards.
+Computing the true positive rate, false positive rate, false discovery rate, and false negative rate based on given golden standards.
 }
 \examples{
 truthgene <- DE.voom(data.benchmark, data.group)$id.list

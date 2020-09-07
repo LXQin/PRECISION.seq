@@ -57,6 +57,9 @@
       <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
     </li>
     <li>
+      <a href="../articles/Intro_Figure.html">Introduction to DepthNorm Figure Functions</a>
+    </li>
+    <li>
       <a href="../articles/Intro_Functions.html">Introduction to DepthNorm Functions</a>
     </li>
   </ul>
@@ -218,21 +221,21 @@
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">simulated</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/simu.html">simu</a></span>(<span class="kw">proportion_L</span> <span class="kw">=</span> <span class="fl">0.0175</span>, <span class="kw">proportion_R</span> <span class="kw">=</span> <span class="fl">0.0225</span>, <span class="kw">median_L</span> <span class="kw">=</span> -<span class="fl">0.5</span>, <span class="kw">median_R</span> <span class="kw">=</span> <span class="fl">0.5</span>, <span class="kw">numsets</span> <span class="kw">=</span> <span class="fl">100</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">simulated</span>$<span class="no">simulated_benchmark</span><span class="kw">[[</span><span class="fl">1</span>]])[,<span class="fl">1</span>:<span class="fl">5</span>]
-<span class="co">#&gt;                   D8   D17    D9     E4     E5</span>
-<span class="co">#&gt; hsa-let-7a-2*      6     4     2      2     11</span>
-<span class="co">#&gt; hsa-let-7a(3)  18756 61589 57395 167139 268842</span>
-<span class="co">#&gt; hsa-let-7a*(2)   154   436   142    812   1517</span>
-<span class="co">#&gt; hsa-let-7b      3001 29023 14939  52727  77765</span>
-<span class="co">#&gt; hsa-let-7b*       23   125    74    208    607</span>
-<span class="co">#&gt; hsa-let-7c      5961  9774 12911  13533  65477</span>
+<span class="co">#&gt;                   D8    D9   D19   E17   E19</span>
+<span class="co">#&gt; hsa-let-7a-2*      6     2     2    21    12</span>
+<span class="co">#&gt; hsa-let-7a(3)  18756 57395 40506 90362 74964</span>
+<span class="co">#&gt; hsa-let-7a*(2)   154   142   196   938   373</span>
+<span class="co">#&gt; hsa-let-7b      3001 14939 25772 30967 15081</span>
+<span class="co">#&gt; hsa-let-7b*       23    74   106   170    82</span>
+<span class="co">#&gt; hsa-let-7c      5961 12911 17112 16358 11911</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">simulated</span>$<span class="no">simulated_test</span><span class="kw">[[</span><span class="fl">1</span>]])[,<span class="fl">1</span>:<span class="fl">5</span>]
-<span class="co">#&gt;                   D8   D17     D9     E4     E5</span>
-<span class="co">#&gt; hsa-let-7a-2*      0     1      0      0      2</span>
-<span class="co">#&gt; hsa-let-7a(3)  62888 53958 127231 143241 253696</span>
-<span class="co">#&gt; hsa-let-7a*(2)   593   113    240   1173   1162</span>
-<span class="co">#&gt; hsa-let-7b      4863 15832  25940  13098  93419</span>
-<span class="co">#&gt; hsa-let-7b*       46    32     59     59    258</span>
-<span class="co">#&gt; hsa-let-7c     20689  8156  28152   8428  71733</span></pre></body></html></div>
+<span class="co">#&gt;                   D8     D9   D19   E17   E19</span>
+<span class="co">#&gt; hsa-let-7a-2*      0      0     0     6     2</span>
+<span class="co">#&gt; hsa-let-7a(3)  62888 127231 60273 30311 21420</span>
+<span class="co">#&gt; hsa-let-7a*(2)   593    240   157   163    80</span>
+<span class="co">#&gt; hsa-let-7b      4863  25940 25624  7626  2966</span>
+<span class="co">#&gt; hsa-let-7b*       46     59    73    50    23</span>
+<span class="co">#&gt; hsa-let-7c     20689  28152 16656  4349  2609</span></pre></body></html></div>
 </div>
   </div>
 

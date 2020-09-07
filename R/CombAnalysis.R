@@ -53,7 +53,7 @@ pip.norm.DE <- function(raw, groups, norm.method,
 
 #' Statistics for DEA Results Based Golden Standards
 #'
-#' Computing the true positive rate, false postive rate, false discovery rate, and false negative rate based on given golden standards.
+#' Computing the true positive rate, false positive rate, false discovery rate, and false negative rate based on given golden standards.
 #'
 #' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample (only 2 groups allowed).

@@ -66,3 +66,14 @@ head(voom.benchmark$p.val)
 head(voom.test.RUVr$id.list)
 head(voom.test.RUVr$p.val)
 ```
+
+
+## Functions for Combininig Normalization and Differential Expression Analysis
+We combine normalization and DEA functions together, so that users could start from raw read counts and directly obtain the DE genes and the corresponding p-values (as same as the output of DE functions). In addition, we prepare a function for computing the true positive rate, false positive rate, false discovery rate, and false negative rate based on given golden standards.  
+```{r}
+res <- pip.norm.DE(data.test, data.group, "norm.TMM")
+
+truthgene <- DE.voom(data.benchmark, data.group)$id.list
+stat <- pip.statistics(data.test, data.group, "norm.TMM", truth = truthgene)
+stat
+```

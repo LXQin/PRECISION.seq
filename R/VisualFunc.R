@@ -15,7 +15,7 @@ fig.volcano <- function(DEA.res, title){
   DE.list <- DEA.res$id.list
   dat.DE.frame <- data.frame(dm = DEA.res$p.val[,2],
                              p.value = DEA.res$p.val[,1])
-  mask <- with(dat.voom.frame, p.value < .01)
+  mask <- with(dat.DE.frame, p.value < .01)
   cols <- ifelse(mask, "red", "black")
 
   xlim = round(1.15 * max(abs(dat.DE.frame$dm)), 1)

@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Relative Log Expression Plot — fig.RLE" />
-<meta property="og:description" content="Function for generating relative log expression plot using the normalized test data as the input." />
+<meta property="og:description" content="Function for generating relative log expression plot using the read count data as the input." />
 
 
 
@@ -98,6 +98,9 @@
       <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
     </li>
     <li>
+      <a href="../articles/Intro_Figure.html">Introduction to DepthNorm Figure Functions</a>
+    </li>
+    <li>
       <a href="../articles/Intro_Functions.html">Introduction to DepthNorm Functions</a>
     </li>
   </ul>
@@ -124,16 +127,16 @@
     </div>
 
     <div class="ref-description">
-    <p>Function for generating relative log expression plot using the normalized test data as the input.</p>
+    <p>Function for generating relative log expression plot using the read count data as the input.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fig.RLE</span>(<span class='no'>normtest</span>, <span class='no'>groups</span>, <span class='no'>main</span>)</pre>
+    <pre class="usage"><span class='fu'>fig.RLE</span>(<span class='no'>data</span>, <span class='no'>groups</span>, <span class='no'>title</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>normtest</th>
+      <th>data</th>
       <td><p>normalized testing using the method which the researchers desire to compare with the other methods</p></td>
     </tr>
     <tr>
@@ -141,7 +144,7 @@
       <td><p>vector of characters indicating the group for each sample (only 2 groups are allowed).</p></td>
     </tr>
     <tr>
-      <th>main</th>
+      <th>title</th>
       <td><p>the title of the figure</p></td>
     </tr>
     </table>
