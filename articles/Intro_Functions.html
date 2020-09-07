@@ -57,6 +57,9 @@
       <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
     </li>
     <li>
+      <a href="../articles/Intro_Figure.html">Introduction to DepthNorm Figure Functions</a>
+    </li>
+    <li>
       <a href="../articles/Intro_Functions.html">Introduction to DepthNorm Functions</a>
     </li>
   </ul>
@@ -88,8 +91,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span>(list = <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span>())
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">precision.seq</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://www-huber.embl.de/users/anders/DESeq">DESeq</a></span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://www-huber.embl.de/users/anders/DESeq">DESeq</a></span>)</pre></div>
 <p>One critical aspect of RNA sequencing data normalization is the sequencing depth. We prepared nine commonly used depth normalization methods and a pair of well-designed datasets used for statistical evaluations in this package.</p>
 <div id="functions-for-depth-normalization" class="section level2">
 <h2 class="hasAnchor">
@@ -144,8 +146,7 @@
 <span class="co">#&gt; hsa-let-7a*(2)   215.731738</span>
 <span class="co">#&gt; hsa-let-7b     13499.451384</span>
 <span class="co">#&gt; hsa-let-7b*       75.082684</span>
-<span class="co">#&gt; hsa-let-7c     11163.051990</span>
-</pre></div>
+<span class="co">#&gt; hsa-let-7c     11163.051990</span></pre></div>
 </div>
 <div id="functions-for-differential-expression-analysis" class="section level2">
 <h2 class="hasAnchor">
@@ -187,8 +188,35 @@
 <span class="co">#&gt; hsa-miR-99a*    3.501843e-07 -2.142053</span>
 <span class="co">#&gt; hsa-miR-99a     6.603158e-07 -1.904275</span>
 <span class="co">#&gt; hsa-miR-125a    2.243507e-06 -1.374217</span>
-<span class="co">#&gt; hsa-miR-146b    3.071453e-06  1.909280</span>
-</pre></div>
+<span class="co">#&gt; hsa-miR-146b    3.071453e-06  1.909280</span></pre></div>
+</div>
+<div id="functions-for-combininig-normalization-and-differential-expression-analysis" class="section level2">
+<h2 class="hasAnchor">
+<a href="#functions-for-combininig-normalization-and-differential-expression-analysis" class="anchor"></a>Functions for Combininig Normalization and Differential Expression Analysis</h2>
+<p>We combine normalization and DEA functions together, so that users could start from raw read counts and directly obtain the DE genes and the corresponding p-values (as same as the output of DE functions). In addition, we prepare a function for computing the true positive rate, false positive rate, false discovery rate, and false negative rate based on given golden standards.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="kw">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.norm.DE.html">pip.norm.DE</a></span>(<span class="kw">data.test</span>, <span class="kw">data.group</span>, <span class="st">"norm.TMM"</span>)
+
+<span class="kw">truthgene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span>(<span class="kw">data.benchmark</span>, <span class="kw">data.group</span>)<span class="op">$</span><span class="kw">id.list</span>
+<span class="kw">stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.statistics.html">pip.statistics</a></span>(<span class="kw">data.test</span>, <span class="kw">data.group</span>, <span class="st">"norm.TMM"</span>, truth = <span class="kw">truthgene</span>)
+<span class="kw">stat</span>
+<span class="co">#&gt; $table</span>
+<span class="co">#&gt;           truth</span>
+<span class="co">#&gt; prediction  DE non-DE</span>
+<span class="co">#&gt;     DE      20     19</span>
+<span class="co">#&gt;     non-DE  39    955</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $TPR</span>
+<span class="co">#&gt; [1] 0.3389831</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $FPR</span>
+<span class="co">#&gt; [1] 0.01950719</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $FDR</span>
+<span class="co">#&gt; [1] 0.4871795</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $FNR</span>
+<span class="co">#&gt; [1] 0.6610169</span></pre></div>
 </div>
   </div>
 
@@ -207,7 +235,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
 </div>
 
       </footer>

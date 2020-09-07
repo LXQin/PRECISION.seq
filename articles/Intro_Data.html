@@ -57,6 +57,9 @@
       <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
     </li>
     <li>
+      <a href="../articles/Intro_Figure.html">Introduction to DepthNorm Figure Functions</a>
+    </li>
+    <li>
       <a href="../articles/Intro_Functions.html">Introduction to DepthNorm Functions</a>
     </li>
   </ul>
@@ -89,8 +92,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span>(list = <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span>())
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">precision.seq</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://www-huber.embl.de/users/anders/DESeq">DESeq</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://bioinf.wehi.edu.au/limma">limma</a></span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://bioinf.wehi.edu.au/limma">limma</a></span>)</pre></div>
 <p>The unique pair of miRNA sequencing data is collected from two of the most common and aggressive soft tissue sarcoma subtypes: myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH). Collected at MSK between 2002 and 2012, 27 MXF samples and 27 PMFH samples including 1033 miRNA markers are extracted from newly diagnosed untreated tumors with sufficient quality and quantity. These samples are then measured twice separately. One of the obtained miRNA sequencing data (named as <code>data.benchmark</code> data in this package) is prepared by uniform handling and balanced sample-to-library-assignment minimizing artifact effects, which needs no normalization in the downstream analysis, while the other one (named as <code>data.test</code> data in this package) is collected in the usual way, which requires normalization for removing obscuring variability.</p>
 <div id="benchmark-data-analysis" class="section level2">
 <h2 class="hasAnchor">
@@ -107,8 +109,7 @@
         ylab = <span class="st">"Log2 Count"</span>, ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">20</span>),
         xaxt = <span class="st">"n"</span>, outline = <span class="fl">FALSE</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span>(<span class="st">"topright"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"MXF"</span>, <span class="st">"PMFH"</span>), bty = <span class="st">"n"</span>,
-       pch = <span class="st">"x"</span>, cex = <span class="fl">1</span>, col = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">1</span>], <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">2</span>]))
-</pre></div>
+       pch = <span class="st">"x"</span>, cex = <span class="fl">1</span>, col = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">1</span>], <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">2</span>]))</pre></div>
 <p><img src="Intro_Data_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
 <div id="differential-expression-analysis" class="section level3">
@@ -126,8 +127,7 @@
                           col = <span class="kw">cols</span>, xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">3.6</span>, <span class="fl">3.6</span>),
                           ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">6</span>),
                           xlab = <span class="st">"Mean Difference: PMFH - MXF"</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span>(h = <span class="fl">2</span>, lty = <span class="fl">2</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span>(h = <span class="fl">2</span>, lty = <span class="fl">2</span>)</pre></div>
 <p><img src="Intro_Data_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 <div id="scatterplot-of-group-mean-averages-v-s--group-mean-differences" class="section level3">
@@ -142,8 +142,7 @@
      pch = <span class="fl">16</span>, cex = <span class="fl">0.5</span>, col = <span class="kw">cols</span>,
      xlab = <span class="st">"Group Mean Average of Log2 Count"</span>, 
      ylab = <span class="st">"Group Mean Difference of Log2 Count"</span>,
-     main = <span class="st">""</span>)
-</pre></div>
+     main = <span class="st">""</span>)</pre></div>
 <p><img src="Intro_Data_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </div>
 </div>
@@ -161,8 +160,7 @@
                      <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">1</span>], <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">2</span>]),
         xaxt = <span class="st">"n"</span>, outline = <span class="fl">FALSE</span>, ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">20</span>))
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span>(<span class="st">"topleft"</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"MXF"</span>, <span class="st">"PMFH"</span>), bty = <span class="st">"n"</span>,
-       pch = <span class="st">"x"</span>, cex = <span class="fl">1</span>, col = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">1</span>], <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">2</span>]))
-</pre></div>
+       pch = <span class="st">"x"</span>, cex = <span class="fl">1</span>, col = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">1</span>], <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">2</span>)[<span class="fl">2</span>]))</pre></div>
 <p><img src="Intro_Data_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
 <div id="differential-expression-analysis-1" class="section level3">
@@ -178,8 +176,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span>(<span class="kw">test.voom.dat</span>, <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="kw">dm</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span>(<span class="kw">p.value</span>), cex = <span class="fl">.5</span>, pch = <span class="fl">16</span>,
                          ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">6</span>), xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="fl">3.6</span>, <span class="fl">3.6</span>),
                          col = <span class="kw">cols</span>, xlab = <span class="st">"Mean Difference: PMFH - MXF"</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span>(h = <span class="fl">2</span>, lty = <span class="fl">2</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span>(h = <span class="fl">2</span>, lty = <span class="fl">2</span>)</pre></div>
 <p><img src="Intro_Data_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 <div id="venn-diagram-between-benchmark-and-test" class="section level3">
@@ -194,8 +191,7 @@
 <span class="kw">venn2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/cbind.html">cbind</a></span>(<span class="kw">bench.sig</span>, <span class="kw">test.sig</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/limma/man/venn.html">vennDiagram</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/limma/man/venn.html">vennCounts</a></span>(<span class="kw">venn2</span>), 
             names = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Benchmark"</span>, <span class="st">"Test"</span>), 
-            cex = <span class="fl">1.5</span>, counts.col = <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">1</span>))
-</pre></div>
+            cex = <span class="fl">1.5</span>, counts.col = <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">1</span>))</pre></div>
 <p><img src="Intro_Data_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 <div id="group-means-of-mxf" class="section level3">
@@ -209,8 +205,7 @@
      xlab = <span class="st">"Group Mean Average of Log2 Count in Benchmark"</span>, 
      ylab = <span class="st">"Group Mean Average of Log2 Count in Test"</span>,
      main = <span class="st">"MXF"</span>, xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">20</span>), ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">20</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span>(<span class="fl">0</span>,<span class="fl">1</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span>(<span class="fl">0</span>,<span class="fl">1</span>)</pre></div>
 <p><img src="Intro_Data_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 <div id="group-means-of-pmfh" class="section level3">
@@ -224,8 +219,7 @@
      xlab = <span class="st">"Group Mean Average of Log2 Count in Benchmark"</span>, 
      ylab = <span class="st">"Group Mean AVerage of Log2 Count in Test"</span>,
      main = <span class="st">"PMFH"</span>, xlim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">20</span>), ylim = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">20</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span>(<span class="fl">0</span>,<span class="fl">1</span>)
-</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span>(<span class="fl">0</span>,<span class="fl">1</span>)</pre></div>
 <p><img src="Intro_Data_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
 </div>
@@ -237,22 +231,21 @@
 <span class="kw">simulated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simu.html">simu</a></span>(proportion_L = <span class="fl">0.0175</span>, proportion_R = <span class="fl">0.0225</span>, median_L = <span class="op">-</span><span class="fl">0.5</span>, median_R = <span class="fl">0.5</span>, numsets = <span class="fl">100</span>)
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">simulated</span><span class="op">$</span><span class="kw">simulated_benchmark</span>[[<span class="fl">1</span>]])[,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]
-<span class="co">#&gt;                   D8    D9   D19     E5   E19</span>
-<span class="co">#&gt; hsa-let-7a-2*      6     2     2     11    12</span>
-<span class="co">#&gt; hsa-let-7a(3)  18756 57395 40506 268842 74964</span>
-<span class="co">#&gt; hsa-let-7a*(2)   154   142   196   1517   373</span>
-<span class="co">#&gt; hsa-let-7b      3001 14939 25772  77765 15081</span>
-<span class="co">#&gt; hsa-let-7b*       23    74   106    607    82</span>
-<span class="co">#&gt; hsa-let-7c      5961 12911 17112  65477 11911</span>
+<span class="co">#&gt;                   D7    D8    D9    E2     E5</span>
+<span class="co">#&gt; hsa-let-7a-2*      2     6     2     1     11</span>
+<span class="co">#&gt; hsa-let-7a(3)  30934 18756 57395 30760 268842</span>
+<span class="co">#&gt; hsa-let-7a*(2)   216   154   142   108   1517</span>
+<span class="co">#&gt; hsa-let-7b      8395  3001 14939  9509  77765</span>
+<span class="co">#&gt; hsa-let-7b*       50    23    74    33    607</span>
+<span class="co">#&gt; hsa-let-7c      5633  5961 12911  2361  65477</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">simulated</span><span class="op">$</span><span class="kw">simulated_test</span>[[<span class="fl">1</span>]])[,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]
-<span class="co">#&gt;                   D8     D9   D19     E5   E19</span>
-<span class="co">#&gt; hsa-let-7a-2*      0      0     0      2     2</span>
-<span class="co">#&gt; hsa-let-7a(3)  62888 127231 60273 253696 21420</span>
-<span class="co">#&gt; hsa-let-7a*(2)   593    240   157   1162    80</span>
-<span class="co">#&gt; hsa-let-7b      4863  25940 25624  93419  2966</span>
-<span class="co">#&gt; hsa-let-7b*       46     59    73    258    23</span>
-<span class="co">#&gt; hsa-let-7c     20689  28152 16656  71733  2609</span>
-</pre></div>
+<span class="co">#&gt;                   D7    D8     D9    E2     E5</span>
+<span class="co">#&gt; hsa-let-7a-2*      2     0      0     4      2</span>
+<span class="co">#&gt; hsa-let-7a(3)  89726 62888 127231 36445 253696</span>
+<span class="co">#&gt; hsa-let-7a*(2)   368   593    240   158   1162</span>
+<span class="co">#&gt; hsa-let-7b     17546  4863  25940 11564  93419</span>
+<span class="co">#&gt; hsa-let-7b*       48    46     59    63    258</span>
+<span class="co">#&gt; hsa-let-7c     11921 20689  28152  2388  71733</span></pre></div>
 </div>
   </div>
 
@@ -271,7 +264,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
 </div>
 
       </footer>
