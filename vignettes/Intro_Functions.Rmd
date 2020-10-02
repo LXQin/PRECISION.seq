@@ -1,5 +1,5 @@
 ---
-title: "Introduction to DepthNorm Functions"
+title: "Introduction to PRECISION.SEQ Functions"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Intro_Functions}
@@ -20,10 +20,10 @@ library(precision.seq)
 library(DESeq)
 ```
 
-One critical aspect of RNA sequencing data normalization is the sequencing depth. We prepared nine commonly used depth normalization methods and a pair of well-designed datasets used for statistical evaluations in this package.
+One critical aspect of data normalization for transcriptomic sequencing is sequencing depth. In this package, we examine nine commonly-used methods for depth normalization and evaluate their performance for microRNA (miRNA) sequencing using a pair of datasets (benchmark data and test data) for the same set of tumor samples. Among these normalization methods, six are based on re-scaling and three are based on regression.
 
 ## Functions for Depth Normalization
-In this section, we will present how to use the normalization functions in this package. The raw count data in the format of data frame or matrix (with columns for samples and rows for markers/genes) and the vector of characters indicating the group of each sample are needed as input. The output depends on the normalization methods. If the normalization methods are re-scalling based, normalized dataset and scalling factor will be provided as output; if the normalization methods are regression based, normalized dataset, which only used for exploration and the adjusting factor will be provided as output.
+In this section, we demonstrate how to use the nine normalization functions. The input for each function includes (1) sequencing count data in the format of a data frame or a data matrix (with columns for samples and rows for miRNAs/markers) and (2) the sample groups in the form of a character vector. The output can take one of two forms depending on the type of the normalization method: for re-scaling-based methods, the output includes a matrix of the normalized data and a vector of the estimated sample-specific scaling factors; for regression-based methods, the output is a matrix of the un-normalized data and a vector of the estimated adjustment factors.
 ```{r warning = FALSE, message = FALSE}
 test.TC <- norm.TC(data.test, data.group)
 test.UQ <- norm.UQ(data.test, data.group)
@@ -33,9 +33,9 @@ test.DESeq <- norm.DESeq(data.test, data.group)
 test.PoissonSeq <- norm.PoissonSeq(data.test)
 test.QN <- norm.QN(data.test)
 test.SVA <- norm.SVA(data.test, data.group)
-test.RUVg <- norm.RUV(data.test, data.group, method = "RUVg")
-test.RUVs <- norm.RUV(data.test, data.group, method = "RUVs")
-test.RUVr <- norm.RUV(data.test, data.group, method = "RUVr")
+test.RUVg <- norm.RUVg(data.test, data.group)
+test.RUVs <- norm.RUVs(data.test, data.group)
+test.RUVr <- norm.RUVr(data.test, data.group)
 
 head(test.TMM$scaling.factor)
 head(test.TMM$dat.normed[,1:5])
@@ -45,7 +45,7 @@ head(test.SVA$dat.normed[,1:5])
 ```
 
 ## Functions for Differential Expression Analysis
-We pack two DEA functions, edgeR and voom-limma, in this package. The input could be either the normalized dataset (always from re-scalling methods) or the non-normalized dataset with adjusting factor (always from regression-based methods). Names of DE markers/genes (p = 0.01 as cut-off point by default), p-values for each marker/gene, and log2 fold change are provided in output.
+We include functions for two methods, edgeR and voom-limma, assessing differential expression. The input can be either the normalized dataset (from re-scaling normalization) or the un-normalized dataset plus adjustment factor (from regression-based normalization). The output includes the p-values for the miRNAs/markers, and their group mean differences (that is, log2 fold changes), and the names of the significantly differentially expressed miRNAs/markers (using a p-value cutoff specified by the user).
 ```{r}
 edgeR.benchmark <- DE.edgeR(data.benchmark, data.group)
 voom.benchmark <- DE.voom(data.benchmark, data.group)
@@ -68,10 +68,11 @@ head(voom.test.RUVr$p.val)
 ```
 
 
-## Functions for Combininig Normalization and Differential Expression Analysis
-We combine normalization and DEA functions together, so that users could start from raw read counts and directly obtain the DE genes and the corresponding p-values (as same as the output of DE functions). In addition, we prepare a function for computing the true positive rate, false positive rate, false discovery rate, and false negative rate based on given golden standards.  
+## Functions for Connecting Normalization and Differential Expression Analysis
+We connect the depth-normalization step and the differential-expression-analysis step with functions that combine the functions for these two steps. In addition, we include a function for computing the true positive rate, false positive rate, false discovery rate, and false negative rate using the significance result based on the benchmark data as the gold standard.
 ```{r}
-res <- pip.norm.DE(data.test, data.group, "norm.TMM")
+res.norm <- pip.norm(data.test, data.group, "norm.TMM")
+res.DE <- pip.norm.DE(data.test, data.group, "norm.TMM")
 
 truthgene <- DE.voom(data.benchmark, data.group)$id.list
 stat <- pip.statistics(data.test, data.group, "norm.TMM", truth = truthgene)

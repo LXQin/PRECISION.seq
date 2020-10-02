@@ -8,7 +8,6 @@ fig.FDR_FNR(
   raw,
   groups,
   MethodsCompare,
-  RUV_method = NULL,
   QN_filter = FALSE,
   DE.method = "DE.voom",
   Pval = 0.01,
@@ -24,8 +23,6 @@ fig.FDR_FNR(
 
 \item{MethodsCompare}{the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.}
 
-\item{RUV_method}{the exact RUV method used from \code{RUVg}, \code{RUVr} and \code{RUVs} if \code{method = norm.RUV}}
-
 \item{QN_filter}{whether the filtering is performed if \code{method = norm.QN}.}
 
 \item{DE.method}{the method for differential expression analysis from \code{DE.voom} and \code{DE.edgeR}, default to be \code{DE.voom}.}
@@ -39,7 +36,7 @@ fig.FDR_FNR(
 \item{selected_marker}{vector of a subset of genes/markers for this analysis}
 }
 \value{
-plotly figure for selection of normalization methods
+figure for selection of normalization methods
 }
 \description{
 Selection of normalization methods based on golden standards

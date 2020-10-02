@@ -8,7 +8,6 @@ pip.norm.DE(
   raw,
   groups,
   norm.method,
-  RUV_method = NULL,
   QN_filter = FALSE,
   DE.method = "DE.voom",
   Pval = 0.01
@@ -19,9 +18,7 @@ pip.norm.DE(
 
 \item{groups}{vector of characters indicating the group for each sample (only 2 groups allowed).}
 
-\item{norm.method}{the method for normalization selected from \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.}
-
-\item{RUV_method}{the exact RUV method used from \code{RUVg}, \code{RUVr} and \code{RUVs} if \code{method = norm.RUV}}
+\item{norm.method}{the method for normalization selected from \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, \code{norm.RUVr}, \code{norm.RUVg}, and \code{norm.RUVs}.}
 
 \item{QN_filter}{whether the filtering is performed if \code{method = norm.QN}.}
 
@@ -30,7 +27,7 @@ pip.norm.DE(
 \item{Pval}{p-value for identifying DE genes, default to be 0.01}
 }
 \value{
-list, containing \code{id.list} (names of DE genes) and \code{p.val} (corresponding p-values and log2-fold-change for all genes).
+list, containing \code{id.list} (names of DE genes), \code{p.val}, and \code{log2.FC}.
 }
 \description{
 Pipeline of Differential Expression Analysis for RNASeq Data

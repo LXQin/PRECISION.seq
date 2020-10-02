@@ -95,13 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
+      <a href="../articles/Intro_Data.html">Introduction to PRECISION.SEQ Data</a>
     </li>
     <li>
-      <a href="../articles/Intro_Figure.html">Introduction to DepthNorm Figure Functions</a>
+      <a href="../articles/Intro_Figure.html">Introduction to PRECISION.SEQ Figure Functions</a>
     </li>
     <li>
-      <a href="../articles/Intro_Functions.html">Introduction to DepthNorm Functions</a>
+      <a href="../articles/Intro_Functions.html">Introduction to PRECISION.SEQ Functions</a>
     </li>
   </ul>
 </li>
@@ -130,7 +130,7 @@
     <p>Normalize the dataset using UQ, and return the normalized dataset with scaling factor.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>norm.UQ</span>(<span class='no'>raw</span>, <span class='no'>groups</span>)</pre>
+    <pre class="usage"><span class='fu'>norm.UQ</span><span class='op'>(</span><span class='va'>raw</span>, <span class='va'>groups</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,7 +153,8 @@
     <p>Dillies, Marie-Agnès, et al. "A comprehensive evaluation of normalization methods for Illumina high-throughput RNA sequencing data analysis." <em>Briefings in bioinformatics</em> 14.6 (2013): 671-683.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>test.UQ</span> <span class='kw'>&lt;-</span> <span class='fu'>norm.UQ</span>(<span class='no'>data.test</span>, <span class='no'>data.group</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>test.UQ</span> <span class='op'>&lt;-</span> <span class='fu'>norm.UQ</span><span class='op'>(</span><span class='va'>data.test</span>, <span class='va'>data.group</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -165,11 +166,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Li-Xuan Qin, Jian Zou.</p>
+  <p>Developed by Jian Zou, Yannick Duren, Li-Xuan Qin.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

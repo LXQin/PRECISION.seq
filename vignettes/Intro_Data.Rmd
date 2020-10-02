@@ -1,5 +1,5 @@
 ---
-title: "Introduction to DepthNorm Data"
+title: "Introduction to PRECISION.SEQ Data"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Intro_Data}
@@ -21,11 +21,12 @@ library(DESeq)
 library(limma)
 ```
 
-The unique pair of miRNA sequencing data is collected from two of the most common and aggressive soft tissue sarcoma subtypes: myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH). Collected at MSK between 2002 and 2012, 27 MXF samples and 27 PMFH samples including 1033 miRNA markers are extracted from newly diagnosed untreated tumors with sufficient quality and quantity. These samples are then measured twice separately. One of the obtained miRNA sequencing data (named as `data.benchmark` data in this package) is prepared by uniform handling and balanced sample-to-library-assignment minimizing artifact effects, which needs no normalization in the downstream analysis, while the other one (named as `data.test` data in this package) is collected in the usual way, which requires normalization for removing obscuring variability. 
+MicroRNA (miRNA) sequencing data were collected for two subtypes of soft tissue sarcoma: myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH). Twenty-seven MXF samples and Twenty-seven PMFH samples, which were newly diagnosed untreated tumors, were collected at MSK between 2002 and 2012. These tumor samples were sequenced twice: once with uniform handling and balanced sample-to-library-assignment to minimize data artifact due to experimental handling and avoid their confounding with sample group (that is, tumor type); and a second time without, which exhibits data artifacts due to handling and requires normalization for removing obscuring variability. We call the former the benchmark data and the latter the test data. They are named as data.benchmark and data.test respectively in this package. We show how to examine the overall distribution and perform differential expression analysis for these data sets as well as how to simulate additional paired data sets by applying a novel data permutation algorithm to the paired data sets.
+
 
 ## Benchmark Data Analysis
 ### Overall Data Distribution
-We show the boxplot of the log2(benchmark+1) for each sample.
+We examine the overall distribution of the benchmark data using sample-specific boxplots.
 ```{r warning = FALSE, message = FALSE}
 benchmark.log <- log2(data.benchmark + 1)
 boxplot(benchmark.log, 
@@ -38,12 +39,12 @@ legend("topright",c("MXF", "PMFH"), bty = "n",
 ```  
 
 ### Differential Expression Analysis
-We continue to perform the DEA on benchmark data using voom-limma, and present the relationship between p-values and log fold change in volcano plot.
+We assess evidence for differential expression in the benchmark data using the voom-limma method for the log2 transformed count data. The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average.
 ```{r warning=FALSE, message=FALSE}
 benchmark.voom <- DE.voom(RC = data.benchmark, groups = data.group, P = 0.01)
 DE.bench <- benchmark.voom$id.list
-benchmark.voom.dat <- data.frame(dm = benchmark.voom$p.val[,2],
-                                 p.value = benchmark.voom$p.val[,1])
+benchmark.voom.dat <- data.frame(dm = benchmark.voom$log2.FC,
+                                 p.value = benchmark.voom$p.val)
 mask <- with(benchmark.voom.dat, p.value < .01)
 cols <- ifelse(mask,"red", "black")
 with(benchmark.voom.dat, plot(dm, -log10(p.value), cex = .5, pch = 16,
@@ -51,11 +52,7 @@ with(benchmark.voom.dat, plot(dm, -log10(p.value), cex = .5, pch = 16,
                           ylim = c(0, 6),
                           xlab = "Mean Difference: PMFH - MXF"))
 abline(h = 2, lty = 2)
-```  
 
-### Scatterplot of Group Mean Averages V.S. Group Mean Differences
-In the below scatterplot in log scale, red dots indicates the DE markers with p < 0.01 as cut-off point.
-```{r warning=FALSE, message=FALSE}
 cols <- ifelse(rownames(benchmark.log) %in% DE.bench, "red", "black")
 plot(rowMeans(benchmark.log),
      apply(benchmark.log[,grepl("MXF", colnames(benchmark.log))], 1, mean) -
@@ -69,7 +66,7 @@ plot(rowMeans(benchmark.log),
 
 ## Test Data Analysis
 ### Overall Data Distribution
-We show the boxplot of the log2(test+1) for each sample.
+We examine the overall distribution of the test data using sample-specific boxplots.
 ```{r warning = FALSE, message = FALSE}
 test.log <- log2(data.test + 1)
 boxplot(test.log, 
@@ -81,11 +78,11 @@ legend("topleft",c("MXF", "PMFH"), bty = "n",
 ```
 
 ### Differential Expression Analysis
-We continue to perform the DEA on test data using voom-limma without any normalization, and present the relationship between p-values and log fold change in volcano plot.
+We assess evidence for differential expression in the test data using the voom-limma method (here without any depth normalization). The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average.
 ```{r warning=FALSE, message=FALSE}
 test.voom <- DE.voom(RC = data.test, groups = data.group, P = 0.01)
-test.voom.dat <- data.frame(dm = test.voom$p.val[,2],
-                            p.value = test.voom$p.val[,1])
+test.voom.dat <- data.frame(dm = test.voom$log2.FC,
+                            p.value = test.voom$p.val)
 mask <- with(test.voom.dat, p.value < .01)
 cols <- ifelse(mask,"red", "black")
 with(test.voom.dat, plot(dm, -log10(p.value), cex = .5, pch = 16,
@@ -94,10 +91,11 @@ with(test.voom.dat, plot(dm, -log10(p.value), cex = .5, pch = 16,
 abline(h = 2, lty = 2)
 ```
 
-### Venn Diagram Between Benchmark and Test
+### Comparison of Differential Expression Between Benchmark Data and Test Data
+Significance for differential expression is claimed using a p-value cutoff of 0.01 for both the benchmark data and the test data. They are compared with each other using the Venn diagram.
 ```{r warning=FALSE, message=FALSE}
-pval.bench.test <- data.frame(cbind(bench.pval = benchmark.voom$p.val[,1], 
-                                    test.pval = test.voom$p.val[rownames(benchmark.voom$p.val),1]))
+pval.bench.test <- data.frame(cbind(bench.pval = benchmark.voom$p.val, 
+                                    test.pval = test.voom$p.val[names(benchmark.voom$p.val)]))
 attach(pval.bench.test)
 bench.sig <- (bench.pval < 0.01)
 test.sig <- (test.pval < 0.01)
@@ -107,7 +105,7 @@ vennDiagram(vennCounts(venn2),
             cex = 1.5, counts.col = rainbow(1))
 ```
 
-### Group Means of MXF
+### Comparison of Estimated Group Means Between Benchmark Data and Test Data
 Scatterplot for the relationship between group means of benchmark and test data for MXF.
 ```{r warning=FALSE, message=FALSE}
 benchmark.log.MXF.mean <- rowMeans(benchmark.log[, grepl("MXF", colnames(benchmark.log))])
@@ -117,11 +115,7 @@ plot(benchmark.log.MXF.mean,
      ylab = "Group Mean Average of Log2 Count in Test",
      main = "MXF", xlim = c(0, 20), ylim = c(0, 20))
 abline(0,1)
-```
 
-### Group Means of PMFH
-Scatterplot for the relationship between group means of benchmark and test data for PMFH.
-```{r warning=FALSE, message=FALSE}
 benchmark.log.PMFH.mean <- rowMeans(benchmark.log[, grepl("PMFH", colnames(benchmark.log))])
 plot(benchmark.log.PMFH.mean,
      rowMeans(test.log[,grepl("PMFH", colnames(test.log))]), pch = 16, cex = 0.5,
@@ -133,7 +127,7 @@ abline(0,1)
 
 
 ## Simulation
-In this section, we will present how to use `simu()` function to generate desired simulated dataset. We will simulate all the possible datasets with proportion of DE between 0.0175 and 0.0225 and median of mean differences between -0.5 and 0.5.
+Here we describe how to use `simu()` function to generate additional pairs of data sets by permuting the paired data sets to achieve a pre-specified level of differential expression. As an example, we show how to generate data sets with the proportion of differential expression around 0.02 (more specifically, in the range of 0.0175 and 0.0225) and the median of mean differences (for log2 counts) around 0 (more specifically, in the range of -0.5 and 0.5).
 ```{r warning=FALSE, message=FALSE}
 simulated <- simu(proportion_L = 0.0175, proportion_R = 0.0225, median_L = -0.5, median_R = 0.5, numsets = 100)
 

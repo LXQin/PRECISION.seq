@@ -95,13 +95,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
+      <a href="../articles/Intro_Data.html">Introduction to PRECISION.SEQ Data</a>
     </li>
     <li>
-      <a href="../articles/Intro_Figure.html">Introduction to DepthNorm Figure Functions</a>
+      <a href="../articles/Intro_Figure.html">Introduction to PRECISION.SEQ Figure Functions</a>
     </li>
     <li>
-      <a href="../articles/Intro_Functions.html">Introduction to DepthNorm Functions</a>
+      <a href="../articles/Intro_Functions.html">Introduction to PRECISION.SEQ Functions</a>
     </li>
   </ul>
 </li>
@@ -130,7 +130,7 @@
     <p>Perform DEA by voom-limma pipeline on normalized dataset or dataset with adjusting factor.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>DE.voom</span>(<span class='no'>RC</span>, <span class='no'>groups</span>, <span class='kw'>Pval</span> <span class='kw'>=</span> <span class='fl'>0.01</span>, <span class='kw'>normalized</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>DE.voom</span><span class='op'>(</span><span class='va'>RC</span>, <span class='va'>groups</span>, Pval <span class='op'>=</span> <span class='fl'>0.01</span>, normalized <span class='op'>=</span> <span class='cn'>TRUE</span>, adjust <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,13 +159,14 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list, containing <code>id.list</code> (names of DE genes) and <code>p.val</code> (corresponding p-values and log2-fold-change for all genes).</p>
+    <p>list, containing <code>id.list</code> (names of DE genes), <code>p.val</code>, and <code>log2.FC</code>.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p><a href='https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html'>Differential Expression with Limma-Voom</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>voom.benchmark</span> <span class='kw'>&lt;-</span> <span class='fu'>DE.voom</span>(<span class='no'>data.benchmark</span>, <span class='no'>data.group</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>voom.benchmark</span> <span class='op'>&lt;-</span> <span class='fu'>DE.voom</span><span class='op'>(</span><span class='va'>data.benchmark</span>, <span class='va'>data.group</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -177,11 +178,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Li-Xuan Qin, Jian Zou.</p>
+  <p>Developed by Jian Zou, Yannick Duren, Li-Xuan Qin.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

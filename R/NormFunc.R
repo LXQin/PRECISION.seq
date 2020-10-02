@@ -224,13 +224,12 @@ norm.SVA <- function(raw, groups) {
 }
 
 
-#' Normalization By Remove Unwanted Variation (RUV)
+#' Normalization By Remove Unwanted Variation Using Control Genes (RUVg)
 #'
-#' Normalize the dataset using RUV (including RUVg, RUVr and RUVs), and return the normalized dataset with adjusting factor.
+#' Normalize the dataset using RUV Using Control Genes, and return the normalized dataset with adjusting factor.
 #'
 #' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample.
-#' @param method indicate the exact RUV method used from \code{RUVg}, \code{RUVr} and \code{RUVs}.
 
 #' @return list, containing \code{dat.normed} (normalized dataset), and the \code{adjust.factor} (adjusting factors) for the design matrix. The normalized dataset could only used for exploration, and adjusting factors are recommended as a covariate in the downstream analysis.
 #'
@@ -244,17 +243,17 @@ norm.SVA <- function(raw, groups) {
 #' @references \href{http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf}{RUVSeq Tutorial}
 #'
 #' @examples
-#' test.RUVr <- norm.RUV(data.test, data.group, method = "RUVr")
-norm.RUV <- function(raw, groups, method = c("RUVg", "RUVs", "RUVr")) {
+#' test.RUVg <- norm.RUV(data.test, data.group)
+norm.RUVg <- function(raw, groups) {
   filter <- apply(raw, 1, function(x) length(x[x > 5]) >= 2)
   dat.ruv <- raw[filter, ]
   genes <- rownames(dat.ruv)
   condition <- factor(groups)
   set <- newSeqExpressionSet(as.matrix(dat.ruv),
-                            phenoData = data.frame(condition,
-                                                   row.names = colnames(dat.ruv)))
+                             phenoData = data.frame(condition,
+                                                    row.names = colnames(dat.ruv)))
   design <- model.matrix(~ condition, data = data.frame(condition,
-                                                       row.names = colnames(dat.ruv)))
+                                                        row.names = colnames(dat.ruv)))
   y <- DGEList(counts = counts(set), group = condition)
   y <- calcNormFactors(y, method = "upperquartile")
   y <- estimateGLMCommonDisp(y, design)
@@ -264,32 +263,115 @@ norm.RUV <- function(raw, groups, method = c("RUVg", "RUVs", "RUVr")) {
   top <- topTags(lrt, n = nrow(set))$table
   spikes <- rownames(set)[which(!(rownames(set) %in% rownames(top)[1:0.15*nrow(raw)]))]
 
-  if (method == "RUVg") {
-    t <- RUVg(set, spikes, k = 1)
-    dat.normed <- normCounts(t)
-    return(list(dat.normed = dat.normed,
-                adjust.factor = t$W))
-  }else if (method == "RUVs") {
-    differences <- makeGroups(condition)
-    controls <- rownames(dat.ruv)
-    t <- RUVs(set, controls, k = 1, differences)
-    dat.normed <- normCounts(t)
-    return(list(dat.normed = dat.normed,
-                adjust.factor = t$W))
-  }else if (method == "RUVr") {
-    design <- model.matrix(~ condition, data = pData(set))
-    y <- DGEList(counts = counts(set), group = condition)
-    y <- calcNormFactors(y, method = "upperquartile")
-    y <- estimateGLMCommonDisp(y, design)
-    y <- estimateGLMTagwiseDisp(y, design)
-    fit <- glmFit(y, design)
-    res <- residuals(fit, type = "deviance")
-    setUQ <- betweenLaneNormalization(set, which = "upper")
-    controls <- rownames(dat.ruv)
-    t <- RUVr(setUQ, controls, k = 1, res)
-    dat.normed <- normCounts(t)
 
-    return(list(dat.normed = dat.normed,
-                adjust.factor = t$W))
-  }
+  t <- RUVg(set, spikes, k = 1)
+  dat.normed <- normCounts(t)
+  return(list(dat.normed = dat.normed,
+              adjust.factor = t$W))
 }
+
+
+#' Normalization By Remove Unwanted Variation Using Replicate Samples (RUVs)
+#'
+#' Normalize the dataset using RUV using replicate samples, and return the normalized dataset with adjusting factor.
+#'
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param groups vector of characters indicating the group for each sample.
+
+#' @return list, containing \code{dat.normed} (normalized dataset), and the \code{adjust.factor} (adjusting factors) for the design matrix. The normalized dataset could only used for exploration, and adjusting factors are recommended as a covariate in the downstream analysis.
+#'
+#' @import EDASeq
+#' @import DESeq2
+#' @import edgeR
+#' @import RUVSeq
+#' @import Biobase
+#' @export
+#'
+#' @references \href{http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf}{RUVSeq Tutorial}
+#'
+#' @examples
+#' test.RUVs <- norm.RUVs(data.test, data.group)
+norm.RUVs <- function(raw, groups) {
+  filter <- apply(raw, 1, function(x) length(x[x > 5]) >= 2)
+  dat.ruv <- raw[filter, ]
+  genes <- rownames(dat.ruv)
+  condition <- factor(groups)
+  set <- newSeqExpressionSet(as.matrix(dat.ruv),
+                             phenoData = data.frame(condition,
+                                                    row.names = colnames(dat.ruv)))
+  design <- model.matrix(~ condition, data = data.frame(condition,
+                                                        row.names = colnames(dat.ruv)))
+  y <- DGEList(counts = counts(set), group = condition)
+  y <- calcNormFactors(y, method = "upperquartile")
+  y <- estimateGLMCommonDisp(y, design)
+  y <- estimateGLMTagwiseDisp(y, design)
+  fit <- glmFit(y, design)
+  lrt <- glmLRT(fit, coef = 2)
+  top <- topTags(lrt, n = nrow(set))$table
+  spikes <- rownames(set)[which(!(rownames(set) %in% rownames(top)[1:0.15*nrow(raw)]))]
+
+  differences <- makeGroups(condition)
+  controls <- rownames(dat.ruv)
+  t <- RUVs(set, controls, k = 1, differences)
+  dat.normed <- normCounts(t)
+  return(list(dat.normed = dat.normed,
+              adjust.factor = t$W))
+}
+
+
+#' Normalization By Remove Unwanted Variation Using Residuals (RUVr)
+#'
+#' Normalize the dataset using RUV using residuals, and return the normalized dataset with adjusting factor.
+#'
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param groups vector of characters indicating the group for each sample.
+
+#' @return list, containing \code{dat.normed} (normalized dataset), and the \code{adjust.factor} (adjusting factors) for the design matrix. The normalized dataset could only used for exploration, and adjusting factors are recommended as a covariate in the downstream analysis.
+#'
+#' @import EDASeq
+#' @import DESeq2
+#' @import edgeR
+#' @import RUVSeq
+#' @import Biobase
+#' @export
+#'
+#' @references \href{http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf}{RUVSeq Tutorial}
+#'
+#' @examples
+#' test.RUVr <- norm.RUVr(data.test, data.group)
+norm.RUVr <- function(raw, groups) {
+  filter <- apply(raw, 1, function(x) length(x[x > 5]) >= 2)
+  dat.ruv <- raw[filter, ]
+  genes <- rownames(dat.ruv)
+  condition <- factor(groups)
+  set <- newSeqExpressionSet(as.matrix(dat.ruv),
+                             phenoData = data.frame(condition,
+                                                    row.names = colnames(dat.ruv)))
+  design <- model.matrix(~ condition, data = data.frame(condition,
+                                                        row.names = colnames(dat.ruv)))
+  y <- DGEList(counts = counts(set), group = condition)
+  y <- calcNormFactors(y, method = "upperquartile")
+  y <- estimateGLMCommonDisp(y, design)
+  y <- estimateGLMTagwiseDisp(y, design)
+  fit <- glmFit(y, design)
+  lrt <- glmLRT(fit, coef = 2)
+  top <- topTags(lrt, n = nrow(set))$table
+  spikes <- rownames(set)[which(!(rownames(set) %in% rownames(top)[1:0.15*nrow(raw)]))]
+
+  design <- model.matrix(~ condition, data = pData(set))
+  y <- DGEList(counts = counts(set), group = condition)
+  y <- calcNormFactors(y, method = "upperquartile")
+  y <- estimateGLMCommonDisp(y, design)
+  y <- estimateGLMTagwiseDisp(y, design)
+  fit <- glmFit(y, design)
+  res <- residuals(fit, type = "deviance")
+  setUQ <- betweenLaneNormalization(set, which = "upper")
+  controls <- rownames(dat.ruv)
+  t <- RUVr(setUQ, controls, k = 1, res)
+  dat.normed <- normCounts(t)
+
+  return(list(dat.normed = dat.normed,
+              adjust.factor = t$W))
+}
+
+

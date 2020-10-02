@@ -7,12 +7,14 @@
 fig.CAT(
   MethodsCompare,
   DE.method = "DE.voom",
-  RUV_method = NULL,
   QN_filter = FALSE,
   Pval = 0.01,
   MethodNew,
   pvalues,
-  Methods_visual = c(MethodsCompare, MethodNew)
+  Methods_visual = c(MethodsCompare, MethodNew),
+  benchmark = data.benchmark,
+  test = data.test,
+  group = data.group
 )
 }
 \arguments{
@@ -20,17 +22,19 @@ fig.CAT(
 
 \item{DE.method}{the DEA method selected from \code{DE.voom} and \code{DE.edgeR}, and default to be \code{DE.voom}.}
 
-\item{RUV_method}{the exact RUV method used from \code{RUVg}, \code{RUVr} and \code{RUVs} if \code{norm.RUV} is used.}
-
 \item{QN_filter}{whether the filtering is performed if \code{norm.QN} is used.}
 
 \item{Pval}{p-value cut-off point for identifying DE genes, default to be 0.01.}
 
 \item{MethodNew}{the name of the new method which will be presented in the legend.}
 
-\item{pvalues}{a vector of p values computed from DE analysis using the new method normalized data.}
+\item{pvalues}{a vector of p values computed from DE analysis using the new method normalized test data.}
 
 \item{Methods_visual}{a vector of methods' names shown in the figure.}
+
+\item{benchmark}{benchmark data with the same format of data.benchmark, which are used for benchmark p-values, and is set to use data.benchmark by default}
+
+\item{test}{test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default}
 }
 \value{
 figure of concordance for comparison
@@ -42,5 +46,5 @@ from benchmark data without normalization and normalized test data.
 \examples{
 t <-  runif(1033)
 names(t) <-  rownames(data.test)
-fig.CAT(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"), MethodNew = "Example", pvalues = t)
+fig.CAT(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)
 }

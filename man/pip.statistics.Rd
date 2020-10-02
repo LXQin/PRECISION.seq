@@ -8,7 +8,6 @@ pip.statistics(
   raw,
   groups,
   norm.method,
-  RUV_method = NULL,
   QN_filter = FALSE,
   DE.method = "DE.voom",
   Pval = 0.01,
@@ -23,8 +22,6 @@ pip.statistics(
 \item{groups}{vector of characters indicating the group for each sample (only 2 groups allowed).}
 
 \item{norm.method}{the method for normalization selected from \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.}
-
-\item{RUV_method}{the exact RUV method used from \code{RUVg}, \code{RUVr} and \code{RUVs} if \code{method = norm.RUV}}
 
 \item{QN_filter}{whether the filtering is performed if \code{method = norm.QN}.}
 

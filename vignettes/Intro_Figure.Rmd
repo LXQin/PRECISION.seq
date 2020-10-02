@@ -1,5 +1,5 @@
 ---
-title: "Introduction to DepthNorm Figure Functions"
+title: "Introduction to PRECISION.SEQ Figure Functions"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Intro_Figure}
@@ -17,42 +17,49 @@ knitr::opts_chunk$set(
 ```{r setup, warning = FALSE, message = FALSE}
 rm(list = ls())
 library(precision.seq)
+library(Biobase)
 ```
 
-In this article, we will present how to use the included figure functions in this package.
+We include a number of functions for comparing the data distribution and differential-expression-analysis results for the test data (before and after normalization) with these for the benchmark data in this package.
 
-## Volcano Figure
-The results from the differential expression analysis are needed for generating volcano plot. 0.01 is taken as p-value cut-off point, and the red dots represent for the genes differentially expressed.
-```{r}
-voom.benchmark <- DE.voom(data.benchmark, data.group)
-fig.volcano(voom.benchmark, title = "Volcano Plot")
-```
 
 ## Relative Log Expression Plot
-The relative log expression plot shows the deviation from the median expression by extracting the median for the gene expression, and each boxplot represents for one sample.
+Relative log expression plot is sample-specific boxplots showing the data deviation of each sample from a pseudo-sample whose data are the median count across all samples.
 ```{r}
 fig.RLE(data.test, data.group, "test without normalization")
 ```
 
-## Concordance At The Top Plot
-Concordance at the top figure compares the concordance of the p-values obtained from benchmark data without normalization and normalized test data. Users could apply their own normalization method to our test data, and input the result p-values to this function to compare with other popular methods.
-```{r}
-t <-  runif(1033)
-names(t) <-  rownames(data.test)
-fig.CAT(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"), MethodNew = "Example", pvalues = t)
+## Venn Diagram
+Venn diagram is used to identify the performance of different normalization methods based on intersection of DE genes using a pair of data.
+```{r warning=FALSE, message=FALSE}
+benchmark.voom <- DE.voom(RC = data.benchmark, groups = data.group, P = 0.01)
+test.voom <- DE.voom(RC = data.test, groups = data.group, P = 0.01)
+fig.venn(benchmark.voom$p.val, test.voom$p.val, 0.01)
 ```
 
 ## Scatterplot for FNR and FDR
-Scatter plot for selecting normalization methods based on golden standards. Users could input the golden standards (list of genes which are truly differential expressed), and the raw data and sample information. This function will then calculate the FNR and FDR for the selected normalization methods.
-```{r}
+False Negative Rate (FNR) and False Discovery Rate (FDR) are calculated for each normalization method in the test data by comparing against the differential expression status based on the benchmark data as a gold standard. Scatter plot is used to plot the FNRs and FDRs among the normalization methods under study. Besides the benchmark-data-based gold standard, users also have the option of inputting an alternative golden standard (in the form of a list of miRNA/marker names). 
+```{r warning=FALSE, message=FALSE}
 truthgene <- DE.voom(data.benchmark, data.group)$id.list
-fig.FDR_FNR(data.test, data.group, MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"), truth = truthgene)
+fig.FDR_FNR(data.test, data.group, MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"),
+            truth = truthgene)
 ```
 
 
+## Concordance at The Top Plot
+Concordance at the top plot compares the concordance of the p-values for differential expression assessed in the test data (before and after normalization) versus that in the benchmark data. Besides the nine normalization methods included in this package, additional normalization methods implemented by the user can also be used and assessed against the benchmark.
+```{r warning=FALSE, message=FALSE}
+t <-  runif(1033)
+names(t) <-  rownames(data.test)
+fig.CAT(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"), MethodNew = "Example", 
+        pvalues = t)
+```
 
 
-
-
-
+## Dendrogram for Method Clustering 
+Dendrogram clusters the p-values for differential expression on the same dataset obtained through different normalization methods, which could be used to visualize the similarity among different normalization methods.
+```{r warning=FALSE, message=FALSE}
+fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), 
+               MethodNew = "Example", pvalues = t)
+```
 

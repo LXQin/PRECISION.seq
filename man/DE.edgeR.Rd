@@ -18,7 +18,7 @@ DE.edgeR(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL)
 \item{adjust}{the adjusting factor if the dataset itself is not normalized}
 }
 \value{
-list, containing \code{id.list} (names of DE genes) and \code{p.val} (corresponding p-values and log2-fold-change for all genes).
+list, containing \code{id.list} (names of DE genes), \code{p.val}, and \code{log2.FC}.
 }
 \description{
 Perform DEA by EdgeR on normalized dataset or dataset with adjusting factor.

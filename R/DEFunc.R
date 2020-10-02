@@ -8,7 +8,7 @@
 #' @param normalized whether the dataset is normalized (by scaling method)
 #' @param adjust the adjusting factor if the dataset itself is not normalized
 #'
-#' @return list, containing \code{id.list} (names of DE genes) and \code{p.val} (corresponding p-values and log2-fold-change for all genes).
+#' @return list, containing \code{id.list} (names of DE genes), \code{p.val}, and \code{log2.FC}.
 #'
 #' @import edgeR
 #' @import limma
@@ -41,8 +41,10 @@ DE.voom <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) {
   out <- out[order(out[,1]),]
   colnames(out) <- c("Pvalue","log2.FC")
   return(list(id.list = rownames(out[out[,1] < Pval,]),
-              p.val = out))
+              p.val = out[,1],
+              log2.FC = out[,2]))
 }
+
 
 #' Differential Expression Analysis Using EdgeR
 #'
@@ -54,7 +56,7 @@ DE.voom <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) {
 #' @param normalized whether the dataset is normalized (by scaling method)
 #' @param adjust the adjusting factor if the dataset itself is not normalized
 #'
-#' @return list, containing \code{id.list} (names of DE genes) and \code{p.val} (corresponding p-values and log2-fold-change for all genes).
+#' @return list, containing \code{id.list} (names of DE genes), \code{p.val}, and \code{log2.FC}.
 #'
 #' @import edgeR
 #' @import limma
@@ -81,5 +83,6 @@ DE.edgeR <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) 
   out <- out[order(out[,1]),]
   colnames(out) <- c("Pvalue","log2.FC")
   return(list(id.list = rownames(out[out[,1] < Pval,]),
-              p.val = out))
+              p.val = out[,1],
+              log2.FC = out[,2]))
 }
