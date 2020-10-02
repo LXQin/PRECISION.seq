@@ -29,8 +29,7 @@ Imports:
     vsn,
     ggplot2,
     ggrepel,
-    ggdendro,
-    AnnotationDbi
+    ggdendro
 Suggests: 
     knitr,
     rmarkdown
