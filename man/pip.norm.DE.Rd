@@ -14,20 +14,32 @@ pip.norm.DE(
 )
 }
 \arguments{
-\item{raw}{raw count data in the format of data frame or matrix, with columns for samples and raws for genes.}
+\item{raw}{raw count data in the format of data frame or matrix, with columns
+for samples and raws for genes.}
 
-\item{groups}{vector of characters indicating the group for each sample (only 2 groups allowed).}
+\item{groups}{vector of characters indicating the group for each sample
+(only 2 groups allowed).}
 
-\item{norm.method}{the method for normalization selected from \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, \code{norm.RUVr}, \code{norm.RUVg}, and \code{norm.RUVs}.}
+\item{norm.method}{the method for normalization selected from \code{all}
+\code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ},
+\code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN},
+\code{norm.SVA}, \code{norm.RUVr}, \code{norm.RUVg}, and \code{norm.RUVs}.
+The function applies all available normalization methods if \code{all}
+is selected.}
 
 \item{QN_filter}{whether the filtering is performed if \code{method = norm.QN}.}
 
-\item{DE.method}{the method for differential expression analysis from \code{DE.voom} and \code{DE.edgeR}, default to be \code{DE.voom}.}
+\item{DE.method}{the method for differential expression analysis from
+\code{DE.voom} and \code{DE.edgeR}, default to be \code{DE.voom}.}
 
 \item{Pval}{p-value for identifying DE genes, default to be 0.01}
 }
 \value{
-list, containing \code{id.list} (names of DE genes), \code{p.val}, and \code{log2.FC}.
+list, containing \code{id.list} (names of DE genes), \code{p.val},
+and \code{log2.FC} for a single normalization. If method="all", a list of
+of DEAs is returned for the raw data normalized with each supported
+normaliztion methods vontaining containing \code{id.list} (names of DE genes),
+\code{p.val}, and \code{log2.FC} each.
 }
 \description{
 Pipeline of Differential Expression Analysis for RNASeq Data

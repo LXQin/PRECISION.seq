@@ -134,15 +134,15 @@ from benchmark data without normalization and normalized test data.</p>
 
     <pre class="usage"><span class='fu'>fig.CAT</span><span class='op'>(</span>
   <span class='va'>MethodsCompare</span>,
+  benchmark <span class='op'>=</span> <span class='va'>data.benchmark</span>,
+  test <span class='op'>=</span> <span class='va'>data.test</span>,
+  group <span class='op'>=</span> <span class='va'>data.group</span>,
   DE.method <span class='op'>=</span> <span class='st'>"DE.voom"</span>,
   QN_filter <span class='op'>=</span> <span class='cn'>FALSE</span>,
   Pval <span class='op'>=</span> <span class='fl'>0.01</span>,
   <span class='va'>MethodNew</span>,
   <span class='va'>pvalues</span>,
-  Methods_visual <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>MethodsCompare</span>, <span class='va'>MethodNew</span><span class='op'>)</span>,
-  benchmark <span class='op'>=</span> <span class='va'>data.benchmark</span>,
-  test <span class='op'>=</span> <span class='va'>data.test</span>,
-  group <span class='op'>=</span> <span class='va'>data.group</span>
+  Methods_visual <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>MethodsCompare</span>, <span class='va'>MethodNew</span><span class='op'>)</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -151,6 +151,14 @@ from benchmark data without normalization and normalized test data.</p>
     <tr>
       <th>MethodsCompare</th>
       <td><p>the vector of methods that researchers would like to compare with, and selected from  <code>norm.none</code>, <code>norm.TMM</code>, <code>norm.TC</code>, <code>norm.UQ</code>, <code>norm.med</code>, <code>norm.DESeq</code>, <code>norm.PoissonSeq</code>, <code>norm.QN</code>, <code>norm.SVA</code>, and <code>norm.RUV</code>.</p></td>
+    </tr>
+    <tr>
+      <th>benchmark</th>
+      <td><p>benchmark data with the same format of data.benchmark, which are used for benchmark p-values, and is set to use data.benchmark by default</p></td>
+    </tr>
+    <tr>
+      <th>test</th>
+      <td><p>test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default</p></td>
     </tr>
     <tr>
       <th>DE.method</th>
@@ -177,12 +185,8 @@ from benchmark data without normalization and normalized test data.</p>
       <td><p>a vector of methods' names shown in the figure.</p></td>
     </tr>
     <tr>
-      <th>benchmark</th>
-      <td><p>benchmark data with the same format of data.benchmark, which are used for benchmark p-values, and is set to use data.benchmark by default</p></td>
-    </tr>
-    <tr>
-      <th>test</th>
-      <td><p>test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default</p></td>
+      <th>groups</th>
+      <td><p>vector of characters indicating the group for each sample.</p></td>
     </tr>
     </table>
 
@@ -195,7 +199,7 @@ from benchmark data without normalization and normalized test data.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>data.test</span><span class='op'>)</span>
 <span class='fu'>fig.CAT</span><span class='op'>(</span>MethodsCompare <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"norm.none"</span>, <span class='st'>"norm.TMM"</span>, <span class='st'>"norm.SVA"</span>, <span class='st'>"norm.TC"</span>, <span class='st'>"norm.RUVr"</span><span class='op'>)</span>, MethodNew <span class='op'>=</span> <span class='st'>"Example"</span>, pvalues <span class='op'>=</span> <span class='va'>t</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Number of significant surrogate variables is:  1 
-#&gt; Iteration (out of 5 ):1  2  3  4  5  </div><div class='output co'>#&gt; <span class='error'>Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'annotatedDataFrameFrom': could not find function "counts"</span></div></pre>
+#&gt; Iteration (out of 5 ):1  2  3  4  5  </div><div class='output co'>#&gt; <span class='error'>Error in h(simpleError(msg, call)): Fehler bei der Auswertung des Argumentes 'object' bei der Methodenauswahl für Funktion 'annotatedDataFrameFrom': konnte Funktion "counts" nicht finden</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

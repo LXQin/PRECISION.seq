@@ -75,6 +75,6 @@ res.norm <- pip.norm(data.test, data.group, "norm.TMM")
 res.DE <- pip.norm.DE(data.test, data.group, "norm.TMM")
 
 truthgene <- DE.voom(data.benchmark, data.group)$id.list
-stat <- pip.statistics(data.test, data.group, "norm.TMM", truth = truthgene)
+stat <- pip.statistics(data.test, data.group, truth=truthgene, DE.method="DE.voom", norm.method="norm.TMM")
 stat
 ```

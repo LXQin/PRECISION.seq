@@ -1,9 +1,9 @@
-pandoc: 2.9.2.1
+pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   Intro_Data: Intro_Data.html
   Intro_Figure: Intro_Figure.html
   Intro_Functions: Intro_Functions.html
-last_built: 2020-10-02T02:24Z
+last_built: 2020-10-02T11:03Z
 

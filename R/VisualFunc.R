@@ -61,15 +61,17 @@ fig.RLE = function(data, groups, title) {
 #' Function for generating concordance at the top plot, which compares concordance of the p-values obtained
 #' from benchmark data without normalization and normalized test data.
 #'
+#'
 #' @param MethodsCompare the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.
+#' @param benchmark benchmark data with the same format of data.benchmark, which are used for benchmark p-values, and is set to use data.benchmark by default
+#' @param test test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default
+#' @param groups vector of characters indicating the group for each sample.
 #' @param DE.method the DEA method selected from \code{DE.voom} and \code{DE.edgeR}, and default to be \code{DE.voom}.
 #' @param QN_filter whether the filtering is performed if \code{norm.QN} is used.
 #' @param Pval p-value cut-off point for identifying DE genes, default to be 0.01.
 #' @param MethodNew the name of the new method which will be presented in the legend.
 #' @param pvalues a vector of p values computed from DE analysis using the new method normalized test data.
 #' @param Methods_visual a vector of methods' names shown in the figure.
-#' @param benchmark benchmark data with the same format of data.benchmark, which are used for benchmark p-values, and is set to use data.benchmark by default
-#' @param test test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default
 #'
 #' @return figure of concordance for comparison
 #'
@@ -82,9 +84,9 @@ fig.RLE = function(data, groups, title) {
 #' t <-  runif(1033)
 #' names(t) <-  rownames(data.test)
 #' fig.CAT(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)
-fig.CAT <- function(MethodsCompare, DE.method = "DE.voom", QN_filter = FALSE,
-                    Pval = 0.01, MethodNew, pvalues, Methods_visual = c(MethodsCompare, MethodNew),
-                    benchmark = data.benchmark, test = data.test, group = data.group){
+fig.CAT <- function(MethodsCompare, benchmark = data.benchmark, test = data.test,
+                    group = data.group, DE.method = "DE.voom", QN_filter = FALSE,
+                    Pval = 0.01, MethodNew, pvalues, Methods_visual = c(MethodsCompare, MethodNew)){
   DEFUN = match.fun(DE.method)
   benchmark.p <-  DEFUN(benchmark, group)$p.val
   numMethods <- length(MethodsCompare) + 1
@@ -118,14 +120,13 @@ fig.CAT <- function(MethodsCompare, DE.method = "DE.voom", QN_filter = FALSE,
 #'
 #' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample (only 2 groups allowed).
+#' @param truth vector of genes that are truly differential expressed
 #' @param MethodsCompare the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.
 #' @param QN_filter whether the filtering is performed if \code{method = norm.QN}.
 #' @param DE.method the method for differential expression analysis from \code{DE.voom} and \code{DE.edgeR}, default to be \code{DE.voom}.
 #' @param Pval p-value for identifying DE genes, default to be 0.01
-#' @param truth vector of genes that are truly differential expressed
-#' @param marker_selection whether selecting a subset of genes/markers for this analysis
-#' @param selected_marker vector of a subset of genes/markers for this analysis
-#'
+#' @param selected.marker if given, vector of a subset of genes/markers for
+#' this analysis. Leave \code{NULL} if all markers are considered for the analysis.
 #'
 #' @return figure for selection of normalization methods
 #'
@@ -136,17 +137,18 @@ fig.CAT <- function(MethodsCompare, DE.method = "DE.voom", QN_filter = FALSE,
 #' @examples
 #' truthgene <- DE.voom(data.benchmark, data.group)$id.list
 #' fig.FDR_FNR(data.test, data.group, MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"), truth = truthgene)
-fig.FDR_FNR <- function(raw, groups, MethodsCompare,
+fig.FDR_FNR <- function(raw, groups, MethodsCompare, truth,
                         QN_filter = FALSE,
-                        DE.method = "DE.voom", Pval = 0.01, truth,
-                        marker_selection = FALSE, selected_marker = NULL) {
+                        DE.method = "DE.voom", Pval = 0.01,
+                        selected.marker = NULL) {
   numMethods <- length(MethodsCompare)
   FNR <- FDR <- c()
   for (i in 1:numMethods){
-    temp <- pip.statistics(raw = raw, groups = groups, norm.method = MethodsCompare[i],
-                           QN_filter = QN_filter,
-                           DE.method = DE.method, Pval = Pval, truth = truth,
-                           marker_selection = marker_selection, selected_marker = selected_marker)
+    temp <- pip.statistics(raw = raw, groups = groups, truth = truth,
+                           DE.method = DE.method,
+                           norm.method = MethodsCompare[i],
+                           QN_filter = QN_filter, Pval = Pval,
+                           selected.marker = selected.marker)
     FNR <- c(FNR, temp$FNR)
     FDR <- c(FDR, temp$FDR)
   }
@@ -174,11 +176,8 @@ fig.FDR_FNR <- function(raw, groups, MethodsCompare,
 #' test.voom <- DE.voom(RC = data.test, groups = data.group, P = 0.01)
 #' fig.venn(benchmark.voom$p.val, test.voom$p.val, 0.01)
 fig.venn <- function(benchmark.pval, test.pval, Pvalue){
-  pval.bench.test <- data.frame(cbind(bench.pval = benchmark.pval,
-                                    test.pval = test.pval[names(benchmark.pval)]))
-  attach(pval.bench.test)
-  bench.sig <- (bench.pval < Pvalue)
-  test.sig <- (test.pval < Pvalue)
+  bench.sig <- (benchmark.pval < Pvalue)
+  test.sig <- (test.pval[names(benchmark.pval)] < Pvalue)
   venn2 <- cbind(bench.sig, test.sig)
   p <- vennDiagram(vennCounts(venn2),
                    names = c("Benchmark", "Test"),

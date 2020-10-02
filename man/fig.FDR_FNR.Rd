@@ -8,12 +8,11 @@ fig.FDR_FNR(
   raw,
   groups,
   MethodsCompare,
+  truth,
   QN_filter = FALSE,
   DE.method = "DE.voom",
   Pval = 0.01,
-  truth,
-  marker_selection = FALSE,
-  selected_marker = NULL
+  selected.marker = NULL
 )
 }
 \arguments{
@@ -23,17 +22,16 @@ fig.FDR_FNR(
 
 \item{MethodsCompare}{the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.}
 
+\item{truth}{vector of genes that are truly differential expressed}
+
 \item{QN_filter}{whether the filtering is performed if \code{method = norm.QN}.}
 
 \item{DE.method}{the method for differential expression analysis from \code{DE.voom} and \code{DE.edgeR}, default to be \code{DE.voom}.}
 
 \item{Pval}{p-value for identifying DE genes, default to be 0.01}
 
-\item{truth}{vector of genes that are truly differential expressed}
-
-\item{marker_selection}{whether selecting a subset of genes/markers for this analysis}
-
-\item{selected_marker}{vector of a subset of genes/markers for this analysis}
+\item{selected.marker}{if given, vector of a subset of genes/markers for
+this analysis. Leave \code{NULL} if all markers are considered for the analysis.}
 }
 \value{
 figure for selection of normalization methods

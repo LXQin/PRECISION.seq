@@ -7,16 +7,27 @@
 pip.norm(raw, groups, norm.method, QN_filter = FALSE)
 }
 \arguments{
-\item{raw}{raw count data in the format of data frame or matrix, with columns for samples and raws for genes.}
+\item{raw}{raw count data in the format of data frame or matrix, with columns
+for samples and raws for genes.}
 
-\item{groups}{vector of characters indicating the group for each sample (only 2 groups allowed).}
+\item{groups}{vector of characters indicating the group for each sample
+(only 2 groups allowed).}
 
-\item{norm.method}{the method for normalization selected from \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, \code{norm.RUVr}, \code{norm.RUVg}, and \code{norm.RUVs}.}
+\item{norm.method}{the method for normalization selected from
+ \code{all}, \code{norm.none}
+\code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med},
+\code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA},
+\code{norm.RUVr}, \code{norm.RUVg}, and \code{norm.RUVs}.
+If \code{all} is selected, the function applies all provided normalization
+methods to the data and returns a list normalized counts (and scaling factors
+or adjusting factors depending on the method).}
 
 \item{QN_filter}{whether the filtering is performed if \code{method = norm.QN}.}
 }
 \value{
 list, containing normalized dataset, and scaling factors or adjusting factors.
+If method="all" the list contains the normalized data set and
+scaling/adjusting factors for all provided methods.
 }
 \description{
 Normalization for RNASeq Data

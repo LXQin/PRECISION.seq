@@ -75,7 +75,7 @@
 
       
 
-      </header><script src="Intro_Figure_files/header-attrs-2.3/header-attrs.js"></script><script src="Intro_Figure_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="Intro_Figure_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to PRECISION.SEQ Figure Functions</h1>
@@ -106,8 +106,8 @@
 <a href="#venn-diagram" class="anchor"></a>Venn Diagram</h2>
 <p>Venn diagram is used to identify the performance of different normalization methods based on intersection of DE genes using a pair of data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">benchmark.voom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC <span class="op">=</span> <span class="va">data.benchmark</span>, groups <span class="op">=</span> <span class="va">data.group</span>, P <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>
-<span class="va">test.voom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC <span class="op">=</span> <span class="va">data.test</span>, groups <span class="op">=</span> <span class="va">data.group</span>, P <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>
+<span class="va">benchmark.voom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC <span class="op">=</span> <span class="va">data.benchmark</span>, groups <span class="op">=</span> <span class="va">data.group</span>, Pval <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>
+<span class="va">test.voom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC <span class="op">=</span> <span class="va">data.test</span>, groups <span class="op">=</span> <span class="va">data.group</span>, Pval <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>
 <span class="fu"><a href="../reference/fig.venn.html">fig.venn</a></span><span class="op">(</span><span class="va">benchmark.voom</span><span class="op">$</span><span class="va">p.val</span>, <span class="va">test.voom</span><span class="op">$</span><span class="va">p.val</span>, <span class="fl">0.01</span><span class="op">)</span></pre></div>
 <p><img src="Intro_Figure_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <pre><code>#&gt; NULL</code></pre>
@@ -118,8 +118,8 @@
 <p>False Negative Rate (FNR) and False Discovery Rate (FDR) are calculated for each normalization method in the test data by comparing against the differential expression status based on the benchmark data as a gold standard. Scatter plot is used to plot the FNRs and FDRs among the normalization methods under study. Besides the benchmark-data-based gold standard, users also have the option of inputting an alternative golden standard (in the form of a list of miRNA/marker names).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="va">truthgene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span><span class="va">data.benchmark</span>, <span class="va">data.group</span><span class="op">)</span><span class="op">$</span><span class="va">id.list</span>
-<span class="fu"><a href="../reference/fig.FDR_FNR.html">fig.FDR_FNR</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, MethodsCompare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm.none"</span>, <span class="st">"norm.TMM"</span>, <span class="st">"norm.SVA"</span>, <span class="st">"norm.TC"</span><span class="op">)</span>,
-            truth <span class="op">=</span> <span class="va">truthgene</span><span class="op">)</span>
+<span class="fu"><a href="../reference/fig.FDR_FNR.html">fig.FDR_FNR</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, truth <span class="op">=</span> <span class="va">truthgene</span>,
+            MethodsCompare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm.none"</span>, <span class="st">"norm.TMM"</span>, <span class="st">"norm.SVA"</span>, <span class="st">"norm.TC"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Number of significant surrogate variables is:  1 </span>
 <span class="co">#&gt; Iteration (out of 5 ):1  2  3  4  5</span></pre></div>
 <p><img src="Intro_Figure_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>

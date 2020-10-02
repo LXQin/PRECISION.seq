@@ -6,19 +6,23 @@
 \usage{
 fig.CAT(
   MethodsCompare,
+  benchmark = data.benchmark,
+  test = data.test,
+  group = data.group,
   DE.method = "DE.voom",
   QN_filter = FALSE,
   Pval = 0.01,
   MethodNew,
   pvalues,
-  Methods_visual = c(MethodsCompare, MethodNew),
-  benchmark = data.benchmark,
-  test = data.test,
-  group = data.group
+  Methods_visual = c(MethodsCompare, MethodNew)
 )
 }
 \arguments{
 \item{MethodsCompare}{the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.}
+
+\item{benchmark}{benchmark data with the same format of data.benchmark, which are used for benchmark p-values, and is set to use data.benchmark by default}
+
+\item{test}{test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default}
 
 \item{DE.method}{the DEA method selected from \code{DE.voom} and \code{DE.edgeR}, and default to be \code{DE.voom}.}
 
@@ -32,9 +36,7 @@ fig.CAT(
 
 \item{Methods_visual}{a vector of methods' names shown in the figure.}
 
-\item{benchmark}{benchmark data with the same format of data.benchmark, which are used for benchmark p-values, and is set to use data.benchmark by default}
-
-\item{test}{test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default}
+\item{groups}{vector of characters indicating the group for each sample.}
 }
 \value{
 figure of concordance for comparison

@@ -144,15 +144,22 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>raw</th>
-      <td><p>raw count data in the format of data frame or matrix, with columns for samples and raws for genes.</p></td>
+      <td><p>raw count data in the format of data frame or matrix, with columns
+for samples and raws for genes.</p></td>
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>vector of characters indicating the group for each sample (only 2 groups allowed).</p></td>
+      <td><p>vector of characters indicating the group for each sample
+(only 2 groups allowed).</p></td>
     </tr>
     <tr>
       <th>norm.method</th>
-      <td><p>the method for normalization selected from <code>norm.none</code>, <code>norm.TMM</code>, <code>norm.TC</code>, <code>norm.UQ</code>, <code>norm.med</code>, <code>norm.DESeq</code>, <code>norm.PoissonSeq</code>, <code>norm.QN</code>, <code>norm.SVA</code>, <code>norm.RUVr</code>, <code>norm.RUVg</code>, and <code>norm.RUVs</code>.</p></td>
+      <td><p>the method for normalization selected from <code>all</code>
+<code>norm.none</code>, <code>norm.TMM</code>, <code>norm.TC</code>, <code>norm.UQ</code>,
+<code>norm.med</code>, <code>norm.DESeq</code>, <code>norm.PoissonSeq</code>, <code>norm.QN</code>,
+<code>norm.SVA</code>, <code>norm.RUVr</code>, <code>norm.RUVg</code>, and <code>norm.RUVs</code>.
+The function applies all available normalization methods if <code>all</code>
+is selected.</p></td>
     </tr>
     <tr>
       <th>QN_filter</th>
@@ -160,7 +167,8 @@
     </tr>
     <tr>
       <th>DE.method</th>
-      <td><p>the method for differential expression analysis from <code>DE.voom</code> and <code>DE.edgeR</code>, default to be <code>DE.voom</code>.</p></td>
+      <td><p>the method for differential expression analysis from
+<code>DE.voom</code> and <code>DE.edgeR</code>, default to be <code>DE.voom</code>.</p></td>
     </tr>
     <tr>
       <th>Pval</th>
@@ -170,7 +178,11 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list, containing <code>id.list</code> (names of DE genes), <code>p.val</code>, and <code>log2.FC</code>.</p>
+    <p>list, containing <code>id.list</code> (names of DE genes), <code>p.val</code>,
+and <code>log2.FC</code> for a single normalization. If method="all", a list of
+of DEAs is returned for the raw data normalized with each supported
+normaliztion methods vontaining containing <code>id.list</code> (names of DE genes),
+<code>p.val</code>, and <code>log2.FC</code> each.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>pip.norm.DE</span><span class='op'>(</span><span class='va'>data.test</span>, <span class='va'>data.group</span>, <span class='st'>"norm.TMM"</span><span class='op'>)</span>

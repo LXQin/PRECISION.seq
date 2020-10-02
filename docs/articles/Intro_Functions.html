@@ -75,7 +75,7 @@
 
       
 
-      </header><script src="Intro_Functions_files/header-attrs-2.3/header-attrs.js"></script><script src="Intro_Functions_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="Intro_Functions_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to PRECISION.SEQ Functions</h1>
@@ -193,7 +193,7 @@
 <span class="va">res.DE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.norm.DE.html">pip.norm.DE</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"norm.TMM"</span><span class="op">)</span>
 
 <span class="va">truthgene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span><span class="va">data.benchmark</span>, <span class="va">data.group</span><span class="op">)</span><span class="op">$</span><span class="va">id.list</span>
-<span class="va">stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.statistics.html">pip.statistics</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"norm.TMM"</span>, truth <span class="op">=</span> <span class="va">truthgene</span><span class="op">)</span>
+<span class="va">stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.statistics.html">pip.statistics</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, truth<span class="op">=</span><span class="va">truthgene</span>, DE.method<span class="op">=</span><span class="st">"DE.voom"</span>, norm.method<span class="op">=</span><span class="st">"norm.TMM"</span><span class="op">)</span>
 <span class="va">stat</span>
 <span class="co">#&gt; $table</span>
 <span class="co">#&gt;           truth</span>

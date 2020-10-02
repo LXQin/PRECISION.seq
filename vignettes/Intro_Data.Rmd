@@ -41,7 +41,7 @@ legend("topright",c("MXF", "PMFH"), bty = "n",
 ### Differential Expression Analysis
 We assess evidence for differential expression in the benchmark data using the voom-limma method for the log2 transformed count data. The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average.
 ```{r warning=FALSE, message=FALSE}
-benchmark.voom <- DE.voom(RC = data.benchmark, groups = data.group, P = 0.01)
+benchmark.voom <- DE.voom(RC = data.benchmark, groups = data.group, Pval = 0.01)
 DE.bench <- benchmark.voom$id.list
 benchmark.voom.dat <- data.frame(dm = benchmark.voom$log2.FC,
                                  p.value = benchmark.voom$p.val)
@@ -80,7 +80,7 @@ legend("topleft",c("MXF", "PMFH"), bty = "n",
 ### Differential Expression Analysis
 We assess evidence for differential expression in the test data using the voom-limma method (here without any depth normalization). The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average.
 ```{r warning=FALSE, message=FALSE}
-test.voom <- DE.voom(RC = data.test, groups = data.group, P = 0.01)
+test.voom <- DE.voom(RC = data.test, groups = data.group, Pval = 0.01)
 test.voom.dat <- data.frame(dm = test.voom$log2.FC,
                             p.value = test.voom$p.val)
 mask <- with(test.voom.dat, p.value < .01)

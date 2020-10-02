@@ -75,7 +75,7 @@
 
       
 
-      </header><script src="Intro_Data_files/header-attrs-2.3/header-attrs.js"></script><script src="Intro_Data_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="Intro_Data_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to PRECISION.SEQ Data</h1>
@@ -117,7 +117,7 @@
 <a href="#differential-expression-analysis" class="anchor"></a>Differential Expression Analysis</h3>
 <p>We assess evidence for differential expression in the benchmark data using the voom-limma method for the log2 transformed count data. The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">benchmark.voom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC <span class="op">=</span> <span class="va">data.benchmark</span>, groups <span class="op">=</span> <span class="va">data.group</span>, P <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>
+<span class="va">benchmark.voom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC <span class="op">=</span> <span class="va">data.benchmark</span>, groups <span class="op">=</span> <span class="va">data.group</span>, Pval <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>
 <span class="va">DE.bench</span> <span class="op">&lt;-</span> <span class="va">benchmark.voom</span><span class="op">$</span><span class="va">id.list</span>
 <span class="va">benchmark.voom.dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>dm <span class="op">=</span> <span class="va">benchmark.voom</span><span class="op">$</span><span class="va">log2.FC</span>,
                                  p.value <span class="op">=</span> <span class="va">benchmark.voom</span><span class="op">$</span><span class="va">p.val</span><span class="op">)</span>
@@ -164,7 +164,7 @@
 <a href="#differential-expression-analysis-1" class="anchor"></a>Differential Expression Analysis</h3>
 <p>We assess evidence for differential expression in the test data using the voom-limma method (here without any depth normalization). The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">test.voom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC <span class="op">=</span> <span class="va">data.test</span>, groups <span class="op">=</span> <span class="va">data.group</span>, P <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>
+<span class="va">test.voom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC <span class="op">=</span> <span class="va">data.test</span>, groups <span class="op">=</span> <span class="va">data.group</span>, Pval <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>
 <span class="va">test.voom.dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>dm <span class="op">=</span> <span class="va">test.voom</span><span class="op">$</span><span class="va">log2.FC</span>,
                             p.value <span class="op">=</span> <span class="va">test.voom</span><span class="op">$</span><span class="va">p.val</span><span class="op">)</span>
 <span class="va">mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">test.voom.dat</span>, <span class="va">p.value</span> <span class="op">&lt;</span> <span class="fl">.01</span><span class="op">)</span>
@@ -224,21 +224,21 @@
 <span class="va">simulated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simu.html">simu</a></span><span class="op">(</span>proportion_L <span class="op">=</span> <span class="fl">0.0175</span>, proportion_R <span class="op">=</span> <span class="fl">0.0225</span>, median_L <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span>, median_R <span class="op">=</span> <span class="fl">0.5</span>, numsets <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">simulated</span><span class="op">$</span><span class="va">simulated_benchmark</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-<span class="co">#&gt;                   D8   D13   D17    E7    E2</span>
-<span class="co">#&gt; hsa-let-7a-2*      6     4     4     6     1</span>
-<span class="co">#&gt; hsa-let-7a(3)  18756 61856 61589 44134 30760</span>
-<span class="co">#&gt; hsa-let-7a*(2)   154   486   436   320   108</span>
-<span class="co">#&gt; hsa-let-7b      3001 17117 29023 11211  9509</span>
-<span class="co">#&gt; hsa-let-7b*       23    96   125    91    33</span>
-<span class="co">#&gt; hsa-let-7c      5961 43551  9774 13305  2361</span>
+<span class="co">#&gt;                   D9    D7   D13    E7   E19</span>
+<span class="co">#&gt; hsa-let-7a-2*      2     2     4     6    12</span>
+<span class="co">#&gt; hsa-let-7a(3)  57395 30934 61856 44134 74964</span>
+<span class="co">#&gt; hsa-let-7a*(2)   142   216   486   320   373</span>
+<span class="co">#&gt; hsa-let-7b     14939  8395 17117 11211 15081</span>
+<span class="co">#&gt; hsa-let-7b*       74    50    96    91    82</span>
+<span class="co">#&gt; hsa-let-7c     12911  5633 43551 13305 11911</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">simulated</span><span class="op">$</span><span class="va">simulated_test</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-<span class="co">#&gt;                   D8   D13   D17    E7    E2</span>
-<span class="co">#&gt; hsa-let-7a-2*      0     0     1     2     4</span>
-<span class="co">#&gt; hsa-let-7a(3)  62888 84773 53958 20525 36445</span>
-<span class="co">#&gt; hsa-let-7a*(2)   593  3392   113   119   158</span>
-<span class="co">#&gt; hsa-let-7b      4863  8844 15832  4405 11564</span>
-<span class="co">#&gt; hsa-let-7b*       46    29    32    10    63</span>
-<span class="co">#&gt; hsa-let-7c     20689 27704  8156  5990  2388</span></pre></div>
+<span class="co">#&gt;                    D9    D7   D13    E7   E19</span>
+<span class="co">#&gt; hsa-let-7a-2*       0     2     0     2     2</span>
+<span class="co">#&gt; hsa-let-7a(3)  127231 89726 84773 20525 21420</span>
+<span class="co">#&gt; hsa-let-7a*(2)    240   368  3392   119    80</span>
+<span class="co">#&gt; hsa-let-7b      25940 17546  8844  4405  2966</span>
+<span class="co">#&gt; hsa-let-7b*        59    48    29    10    23</span>
+<span class="co">#&gt; hsa-let-7c      28152 11921 27704  5990  2609</span></pre></div>
 </div>
   </div>
 

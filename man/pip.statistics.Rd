@@ -7,13 +7,12 @@
 pip.statistics(
   raw,
   groups,
-  norm.method,
-  QN_filter = FALSE,
-  DE.method = "DE.voom",
-  Pval = 0.01,
   truth,
-  marker_selection = FALSE,
-  selected_marker = NULL
+  DE.method = NULL,
+  norm.method = "norm.none",
+  QN_filter = FALSE,
+  Pval = 0.01,
+  selected.marker = NULL
 )
 }
 \arguments{
@@ -21,19 +20,18 @@ pip.statistics(
 
 \item{groups}{vector of characters indicating the group for each sample (only 2 groups allowed).}
 
+\item{truth}{vector of genes that are truly differential expressed}
+
+\item{DE.method}{the method for differential expression analysis from \code{DE.voom} and \code{DE.edgeR}, default to be \code{DE.voom}.}
+
 \item{norm.method}{the method for normalization selected from \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.}
 
 \item{QN_filter}{whether the filtering is performed if \code{method = norm.QN}.}
 
-\item{DE.method}{the method for differential expression analysis from \code{DE.voom} and \code{DE.edgeR}, default to be \code{DE.voom}.}
-
 \item{Pval}{p-value for identifying DE genes, default to be 0.01}
 
-\item{truth}{vector of genes that are truly differential expressed}
-
-\item{marker_selection}{whether selecting a subset of genes/markers for this analysis}
-
-\item{selected_marker}{vector of a subset of genes/markers for this analysis}
+\item{selected.marker}{if given, provide vector of a subset of genes/markers for
+this analysis. Leave \code{NULL} if all markers are considered for the analysis.}
 }
 \value{
 a list of values about TPR, FPR, FDR, FNR
@@ -43,6 +41,7 @@ Computing the true positive rate, false positive rate, false discovery rate, and
 }
 \examples{
 truthgene <- DE.voom(data.benchmark, data.group)$id.list
-stat <- pip.statistics(data.test, data.group, "norm.TMM", truth = truthgene)
+stat <- pip.statistics(data.test, data.group, truth=truthgene,
+                       DE.method="DE.voom", norm.method="norm.TMM")
 
 }
