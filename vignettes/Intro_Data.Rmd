@@ -21,12 +21,12 @@ library(DESeq)
 library(limma)
 ```
 
-MicroRNA (miRNA) sequencing data were collected for two subtypes of soft tissue sarcoma: myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH). Twenty-seven MXF samples and Twenty-seven PMFH samples, which were newly diagnosed untreated tumors, were collected at MSK between 2002 and 2012. These tumor samples were sequenced twice: once with uniform handling and balanced sample-to-library-assignment to minimize data artifact due to experimental handling and avoid their confounding with sample group (that is, tumor type); and a second time without, which exhibits data artifacts due to handling and requires normalization for removing obscuring variability. We call the former the benchmark data and the latter the test data. They are named as data.benchmark and data.test respectively in this package. We show how to examine the overall distribution and perform differential expression analysis for these data sets as well as how to simulate additional paired data sets by applying a novel data permutation algorithm to the paired data sets.
+MicroRNA (miRNA) sequencing data is collected for two subtypes of soft tissue sarcoma: myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH). 27 MXF samples and 27 PMFH samples, which were newly diagnosed untreated tumors, were collected at Memorial Sloan Kettering Cancer Center between 2002 and 2012. These tumor samples were sequenced twice: once with uniform handling and balanced sample-to-library-assignment to minimize data artifact due to experimental handling and avoid their confounding with sample group (that is, tumor type); and a second time without, which exhibits data artifacts due to handling and requires normalization for removing obscuring variability. We call the former the benchmark data and the latter the test data. They are named as data.benchmark and data.test respectively in this package. We show how to examine the overall distribution and perform differential expression analysis for these data sets as well as how to simulate additional paired data sets by applying a novel data permutation algorithm to the paired data sets.
 
 
 ## Benchmark Data Analysis
 ### Overall Data Distribution
-We examine the overall distribution of the benchmark data using sample-specific boxplots.
+We examine the overall distribution of the log2 transformed benchmark data using sample-specific boxplots.
 ```{r warning = FALSE, message = FALSE}
 benchmark.log <- log2(data.benchmark + 1)
 boxplot(benchmark.log, 
@@ -39,7 +39,7 @@ legend("topright",c("MXF", "PMFH"), bty = "n",
 ```  
 
 ### Differential Expression Analysis
-We assess evidence for differential expression in the benchmark data using the voom-limma method for the log2 transformed count data. The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average.
+We assess evidence for differential expression in the benchmark data using the voom-limma method for the log2 transformed count data. The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average. Red dots indicate the genes which are significantly differentially expressed ($p < 0.01$).
 ```{r warning=FALSE, message=FALSE}
 benchmark.voom <- DE.voom(RC = data.benchmark, groups = data.group, Pval = 0.01)
 DE.bench <- benchmark.voom$id.list
@@ -66,7 +66,7 @@ plot(rowMeans(benchmark.log),
 
 ## Test Data Analysis
 ### Overall Data Distribution
-We examine the overall distribution of the test data using sample-specific boxplots.
+We examine the overall distribution of the log2 transformed test data using sample-specific boxplots.
 ```{r warning = FALSE, message = FALSE}
 test.log <- log2(data.test + 1)
 boxplot(test.log, 
@@ -78,7 +78,7 @@ legend("topleft",c("MXF", "PMFH"), bty = "n",
 ```
 
 ### Differential Expression Analysis
-We assess evidence for differential expression in the test data using the voom-limma method (here without any depth normalization). The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average.
+We assess evidence for differential expression in the test data using the voom-limma method (without any depth normalization). The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average. Red dots indicate the genes which are significantly differentially expressed ($p < 0.01$).
 ```{r warning=FALSE, message=FALSE}
 test.voom <- DE.voom(RC = data.test, groups = data.group, Pval = 0.01)
 test.voom.dat <- data.frame(dm = test.voom$log2.FC,
@@ -106,7 +106,7 @@ vennDiagram(vennCounts(venn2),
 ```
 
 ### Comparison of Estimated Group Means Between Benchmark Data and Test Data
-Scatterplot for the relationship between group means of benchmark and test data for MXF.
+Scatterplot for the relationship between group means of benchmark and test data for MXF and PMFH.
 ```{r warning=FALSE, message=FALSE}
 benchmark.log.MXF.mean <- rowMeans(benchmark.log[, grepl("MXF", colnames(benchmark.log))])
 plot(benchmark.log.MXF.mean,
@@ -127,7 +127,7 @@ abline(0,1)
 
 
 ## Simulation
-Here we describe how to use `simu()` function to generate additional pairs of data sets by permuting the paired data sets to achieve a pre-specified level of differential expression. As an example, we show how to generate data sets with the proportion of differential expression around 0.02 (more specifically, in the range of 0.0175 and 0.0225) and the median of mean differences (for log2 counts) around 0 (more specifically, in the range of -0.5 and 0.5).
+We then describe how to use `simu()` function to generate additional pairs of data sets by permuting the paired data sets to achieve a pre-specified level of differential expression. As an example, we show how to generate data sets with the proportion of differential expression around 0.02 (more specifically, in the range of 0.0175 and 0.0225) and the median of mean differences (for log2 counts) around 0 (more specifically, in the range of -0.5 and 0.5).
 ```{r warning=FALSE, message=FALSE}
 simulated <- simu(proportion_L = 0.0175, proportion_R = 0.0225, median_L = -0.5, median_R = 0.5, numsets = 100)
 

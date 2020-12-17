@@ -75,7 +75,8 @@
 
       
 
-      </header><script src="Intro_Figure_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="Intro_Figure_files/header-attrs-2.5/header-attrs.js"></script><script src="Intro_Figure_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="Intro_Figure_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="Intro_Figure_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to PRECISION.SEQ Figure Functions</h1>
@@ -88,27 +89,27 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">precision.seq</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">Biobase</span><span class="op">)</span></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">Biobase</span><span class="op">)</span></code></pre></div>
 <p>We include a number of functions for comparing the data distribution and differential-expression-analysis results for the test data (before and after normalization) with these for the benchmark data in this package.</p>
 <div id="relative-log-expression-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#relative-log-expression-plot" class="anchor"></a>Relative Log Expression Plot</h2>
-<p>Relative log expression plot is sample-specific boxplots showing the data deviation of each sample from a pseudo-sample whose data are the median count across all samples.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="../reference/fig.RLE.html">fig.RLE</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"test without normalization"</span><span class="op">)</span></pre></div>
+<p>Relative log expression plot is the sample-specific boxplots showing the data deviation of each sample from the median counts across all samples.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/fig.RLE.html">fig.RLE</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"test without normalization"</span><span class="op">)</span></code></pre></div>
 <p><img src="Intro_Figure_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
 <div id="venn-diagram" class="section level2">
 <h2 class="hasAnchor">
 <a href="#venn-diagram" class="anchor"></a>Venn Diagram</h2>
 <p>Venn diagram is used to identify the performance of different normalization methods based on intersection of DE genes using a pair of data.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">benchmark.voom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC <span class="op">=</span> <span class="va">data.benchmark</span>, groups <span class="op">=</span> <span class="va">data.group</span>, Pval <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">benchmark.voom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC <span class="op">=</span> <span class="va">data.benchmark</span>, groups <span class="op">=</span> <span class="va">data.group</span>, Pval <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>
 <span class="va">test.voom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC <span class="op">=</span> <span class="va">data.test</span>, groups <span class="op">=</span> <span class="va">data.group</span>, Pval <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span>
-<span class="fu"><a href="../reference/fig.venn.html">fig.venn</a></span><span class="op">(</span><span class="va">benchmark.voom</span><span class="op">$</span><span class="va">p.val</span>, <span class="va">test.voom</span><span class="op">$</span><span class="va">p.val</span>, <span class="fl">0.01</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="../reference/fig.venn.html">fig.venn</a></span><span class="op">(</span><span class="va">benchmark.voom</span><span class="op">$</span><span class="va">p.val</span>, <span class="va">test.voom</span><span class="op">$</span><span class="va">p.val</span>, <span class="fl">0.01</span><span class="op">)</span></code></pre></div>
 <p><img src="Intro_Figure_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <pre><code>#&gt; NULL</code></pre>
 </div>
@@ -116,36 +117,36 @@
 <h2 class="hasAnchor">
 <a href="#scatterplot-for-fnr-and-fdr" class="anchor"></a>Scatterplot for FNR and FDR</h2>
 <p>False Negative Rate (FNR) and False Discovery Rate (FDR) are calculated for each normalization method in the test data by comparing against the differential expression status based on the benchmark data as a gold standard. Scatter plot is used to plot the FNRs and FDRs among the normalization methods under study. Besides the benchmark-data-based gold standard, users also have the option of inputting an alternative golden standard (in the form of a list of miRNA/marker names).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">truthgene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span><span class="va">data.benchmark</span>, <span class="va">data.group</span><span class="op">)</span><span class="op">$</span><span class="va">id.list</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">truthgene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span><span class="va">data.benchmark</span>, <span class="va">data.group</span><span class="op">)</span><span class="op">$</span><span class="va">id.list</span>
 <span class="fu"><a href="../reference/fig.FDR_FNR.html">fig.FDR_FNR</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, truth <span class="op">=</span> <span class="va">truthgene</span>,
             MethodsCompare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm.none"</span>, <span class="st">"norm.TMM"</span>, <span class="st">"norm.SVA"</span>, <span class="st">"norm.TC"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Number of significant surrogate variables is:  1 </span>
-<span class="co">#&gt; Iteration (out of 5 ):1  2  3  4  5</span></pre></div>
+<span class="co">#&gt; Iteration (out of 5 ):1  2  3  4  5</span></code></pre></div>
 <p><img src="Intro_Figure_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </div>
 <div id="concordance-at-the-top-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#concordance-at-the-top-plot" class="anchor"></a>Concordance at The Top Plot</h2>
-<p>Concordance at the top plot compares the concordance of the p-values for differential expression assessed in the test data (before and after normalization) versus that in the benchmark data. Besides the nine normalization methods included in this package, additional normalization methods implemented by the user can also be used and assessed against the benchmark.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">t</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1033</span><span class="op">)</span>
+<p>Concordance at the top plot compares the concordance of the p-values for differential expression assessed in the test data (before and after normalization) versus that in the benchmark data. Besides the nine normalization methods included in this package, additional normalization methods implemented by the user can also be used and assessed against the benchmark through inputting the p-values of DEA.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1033</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">data.test</span><span class="op">)</span>
 <span class="fu"><a href="../reference/fig.CAT.html">fig.CAT</a></span><span class="op">(</span>MethodsCompare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm.none"</span>, <span class="st">"norm.TMM"</span>, <span class="st">"norm.SVA"</span>, <span class="st">"norm.TC"</span><span class="op">)</span>, MethodNew <span class="op">=</span> <span class="st">"Example"</span>, 
         pvalues <span class="op">=</span> <span class="va">t</span><span class="op">)</span>
 <span class="co">#&gt; Number of significant surrogate variables is:  1 </span>
-<span class="co">#&gt; Iteration (out of 5 ):1  2  3  4  5</span></pre></div>
+<span class="co">#&gt; Iteration (out of 5 ):1  2  3  4  5</span></code></pre></div>
 <p><img src="Intro_Figure_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
 <div id="dendrogram-for-method-clustering" class="section level2">
 <h2 class="hasAnchor">
 <a href="#dendrogram-for-method-clustering" class="anchor"></a>Dendrogram for Method Clustering</h2>
 <p>Dendrogram clusters the p-values for differential expression on the same dataset obtained through different normalization methods, which could be used to visualize the similarity among different normalization methods.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="../reference/fig.dendrogram.html">fig.dendrogram</a></span><span class="op">(</span>MethodsCompare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm.none"</span>, <span class="st">"norm.TMM"</span>, <span class="st">"norm.SVA"</span>, <span class="st">"norm.TC"</span>, <span class="st">"norm.RUVr"</span><span class="op">)</span>, 
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/fig.dendrogram.html">fig.dendrogram</a></span><span class="op">(</span>MethodsCompare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm.none"</span>, <span class="st">"norm.TMM"</span>, <span class="st">"norm.SVA"</span>, <span class="st">"norm.TC"</span>, <span class="st">"norm.RUVr"</span><span class="op">)</span>, 
                MethodNew <span class="op">=</span> <span class="st">"Example"</span>, pvalues <span class="op">=</span> <span class="va">t</span><span class="op">)</span>
 <span class="co">#&gt; Number of significant surrogate variables is:  1 </span>
-<span class="co">#&gt; Iteration (out of 5 ):1  2  3  4  5</span></pre></div>
+<span class="co">#&gt; Iteration (out of 5 ):1  2  3  4  5</span></code></pre></div>
 <p><img src="Intro_Figure_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
   </div>

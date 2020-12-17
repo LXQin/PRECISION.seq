@@ -22,6 +22,7 @@ library(DESeq)
 
 One critical aspect of data normalization for transcriptomic sequencing is sequencing depth. In this package, we examine nine commonly-used methods for depth normalization and evaluate their performance for microRNA (miRNA) sequencing using a pair of datasets (benchmark data and test data) for the same set of tumor samples. Among these normalization methods, six are based on re-scaling and three are based on regression.
 
+
 ## Functions for Depth Normalization
 In this section, we demonstrate how to use the nine normalization functions. The input for each function includes (1) sequencing count data in the format of a data frame or a data matrix (with columns for samples and rows for miRNAs/markers) and (2) the sample groups in the form of a character vector. The output can take one of two forms depending on the type of the normalization method: for re-scaling-based methods, the output includes a matrix of the normalized data and a vector of the estimated sample-specific scaling factors; for regression-based methods, the output is a matrix of the un-normalized data and a vector of the estimated adjustment factors.
 ```{r warning = FALSE, message = FALSE}
@@ -44,8 +45,9 @@ head(test.SVA$adjust.factor)
 head(test.SVA$dat.normed[,1:5])
 ```
 
+
 ## Functions for Differential Expression Analysis
-We include functions for two methods, edgeR and voom-limma, assessing differential expression. The input can be either the normalized dataset (from re-scaling normalization) or the un-normalized dataset plus adjustment factor (from regression-based normalization). The output includes the p-values for the miRNAs/markers, and their group mean differences (that is, log2 fold changes), and the names of the significantly differentially expressed miRNAs/markers (using a p-value cutoff specified by the user).
+We include functions for two methods, edgeR and voom-limma, to assess differential expression. The input can be either the normalized dataset (from re-scaling normalization) or the un-normalized dataset with adjustment factor (from regression-based normalization). The output includes the p-values for the miRNAs/markers, and their group mean differences (log2 fold changes), and the names of the significantly differentially expressed miRNAs/markers (using a p-value cutoff specified by the user).
 ```{r}
 edgeR.benchmark <- DE.edgeR(data.benchmark, data.group)
 voom.benchmark <- DE.voom(data.benchmark, data.group)
