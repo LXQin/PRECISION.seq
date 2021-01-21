@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -62,6 +62,9 @@
     <li>
       <a href="../articles/Intro_Functions.html">Introduction to PRECISION.SEQ Functions</a>
     </li>
+    <li>
+      <a href="../articles/VSN_Example.html">PRECISION.SEQ Example Usage</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -75,8 +78,7 @@
 
       
 
-      </header><script src="Intro_Figure_files/header-attrs-2.5/header-attrs.js"></script><script src="Intro_Figure_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="Intro_Figure_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="Intro_Figure_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="Intro_Figure_files/header-attrs-2.6/header-attrs.js"></script><script src="Intro_Figure_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to PRECISION.SEQ Figure Functions</h1>
@@ -92,7 +94,8 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">precision.seq</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">Biobase</span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">Biobase</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.r-project.org">vsn</a></span><span class="op">)</span></code></pre></div>
 <p>We include a number of functions for comparing the data distribution and differential-expression-analysis results for the test data (before and after normalization) with these for the benchmark data in this package.</p>
 <div id="relative-log-expression-plot" class="section level2">
 <h2 class="hasAnchor">
@@ -130,10 +133,11 @@
 <a href="#concordance-at-the-top-plot" class="anchor"></a>Concordance at The Top Plot</h2>
 <p>Concordance at the top plot compares the concordance of the p-values for differential expression assessed in the test data (before and after normalization) versus that in the benchmark data. Besides the nine normalization methods included in this package, additional normalization methods implemented by the user can also be used and assessed against the benchmark through inputting the p-values of DEA.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">t</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1033</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">data.test</span><span class="op">)</span>
-<span class="fu"><a href="../reference/fig.CAT.html">fig.CAT</a></span><span class="op">(</span>MethodsCompare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm.none"</span>, <span class="st">"norm.TMM"</span>, <span class="st">"norm.SVA"</span>, <span class="st">"norm.TC"</span><span class="op">)</span>, MethodNew <span class="op">=</span> <span class="st">"Example"</span>, 
-        pvalues <span class="op">=</span> <span class="va">t</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vsn/man/justvsn.html">justvsn</a></span><span class="op">(</span><span class="va">data.test</span><span class="op">)</span>
+<span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">vsn.norm</span><span class="op">&lt;</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="va">vsn.norm</span><span class="op">)</span>
+<span class="va">vsn.pval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span><span class="va">vsn.norm</span>, <span class="va">data.group</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/fig.CAT.html">fig.CAT</a></span><span class="op">(</span>MethodsCompare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm.none"</span>, <span class="st">"norm.TMM"</span>, <span class="st">"norm.SVA"</span>, <span class="st">"norm.TC"</span><span class="op">)</span>, MethodNew <span class="op">=</span> <span class="st">"norm.vsn"</span>, pvalues <span class="op">=</span> <span class="va">vsn.pval</span><span class="op">$</span><span class="va">p.val</span><span class="op">)</span>
 <span class="co">#&gt; Number of significant surrogate variables is:  1 </span>
 <span class="co">#&gt; Iteration (out of 5 ):1  2  3  4  5</span></code></pre></div>
 <p><img src="Intro_Figure_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
@@ -143,8 +147,7 @@
 <a href="#dendrogram-for-method-clustering" class="anchor"></a>Dendrogram for Method Clustering</h2>
 <p>Dendrogram clusters the p-values for differential expression on the same dataset obtained through different normalization methods, which could be used to visualize the similarity among different normalization methods.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fig.dendrogram.html">fig.dendrogram</a></span><span class="op">(</span>MethodsCompare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm.none"</span>, <span class="st">"norm.TMM"</span>, <span class="st">"norm.SVA"</span>, <span class="st">"norm.TC"</span>, <span class="st">"norm.RUVr"</span><span class="op">)</span>, 
-               MethodNew <span class="op">=</span> <span class="st">"Example"</span>, pvalues <span class="op">=</span> <span class="va">t</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="../reference/fig.dendrogram.html">fig.dendrogram</a></span><span class="op">(</span>MethodsCompare <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"norm.none"</span>, <span class="st">"norm.TMM"</span>, <span class="st">"norm.SVA"</span>, <span class="st">"norm.TC"</span>, <span class="st">"norm.RUVr"</span><span class="op">)</span>,  MethodNew <span class="op">=</span> <span class="st">"norm.vsn"</span>, pvalues <span class="op">=</span> <span class="va">vsn.pval</span><span class="op">$</span><span class="va">p.val</span><span class="op">)</span>
 <span class="co">#&gt; Number of significant surrogate variables is:  1 </span>
 <span class="co">#&gt; Iteration (out of 5 ):1  2  3  4  5</span></code></pre></div>
 <p><img src="Intro_Figure_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>

@@ -140,7 +140,7 @@ fig.CAT <- function(MethodsCompare, benchmark = data.benchmark, test = data.test
 fig.FDR_FNR <- function(raw, groups, MethodsCompare, truth,
                         QN_filter = FALSE,
                         DE.method = "DE.voom", Pval = 0.01,
-                        selected.marker = NULL) {
+                        selected.marker = NULL, new.norm.list = NULL) {
   numMethods <- length(MethodsCompare)
   FNR <- FDR <- c()
   for (i in 1:numMethods){
@@ -148,7 +148,7 @@ fig.FDR_FNR <- function(raw, groups, MethodsCompare, truth,
                            DE.method = DE.method,
                            norm.method = MethodsCompare[i],
                            QN_filter = QN_filter, Pval = Pval,
-                           selected.marker = selected.marker)
+                           selected.marker = selected.marker, new.norm.list = new.norm.list)
     FNR <- c(FNR, temp$FNR)
     FDR <- c(FDR, temp$FDR)
   }

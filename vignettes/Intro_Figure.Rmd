@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 rm(list = ls())
 library(precision.seq)
 library(Biobase)
+library(vsn)
 ```
 
 We include a number of functions for comparing the data distribution and differential-expression-analysis results for the test data (before and after normalization) with these for the benchmark data in this package.
@@ -51,17 +52,17 @@ fig.FDR_FNR(data.test, data.group, truth = truthgene,
 ## Concordance at The Top Plot
 Concordance at the top plot compares the concordance of the p-values for differential expression assessed in the test data (before and after normalization) versus that in the benchmark data. Besides the nine normalization methods included in this package, additional normalization methods implemented by the user can also be used and assessed against the benchmark through inputting the p-values of DEA.
 ```{r warning=FALSE, message=FALSE}
-t <-  runif(1033)
-names(t) <-  rownames(data.test)
-fig.CAT(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"), MethodNew = "Example", 
-        pvalues = t)
+vsn.norm <- justvsn(data.test)
+vsn.norm <- ifelse(vsn.norm<0, 1, vsn.norm)
+vsn.pval <- DE.voom(vsn.norm, data.group)
+
+fig.CAT(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"), MethodNew = "norm.vsn", pvalues = vsn.pval$p.val)
 ```
 
 
 ## Dendrogram for Method Clustering 
 Dendrogram clusters the p-values for differential expression on the same dataset obtained through different normalization methods, which could be used to visualize the similarity among different normalization methods.
 ```{r warning=FALSE, message=FALSE}
-fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), 
-               MethodNew = "Example", pvalues = t)
+fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"),  MethodNew = "norm.vsn", pvalues = vsn.pval$p.val)
 ```
 

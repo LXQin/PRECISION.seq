@@ -104,19 +104,20 @@ DE.edgeR <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) 
 #' @export
 #'
 DE.statistics <- function(markers, id.list, truth, selected.marker=NULL) {
-  stat.DE <- matrix(NA, nrow = length(markers), ncol = 2)
-  rownames(stat.DE) <- markers
-  colnames(stat.DE) <- c("Benchmark", "Data")
-  stat.DE[truth, 1] <- "DE"
-  stat.DE[id.list, 2] <- "DE"
-  stat.DE[is.na(stat.DE)] = "non-DE"
+
   if (!is.null(selected.marker)) {
-    stat.DE <- stat.DE[selected.marker,]
+    id.list = id.list[id.list %in% selected.marker]
+    truth = truth[truth %in% selected.marker]
+    markers = selected.marker
   }
-  t = table(prediction = stat.DE[,2], truth = stat.DE[,1])
-  return(list(table = t,
-              TPR = t[1,1]/sum(t[,1]),
-              FPR = t[1,2]/sum(t[,2]),
-              FDR = t[1,2]/sum(t[1,]),
-              FNR = t[2,1]/sum(t[,1])))
+
+  tp = sum(id.list %in% truth)
+  fp = length(id.list) - tp
+  fn = length(truth) - tp
+  tn = length(markers) - length(truth) - fp
+
+  return(list(TPR = tp/(tp + fn),
+              FPR = fp/(fp + tn),
+              FDR = fp/(tp + fp),
+              FNR = fn/(tp + fn)))
 }

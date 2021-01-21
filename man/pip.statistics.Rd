@@ -8,11 +8,12 @@ pip.statistics(
   raw,
   groups,
   truth,
-  DE.method = NULL,
-  norm.method = "norm.none",
+  DE.method = "DE.voom",
+  norm.method,
   QN_filter = FALSE,
   Pval = 0.01,
-  selected.marker = NULL
+  selected.marker = NULL,
+  new.norm.list = NULL
 )
 }
 \arguments{
@@ -32,6 +33,8 @@ pip.statistics(
 
 \item{selected.marker}{if given, provide vector of a subset of genes/markers for
 this analysis. Leave \code{NULL} if all markers are considered for the analysis.}
+
+\item{new.norm.list}{a vector of DE genes selected from the data normalized by the new method (the method which is not in the provided in normalization methods).}
 }
 \value{
 a list of values about TPR, FPR, FDR, FNR

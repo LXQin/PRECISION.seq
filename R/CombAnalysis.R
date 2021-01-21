@@ -43,7 +43,7 @@ pip.norm <- function(raw, groups, norm.method,
                            "norm.RUVs", "norm.RUVr", "norm.SVA")) {
     FUN <- match.fun(norm.method)
     data.norm <- FUN(raw, groups)
-  } else if (norm.method == "normPoissonSeq") {
+  } else if (norm.method == "norm.PoissonSeq") {
     data.norm <- norm.PoissonSeq(raw)
   } else if (norm.method == "norm.QN") {
     data.norm <- norm.QN(raw, filter = QN_filter)
@@ -150,6 +150,7 @@ pip.norm.DE <- function(raw, groups, norm.method,
 #' @param Pval p-value for identifying DE genes, default to be 0.01
 #' @param selected.marker if given, provide vector of a subset of genes/markers for
 #' this analysis. Leave \code{NULL} if all markers are considered for the analysis.
+#' @param new.norm.list a vector of DE genes selected from the data normalized by the new method (the method which is not in the provided in normalization methods).
 #'
 #' @return a list of values about TPR, FPR, FDR, FNR
 #' @export
@@ -159,17 +160,22 @@ pip.norm.DE <- function(raw, groups, norm.method,
 #' stat <- pip.statistics(data.test, data.group, truth=truthgene,
 #'                        DE.method="DE.voom", norm.method="norm.TMM")
 #'
-pip.statistics <- function(raw, groups, truth, DE.method = NULL,
-                           norm.method="norm.none", QN_filter = FALSE, Pval = 0.01,
-                           selected.marker = NULL) {
-  if(!is.null(DE.method)) {
+pip.statistics <- function(raw, groups, truth, DE.method = "DE.voom",
+                           norm.method, QN_filter = FALSE, Pval = 0.01,
+                           selected.marker = NULL, new.norm.list = NULL) {
+  norm.method.list <- c("norm.TMM", "norm.TC", "norm.UQ", "norm.med",
+                        "norm.DESeq", "norm.RUVg", "norm.RUVs", "norm.RUVr",
+                        "norm.SVA", "norm.PoissonSeq", "norm.QN", "norm.none")
+
+  if(norm.method %in% norm.method.list) {
     voom.test = pip.norm.DE(raw = raw, groups = groups,
                           norm.method = norm.method, QN_filter = QN_filter,
                           DE.method = DE.method, Pval = Pval)
   }
 
+  DEgenelist = if(norm.method %in% norm.method.list) {voom.test$id.list} else {new.norm.list}
   statistics <- DE.statistics(markers=rownames(raw),
-                              id.list=voom.test$id.list,
+                              id.list=DEgenelist,
                               truth=truth,
                               selected.marker=selected.marker)
   return(statistics)

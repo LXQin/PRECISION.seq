@@ -12,7 +12,8 @@ fig.FDR_FNR(
   QN_filter = FALSE,
   DE.method = "DE.voom",
   Pval = 0.01,
-  selected.marker = NULL
+  selected.marker = NULL,
+  new.norm.list = NULL
 )
 }
 \arguments{
