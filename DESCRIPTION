@@ -30,7 +30,10 @@ Imports:
     ggplot2,
     ggrepel,
     ggdendro,
-    data.table
+    data.table,
+    tidyr,
+    dplyr,
+    ggplotify
 Suggests: 
     knitr,
     rmarkdown

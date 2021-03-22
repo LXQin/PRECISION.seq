@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Selection of normalization methods based on golden standards — fig.FDR_FNR • precision.seq</title>
+<title>Simulated Data — simulated.data • precision.seq</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Selection of normalization methods based on golden standards — fig.FDR_FNR" />
-<meta property="og:description" content="Selection of normalization methods based on golden standards" />
+<meta property="og:title" content="Simulated Data — simulated.data" />
+<meta property="og:description" content="Function for provding simulated datasets according to different proportions of DE and medians of mean difference.
+The range of DE proportion availiable is between 0 and 0.387, and the range of median of mean difference is between -2.52 and 4.59." />
 
 
 
@@ -124,75 +125,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Selection of normalization methods based on golden standards</h1>
+    <h1>Simulated Data</h1>
     
-    <div class="hidden name"><code>fig.FDR_FNR.Rd</code></div>
+    <div class="hidden name"><code>simulated.data.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Selection of normalization methods based on golden standards</p>
+    <p>Function for provding simulated datasets according to different proportions of DE and medians of mean difference.
+The range of DE proportion availiable is between 0 and 0.387, and the range of median of mean difference is between -2.52 and 4.59.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fig.FDR_FNR</span><span class='op'>(</span>
-  <span class='va'>raw</span>,
-  <span class='va'>groups</span>,
-  <span class='va'>MethodsCompare</span>,
-  <span class='va'>truth</span>,
-  QN_filter <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  DE.method <span class='op'>=</span> <span class='st'>"DE.voom"</span>,
-  Pval <span class='op'>=</span> <span class='fl'>0.01</span>,
-  MethodNew <span class='op'>=</span> <span class='cn'>NULL</span>,
-  new.norm.list <span class='op'>=</span> <span class='cn'>NULL</span>,
-  selected.marker <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>simulated.data</span><span class='op'>(</span><span class='va'>proportion_L</span>, <span class='va'>proportion_R</span>, <span class='va'>median_L</span>, <span class='va'>median_R</span>, <span class='va'>numsets</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>raw</th>
-      <td><p>raw count data in the format of data frame or matrix, with columns for samples and raws for genes.</p></td>
+      <th>proportion_L</th>
+      <td><p>the lowest proportion of DE for simulated dataset filtering</p></td>
     </tr>
     <tr>
-      <th>groups</th>
-      <td><p>vector of characters indicating the group for each sample (only 2 groups allowed).</p></td>
+      <th>proportion_R</th>
+      <td><p>the highest proportion of DE for simulated dataset filtering</p></td>
     </tr>
     <tr>
-      <th>MethodsCompare</th>
-      <td><p>the vector of methods that researchers would like to compare with, and selected from  <code>norm.none</code>, <code>norm.TMM</code>, <code>norm.TC</code>, <code>norm.UQ</code>, <code>norm.med</code>, <code>norm.DESeq</code>, <code>norm.PoissonSeq</code>, <code>norm.QN</code>, <code>norm.SVA</code>, and <code>norm.RUV</code>.</p></td>
+      <th>median_L</th>
+      <td><p>the lowest median of mean difference for simulated dataset filtering</p></td>
     </tr>
     <tr>
-      <th>truth</th>
-      <td><p>vector of genes that are truly differential expressed</p></td>
+      <th>median_R</th>
+      <td><p>the highest median of mean difference for simulated dataset filtering</p></td>
     </tr>
     <tr>
-      <th>QN_filter</th>
-      <td><p>whether the filtering is performed if <code>method = norm.QN</code>.</p></td>
-    </tr>
-    <tr>
-      <th>DE.method</th>
-      <td><p>the method for differential expression analysis from <code>DE.voom</code> and <code>DE.edgeR</code>, default to be <code>DE.voom</code>.</p></td>
-    </tr>
-    <tr>
-      <th>Pval</th>
-      <td><p>p-value for identifying DE genes, default to be 0.01</p></td>
-    </tr>
-    <tr>
-      <th>selected.marker</th>
-      <td><p>if given, vector of a subset of genes/markers for
-this analysis. Leave <code>NULL</code> if all markers are considered for the analysis.</p></td>
+      <th>numsets</th>
+      <td><p>number of simulated datasets requested for returning (randomly drawn from the available sets). If it exceeds the maximum of availiable datasets, all the availiable sets will be returned.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>figure for selection of normalization methods</p>
+    <p>list containing list of simulated benchmark data and test data</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>truthgene</span> <span class='op'>&lt;-</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span><span class='va'>data.benchmark</span>, <span class='va'>data.group</span><span class='op'>)</span><span class='op'>$</span><span class='va'>id.list</span>
-<span class='fu'>fig.FDR_FNR</span><span class='op'>(</span><span class='va'>data.test</span>, <span class='va'>data.group</span>, MethodsCompare <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"norm.none"</span>, <span class='st'>"norm.TMM"</span>, <span class='st'>"norm.SVA"</span>, <span class='st'>"norm.TC"</span><span class='op'>)</span>, truth <span class='op'>=</span> <span class='va'>truthgene</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Number of significant surrogate variables is:  1 
-#&gt; Iteration (out of 5 ):1  2  3  4  5  </div><div class='img'><img src='fig.FDR_FNR-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='va'>simulated</span> <span class='op'>&lt;-</span> <span class='fu'>simulated.data</span><span class='op'>(</span><span class='fl'>0.0175</span>, <span class='fl'>0.0225</span>, <span class='op'>-</span><span class='fl'>0.5</span>, <span class='fl'>0.5</span>, <span class='fl'>10</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

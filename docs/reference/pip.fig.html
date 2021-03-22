@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Selection of normalization methods based on golden standards — fig.FDR_FNR • precision.seq</title>
+<title>Pipeline for visualization Using — pip.fig • precision.seq</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Selection of normalization methods based on golden standards — fig.FDR_FNR" />
-<meta property="og:description" content="Selection of normalization methods based on golden standards" />
+<meta property="og:title" content="Pipeline for visualization Using — pip.fig" />
+<meta property="og:description" content="A pipeline for visualization to compare the normalization method with selected existing methods" />
 
 
 
@@ -124,75 +124,71 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Selection of normalization methods based on golden standards</h1>
+    <h1>Pipeline for visualization Using</h1>
     
-    <div class="hidden name"><code>fig.FDR_FNR.Rd</code></div>
+    <div class="hidden name"><code>pip.fig.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Selection of normalization methods based on golden standards</p>
+    <p>A pipeline for visualization to compare the normalization method with selected existing methods</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fig.FDR_FNR</span><span class='op'>(</span>
-  <span class='va'>raw</span>,
-  <span class='va'>groups</span>,
-  <span class='va'>MethodsCompare</span>,
-  <span class='va'>truth</span>,
+    <pre class="usage"><span class='fu'>pip.fig</span><span class='op'>(</span>
+  <span class='va'>norm.method</span>,
   QN_filter <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>new.method.name</span>,
+  normalized.test <span class='op'>=</span> <span class='cn'>NULL</span>,
+  adjust.factor <span class='op'>=</span> <span class='cn'>NULL</span>,
   DE.method <span class='op'>=</span> <span class='st'>"DE.voom"</span>,
-  Pval <span class='op'>=</span> <span class='fl'>0.01</span>,
-  MethodNew <span class='op'>=</span> <span class='cn'>NULL</span>,
-  new.norm.list <span class='op'>=</span> <span class='cn'>NULL</span>,
-  selected.marker <span class='op'>=</span> <span class='cn'>NULL</span>
+  Pval_cutoff <span class='op'>=</span> <span class='fl'>0.01</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>raw</th>
-      <td><p>raw count data in the format of data frame or matrix, with columns for samples and raws for genes.</p></td>
-    </tr>
-    <tr>
-      <th>groups</th>
-      <td><p>vector of characters indicating the group for each sample (only 2 groups allowed).</p></td>
-    </tr>
-    <tr>
-      <th>MethodsCompare</th>
-      <td><p>the vector of methods that researchers would like to compare with, and selected from  <code>norm.none</code>, <code>norm.TMM</code>, <code>norm.TC</code>, <code>norm.UQ</code>, <code>norm.med</code>, <code>norm.DESeq</code>, <code>norm.PoissonSeq</code>, <code>norm.QN</code>, <code>norm.SVA</code>, and <code>norm.RUV</code>.</p></td>
-    </tr>
-    <tr>
-      <th>truth</th>
-      <td><p>vector of genes that are truly differential expressed</p></td>
+      <th>norm.method</th>
+      <td><p>the normalization method selected for comparsion from <code>norm.none</code>, <code>norm.TMM</code>, <code>norm.TC</code>, <code>norm.UQ</code>, <code>norm.med</code>, <code>norm.DESeq</code>, <code>norm.PoissonSeq</code>, <code>norm.QN</code>, <code>norm.SVA</code>, and <code>norm.RUV</code>.</p></td>
     </tr>
     <tr>
       <th>QN_filter</th>
-      <td><p>whether the filtering is performed if <code>method = norm.QN</code>.</p></td>
+      <td><p>whether the filtering is performed if <code>norm.QN</code> selected</p></td>
+    </tr>
+    <tr>
+      <th>new.method.name</th>
+      <td><p>the name of new normalization method</p></td>
+    </tr>
+    <tr>
+      <th>normalized.test</th>
+      <td><p>the normalized test data by the new normalization method</p></td>
+    </tr>
+    <tr>
+      <th>adjust.factor</th>
+      <td><p>the adjusting factors for the test data by the new normalization method</p></td>
     </tr>
     <tr>
       <th>DE.method</th>
-      <td><p>the method for differential expression analysis from <code>DE.voom</code> and <code>DE.edgeR</code>, default to be <code>DE.voom</code>.</p></td>
+      <td><p>the method for differential expression analysis from <code>DE.voom</code> and <code>DE.edgeR</code>, default to be <code>DE.voom</code></p></td>
     </tr>
     <tr>
-      <th>Pval</th>
+      <th>Pval_cutoff</th>
       <td><p>p-value for identifying DE genes, default to be 0.01</p></td>
-    </tr>
-    <tr>
-      <th>selected.marker</th>
-      <td><p>if given, vector of a subset of genes/markers for
-this analysis. Leave <code>NULL</code> if all markers are considered for the analysis.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>figure for selection of normalization methods</p>
+    
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>truthgene</span> <span class='op'>&lt;-</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span><span class='va'>data.benchmark</span>, <span class='va'>data.group</span><span class='op'>)</span><span class='op'>$</span><span class='va'>id.list</span>
-<span class='fu'>fig.FDR_FNR</span><span class='op'>(</span><span class='va'>data.test</span>, <span class='va'>data.group</span>, MethodsCompare <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"norm.none"</span>, <span class='st'>"norm.TMM"</span>, <span class='st'>"norm.SVA"</span>, <span class='st'>"norm.TC"</span><span class='op'>)</span>, truth <span class='op'>=</span> <span class='va'>truthgene</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='va'>vsn.norm</span> <span class='op'>&lt;-</span> <span class='fu'>vsn</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/vsn/man/justvsn.html'>justvsn</a></span><span class='op'>(</span><span class='va'>data.test</span><span class='op'>)</span>
+<span class='va'>vsn.norm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>vsn.norm</span><span class='op'>&lt;</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='va'>vsn.norm</span><span class='op'>)</span>
+<span class='fu'>pip.fig</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"norm.none"</span>, <span class='st'>"norm.TMM"</span>, <span class='st'>"norm.SVA"</span>, <span class='st'>"norm.TC"</span>, <span class='st'>"norm.RUVr"</span><span class='op'>)</span>,
+ new.method.name <span class='op'>=</span> <span class='st'>"vsn"</span>, normalized.test <span class='op'>=</span> <span class='va'>vsn.norm</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Number of significant surrogate variables is:  1 
-#&gt; Iteration (out of 5 ):1  2  3  4  5  </div><div class='img'><img src='fig.FDR_FNR-1.png' alt='' width='700' height='433' /></div></pre>
+#&gt; Iteration (out of 5 ):1  2  3  4  5  </div><div class='output co'>#&gt; <span class='error'>Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'annotatedDataFrameFrom': could not find function "counts"</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

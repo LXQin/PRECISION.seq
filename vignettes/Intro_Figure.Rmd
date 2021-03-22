@@ -19,6 +19,8 @@ rm(list = ls())
 library(precision.seq)
 library(Biobase)
 library(vsn)
+library(limma)
+library(ggplotify)
 ```
 
 We include a number of functions for comparing the data distribution and differential-expression-analysis results for the test data (before and after normalization) with these for the benchmark data in this package.
@@ -36,7 +38,7 @@ Venn diagram is used to identify the performance of different normalization meth
 ```{r warning=FALSE, message=FALSE}
 benchmark.voom <- DE.voom(RC = data.benchmark, groups = data.group, Pval = 0.01)
 test.voom <- DE.voom(RC = data.test, groups = data.group, Pval = 0.01)
-fig.venn(benchmark.voom$p.val, test.voom$p.val, 0.01)
+fig.venn(benchmark.voom$p.val, test.voom$p.val, Pvalue = 0.01)
 ```
 
 
@@ -65,4 +67,15 @@ Dendrogram clusters the p-values for differential expression on the same dataset
 ```{r warning=FALSE, message=FALSE}
 fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"),  MethodNew = "norm.vsn", pvalues = vsn.pval$p.val)
 ```
+
+
+## Integrated Function for All Visualization Tools
+We also provide a function to provide all the figures mentioned above. Users can directly apply this function to compare their newly-devloped normalization methods to the existing methods.
+```{r warning=FALSE, message=FALSE}
+vsn.norm <- vsn::justvsn(data.test)
+vsn.norm <- ifelse(vsn.norm<0, 1, vsn.norm)
+pip.fig(c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"),
+        new.method.name = "vsn", normalized.test = vsn.norm)
+```
+
 

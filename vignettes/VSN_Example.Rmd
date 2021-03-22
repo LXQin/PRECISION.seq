@@ -75,7 +75,7 @@ fig.dendrogram(MethodsCompare =  c("norm.TMM", "norm.TC", "norm.UQ", "norm.med",
 ```{r}
 set.seed(12345)
 sim.groups = c(rep('MXF',27),rep('PMFH',27))
-simulated <- simu(proportion_L = 0.15, proportion_R = 0.25, 
+simulated <- simulated.data(proportion_L = 0.15, proportion_R = 0.25, 
                   median_L = 2, median_R = 4, numsets = 100)
 ```
 
@@ -85,8 +85,8 @@ summary.plot = function(simulation.data, norm.method, num.data = 100) {
   FNR = FDR = c()
   
   for (i in 1:num.data) {
-    benchmark.simu = simulation.data$simulated_benchmark[[i]]
-    test.simu = simulation.data$simulated_test[[i]]
+    benchmark.simu = simulation.data[[i]]$simulated_benchmark
+    test.simu = simulation.data[[i]]$simulated_test
     truthgene <- DE.voom(benchmark.simu, sim.groups)$id.list
     
     if (is.null(truthgene)){

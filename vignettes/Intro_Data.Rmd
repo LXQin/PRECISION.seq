@@ -129,8 +129,8 @@ abline(0,1)
 ## Simulation
 We then describe how to use `simu()` function to generate additional pairs of data sets by permuting the paired data sets to achieve a pre-specified level of differential expression. As an example, we show how to generate data sets with the proportion of differential expression around 0.02 (more specifically, in the range of 0.0175 and 0.0225) and the median of mean differences (for log2 counts) around 0 (more specifically, in the range of -0.5 and 0.5).
 ```{r warning=FALSE, message=FALSE}
-simulated <- simu(proportion_L = 0.0175, proportion_R = 0.0225, median_L = -0.5, median_R = 0.5, numsets = 100)
+simulated <- simulated.data(proportion_L = 0.0175, proportion_R = 0.0225, median_L = -0.5, median_R = 0.5, numsets = 100)
 
-head(simulated$simulated_benchmark[[1]])[,1:5]
-head(simulated$simulated_test[[1]])[,1:5]
+head(simulated[[1]]$simulated_benchmark)[,1:5]
+head(simulated[[1]]$simulated_test)[,1:5]
 ```

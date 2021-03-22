@@ -41,9 +41,9 @@
 "data.simulation"
 
 
-#' Simulated Data Generation
+#' Simulated Data
 #'
-#' Function for generating simulated datasets according to different proportions of DE and medians of mean difference.
+#' Function for provding simulated datasets according to different proportions of DE and medians of mean difference.
 #' The range of DE proportion availiable is between 0 and 0.387, and the range of median of mean difference is between -2.52 and 4.59.
 #'
 #' @param proportion_L the lowest proportion of DE for simulated dataset filtering
@@ -58,8 +58,12 @@
 #' @export
 #'
 #' @examples
-#' simulated <- simu(0.0175, 0.0225, -0.5, 0.5, 10)
-simu <- function(proportion_L, proportion_R, median_L, median_R, numsets){
+#' simulated <- simulated.data(0.0175, 0.0225, -0.5, 0.5, 10)
+simulated.data <- function(proportion_L, proportion_R, median_L, median_R, numsets){
+  if (proportion_L <=0 | proportion_R >= 0.387 | median_L <= -2.52 | median_R >= 4.59) {
+    stop("The range exceeds the availability.")
+  }
+
   benchmark_simu <- data.benchmark
   test_simu <- data.test
   colnames(benchmark_simu) <- sub(".*_", "", colnames(benchmark_simu))
@@ -67,14 +71,21 @@ simu <- function(proportion_L, proportion_R, median_L, median_R, numsets){
   s <- data.simulation %>%
     filter(proportion > proportion_L & proportion < proportion_R) %>%
     filter(median > median_L & median < median_R)
-  rowselect <- if(nrow(s) > numsets){sample(nrow(s), numsets)}else{1:nrow(s)}
-  s <- as.matrix(s[rowselect, 1:54])
-  benchmark_simued <- test_simued <- list()
-  for (i in 1:nrow(s)) {
-    benchmark_simued[[i]] <- benchmark_simu[, s[i,]]
-    test_simued[[i]] <- test_simu[, s[i,]]
+  rowselect <- if(nrow(s) > numsets){
+    sample(nrow(s), numsets)
+  }else{
+      1:nrow(s)
+      warning("Number of datasets that can be provided is less than the demand.")
   }
-  return(list(simulated_benchmark = benchmark_simued,
-              simulated_test = test_simued))
+
+  s <- as.matrix(s[rowselect, 1:54])
+  data.simulated <- list()
+  for (i in 1:nrow(s)) {
+    simulated_benchmark <-  benchmark_simu[, s[i,]]
+    simulated_test <-  test_simu[, s[i,]]
+    data.simulated[[i]] <- list(simulated_benchmark = simulated_benchmark,
+                                simulated_test = simulated_test)
+  }
+  return(data.simulated)
 }
 

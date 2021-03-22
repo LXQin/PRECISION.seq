@@ -180,3 +180,85 @@ pip.statistics <- function(raw, groups, truth, DE.method = "DE.voom",
                               selected.marker=selected.marker)
   return(statistics)
 }
+
+
+#' Pipeline for visualization Using
+#'
+#' A pipeline for visualization to compare the normalization method with selected existing methods
+#' @param norm.method the normalization method selected for comparsion from \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.
+#' @param QN_filter whether the filtering is performed if \code{norm.QN} selected
+#' @param new.method.name the name of new normalization method
+#' @param normalized.test the normalized test data by the new normalization method
+#' @param adjust.factor the adjusting factors for the test data by the new normalization method
+#' @param DE.method the method for differential expression analysis from \code{DE.voom} and \code{DE.edgeR}, default to be \code{DE.voom}
+#' @param Pval_cutoff  p-value for identifying DE genes, default to be 0.01
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' vsn.norm <- vsn::justvsn(data.test)
+#' vsn.norm <- ifelse(vsn.norm<0, 1, vsn.norm)
+#' pip.fig(c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"),
+#'  new.method.name = "vsn", normalized.test = vsn.norm)
+pip.fig <- function(norm.method, QN_filter = FALSE,
+                    new.method.name, normalized.test = NULL, adjust.factor = NULL,
+                    DE.method = "DE.voom", Pval_cutoff = 0.01) {
+
+  DEA <- function(RC, groups, Pval, DEmethod = DE.method, normalized = TRUE, adjust = NULL){
+    FUN <- match.fun(DEmethod)
+    data.DE <- FUN(RC = RC, groups = groups, Pval = Pval, normalized = normalized, adjust = adjust)
+    return(data.DE)
+  }
+
+  if (!is.null(normalized.test) & !is.null(adjust.factor)) {
+    stop("Only one of normalized.test and adjust.factor can be input")
+  }
+
+  if (is.null(normalized.test)){
+    new.method.dea = DEA(RC = data.test, groups = data.group, Pval = Pval_cutoff, normalized = FALSE, adjust = adjust.factor)
+  } else{
+    new.method.dea = DEA(RC = normalized.test, groups = data.group, Pval = Pval_cutoff, normalized = TRUE, adjust = NULL)
+  }
+
+  ## fig.volcano
+  volcano <- fig.volcano(new.method.dea, title = "Volcano Plot")
+
+  ## fig.RLE
+  if (is.null(normalized.test)) {
+    warning("No relative log expression generated beacuse of no normalized test provided")
+  } else {
+    RLE <- fig.RLE(normalized.test, data.group, paste0("RLE for ", new.method.name))
+  }
+
+  ## fig.CAT
+  CAT <- fig.CAT(MethodsCompare = norm.method, benchmark = data.benchmark, test = data.test,
+                 group = data.group, DE.method = DE.method, QN_filter = QN_filter,
+                 Pval = Pval_cutoff, MethodNew = new.method.name,
+                 pvalues = new.method.dea$p.val)
+
+  ## fig.FNR_FDR
+  DEFUN <- match.fun(DE.method)
+  truthgene <- DEFUN(data.benchmark, data.group)
+  FDR_FNR <- fig.FDR_FNR(raw = data.test, groups = data.group, MethodsCompare = norm.method,
+                         truth = truthgene$id.list, QN_filter = QN_filter,
+                         DE.method = DE.method, Pval = Pval_cutoff,
+                         MethodNew = new.method.name, new.norm.list = new.method.dea$id.list, selected.marker = NULL)
+
+  ## fig.venn
+  venn <- fig.venn(truthgene$p.val, new.method.dea$p.val, Pvalue = Pval_cutoff)
+
+  ## fig.dendrogram
+  dendrogram <- fig.dendrogram(MethodsCompare = norm.method, DE.method = DE.method, QN_filter = QN_filter,
+                               Pval = Pval_cutoff, MethodNew = new.method.name, pvalues = new.method.dea$p.val,
+                               Methods_visual = c(MethodsCompare, MethodNew),
+                               test = data.test, group = data.group)
+
+  return(list(volcano = volcano,
+              RLE = RLE,
+              CAT = CAT,
+              FDR_FNR = FDR_FNR,
+              venn = venn,
+              dendrogram = dendrogram))
+}
+

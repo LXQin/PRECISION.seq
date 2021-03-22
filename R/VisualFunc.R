@@ -20,12 +20,17 @@ fig.volcano <- function(DEA.res, title){
 
   xlim = round(1.15 * max(abs(dat.DE.frame$dm)), 1)
   ylim = 1.15 * round(max(-log10(dat.DE.frame$p.value)), 1)
-  with(dat.DE.frame, plot(dm, -log10(p.value), cex = .5, pch = 16,
-                          col = cols, xlim = c(-xlim, xlim),
-                          ylim = c(0, ylim),
-                          xlab = "Mean Difference",
-                          main = title))
-  abline(h = 2, lty = 2)
+
+  p <- ggplot(aes(x = dm, y = -log10(p.value)), data = dat.DE.frame) +
+    geom_point(color = cols) +
+    geom_hline(yintercept = 2, lty = 2) +
+    xlim(-xlim, xlim) +
+    ylim(0, ylim) +
+    xlab("Mean Difference") +
+    ggtitle(title) +
+    theme_bw()
+
+  return(p)
 }
 
 
@@ -38,6 +43,8 @@ fig.volcano <- function(DEA.res, title){
 #' @param title the title of the figure
 #'
 #' @return boxplot for relative log expression
+#' @import ggplot2
+#'
 #' @export
 #'
 #' @examples
@@ -45,15 +52,32 @@ fig.volcano <- function(DEA.res, title){
 fig.RLE = function(data, groups, title) {
   raw.log <- log2(data + 1)
   rle <- t(apply(raw.log, 1, function(x) x - median(x)))
-  color <- groups
-  color[color == levels(factor(color))[1]] <- rainbow(2)[1]
-  color[color == levels(factor(color))[2]] <- rainbow(2)[2]
+
   ylim = round(max(1.5*(apply(rle, 2, IQR)) + max(abs(apply(rle, 2, function(x) quantile(x, c(0.25, 0.75)))))), 1)
-  boxplot(rle, col = color, ylab = "RLE", ylim = c(-ylim, ylim),
-          outline = FALSE, xaxt = "n", main = title)
-  legend("topright",levels(factor(groups)), bty = "n",
-         pch = "x", cex = 1, col = c(rainbow(2)[1], rainbow(2)[2]))
-}
+  #  color <- groups
+  #  color[color == levels(factor(color))[1]] <- rainbow(2)[1]
+  #  color[color == levels(factor(color))[2]] <- rainbow(2)[2]
+  #  boxplot(rle, col = color, ylab = "RLE", ylim = c(-ylim, ylim),
+  #          outline = FALSE, xaxt = "n", main = title)
+  #  legend("topright",levels(factor(groups)), bty = "n",
+  #         pch = "x", cex = 1, col = c(rainbow(2)[1], rainbow(2)[2]))
+
+  df <- tidyr::gather(as.data.frame(rle), Sample, RLE)
+  df$group <- rep(groups, each = nrow(rle))
+  df$Sample <- factor(df$Sample, levels = colnames(rle))
+  p <- ggplot(data = df, aes(x = Sample, y = RLE, fill = group)) +
+    geom_boxplot(outlier.shape = NA) +
+    ylim(-ylim, ylim) +
+    theme_bw() +
+    theme(axis.title.x=element_blank(),
+          axis.text.x=element_blank(),
+          axis.ticks.x=element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          legend.position="bottom") +
+    ggtitle(title)
+  return(p)
+ }
 
 
 #' Concordance At The Top Plot
@@ -89,15 +113,27 @@ fig.CAT <- function(MethodsCompare, benchmark = data.benchmark, test = data.test
                     Pval = 0.01, MethodNew, pvalues, Methods_visual = c(MethodsCompare, MethodNew)){
   DEFUN = match.fun(DE.method)
   benchmark.p <-  DEFUN(benchmark, group)$p.val
-  numMethods <- length(MethodsCompare) + 1
-  catplots <- vector("list", numMethods)
-  for (i in 1:(numMethods - 1)) {
-    catplots[[i]] <- CATplot(pip.norm.DE(test, group, MethodsCompare[i],
-                                         QN_filter = QN_filter,
-                                         DE.method = DE.method, Pval = Pval)$p.val,
-                             benchmark.p, maxrank = 100, make.plot = F)
+
+  if(is.null(MethodNew)){
+    numMethods <- length(MethodsCompare)
+    catplots <- vector("list", numMethods)
+    for (i in 1:numMethods) {
+      catplots[[i]] <- CATplot(pip.norm.DE(test, group, MethodsCompare[i],
+                                           QN_filter = QN_filter,
+                                           DE.method = DE.method, Pval = Pval)$p.val,
+                               benchmark.p, maxrank = 100, make.plot = F)
+    }
+  } else {
+    numMethods <- length(MethodsCompare) + 1
+    catplots <- vector("list", numMethods)
+    for (i in 1:(numMethods - 1)) {
+      catplots[[i]] <- CATplot(pip.norm.DE(test, group, MethodsCompare[i],
+                                           QN_filter = QN_filter,
+                                           DE.method = DE.method, Pval = Pval)$p.val,
+                               benchmark.p, maxrank = 100, make.plot = F)
+    }
+    catplots[[numMethods]] <- CATplot(pvalues, benchmark.p, maxrank = 100, make.plot = F)
   }
-  catplots[[numMethods]] <- CATplot(pvalues, benchmark.p, maxrank = 100, make.plot = F)
 
   data_cat = data.frame(x = numeric(), y = numeric(), curve = character())
   for(i in 1:numMethods){
@@ -107,12 +143,14 @@ fig.CAT <- function(MethodsCompare, benchmark = data.benchmark, test = data.test
   }
   data_cat$curve = factor(data_cat$curve)
 
-  return(ggplot(data_cat, aes(x, y, color = curve)) +
-           geom_line() +
-           ylab("Rate of Agreement with Benchmark") +
-           xlab("Significance Rank") +
-           ggtitle("CATplot") +
-           theme_bw())
+  p <- ggplot(data_cat, aes(x, y, color = curve)) +
+    geom_line() +
+    ylab("Rate of Agreement with Benchmark") +
+    xlab("Significance Rank") +
+    ggtitle("CATplot") +
+    theme_bw()
+
+  return(p)
 }
 
 
@@ -131,6 +169,7 @@ fig.CAT <- function(MethodsCompare, benchmark = data.benchmark, test = data.test
 #' @return figure for selection of normalization methods
 #'
 #' @import ggrepel
+#' @import ggplot2
 #'
 #' @export
 #'
@@ -140,7 +179,8 @@ fig.CAT <- function(MethodsCompare, benchmark = data.benchmark, test = data.test
 fig.FDR_FNR <- function(raw, groups, MethodsCompare, truth,
                         QN_filter = FALSE,
                         DE.method = "DE.voom", Pval = 0.01,
-                        selected.marker = NULL, new.norm.list = NULL) {
+                        MethodNew = NULL, new.norm.list = NULL,
+                        selected.marker = NULL) {
   numMethods <- length(MethodsCompare)
   FNR <- FDR <- c()
   for (i in 1:numMethods){
@@ -152,6 +192,17 @@ fig.FDR_FNR <- function(raw, groups, MethodsCompare, truth,
     FNR <- c(FNR, temp$FNR)
     FDR <- c(FDR, temp$FDR)
   }
+
+  if (!is.null(MethodNew) & !is.null(new.norm.list)) {
+    new.method.stat <- DE.statistics(markers=rownames(raw),
+                                     id.list=new.norm.list,
+                                     truth=truth,
+                                     selected.marker=selected.marker)
+    FNR <- c(FNR, new.method.stat$FNR)
+    FDR <- c(FDR, new.method.stat$FDR)
+    MethodsCompare <- c(MethodsCompare, MethodNew)
+  }
+
   stat <- data.frame(FNR = FNR, FDR = FDR, names = MethodsCompare)
   p <- ggplot(stat, aes(FNR, FDR, label = names)) + geom_point(color = "red") +
     geom_text_repel() + theme_bw()
@@ -169,6 +220,8 @@ fig.FDR_FNR <- function(raw, groups, MethodsCompare, truth,
 #'
 #' @return A Venn diagram
 #' @import limma
+#' @import ggplotify
+#'
 #' @export
 #'
 #' @examples
@@ -178,10 +231,11 @@ fig.FDR_FNR <- function(raw, groups, MethodsCompare, truth,
 fig.venn <- function(benchmark.pval, test.pval, Pvalue){
   bench.sig <- (benchmark.pval < Pvalue)
   test.sig <- (test.pval[names(benchmark.pval)] < Pvalue)
-  venn2 <- cbind(bench.sig, test.sig)
-  p <- vennDiagram(vennCounts(venn2),
-                   names = c("Benchmark", "Test"),
-                   cex = 1.5, counts.col = rainbow(1))
+  venn <- vennCounts(cbind(bench.sig, test.sig))
+  p <- as.ggplot(function() vennDiagram(venn,
+                                        names = c("Benchmark", "Test"),
+                                        cex = 1.5, counts.col = rainbow(1)))
+
   return(p)
 }
 

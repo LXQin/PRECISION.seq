@@ -78,7 +78,7 @@
 
       
 
-      </header><script src="VSN_Example_files/header-attrs-2.6/header-attrs.js"></script><script src="VSN_Example_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="VSN_Example_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>PRECISION.SEQ Example Usage</h1>
@@ -108,10 +108,12 @@
 <h2 class="hasAnchor">
 <a href="#relative-log-expression-plot" class="anchor"></a>Relative Log Expression Plot</h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fig.RLE.html">fig.RLE</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"test without normalization"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/fig.RLE.html">fig.RLE</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"test without normalization"</span><span class="op">)</span>
+<span class="co">#&gt; Warning: Removed 367 rows containing non-finite values (stat_boxplot).</span></code></pre></div>
 <p><img src="VSN_Example_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fig.RLE.html">fig.RLE</a></span><span class="op">(</span><span class="va">vsn.norm</span>, <span class="va">data.group</span>, <span class="st">"test with VSN normalization"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/fig.RLE.html">fig.RLE</a></span><span class="op">(</span><span class="va">vsn.norm</span>, <span class="va">data.group</span>, <span class="st">"test with VSN normalization"</span><span class="op">)</span>
+<span class="co">#&gt; Warning: Removed 1465 rows containing non-finite values (stat_boxplot).</span></code></pre></div>
 <p><img src="VSN_Example_files/figure-html/unnamed-chunk-3-2.png" width="700"></p>
 </div>
 <div id="scatterplot-for-fnr-and-fdr" class="section level2">
@@ -178,7 +180,7 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span>
 <span class="va">sim.groups</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">'MXF'</span>,<span class="fl">27</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">'PMFH'</span>,<span class="fl">27</span><span class="op">)</span><span class="op">)</span>
-<span class="va">simulated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simu.html">simu</a></span><span class="op">(</span>proportion_L <span class="op">=</span> <span class="fl">0.15</span>, proportion_R <span class="op">=</span> <span class="fl">0.25</span>, 
+<span class="va">simulated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulated.data.html">simulated.data</a></span><span class="op">(</span>proportion_L <span class="op">=</span> <span class="fl">0.15</span>, proportion_R <span class="op">=</span> <span class="fl">0.25</span>, 
                   median_L <span class="op">=</span> <span class="fl">2</span>, median_R <span class="op">=</span> <span class="fl">4</span>, numsets <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="boxplot-for-fdr-and-fnr" class="section level2">
@@ -189,8 +191,8 @@
   <span class="va">FNR</span> <span class="op">=</span> <span class="va">FDR</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">)</span>
   
   <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">num.data</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">benchmark.simu</span> <span class="op">=</span> <span class="va">simulation.data</span><span class="op">$</span><span class="va">simulated_benchmark</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>
-    <span class="va">test.simu</span> <span class="op">=</span> <span class="va">simulation.data</span><span class="op">$</span><span class="va">simulated_test</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>
+    <span class="va">benchmark.simu</span> <span class="op">=</span> <span class="va">simulation.data</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">simulated_benchmark</span>
+    <span class="va">test.simu</span> <span class="op">=</span> <span class="va">simulation.data</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">simulated_test</span>
     <span class="va">truthgene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span><span class="va">benchmark.simu</span>, <span class="va">sim.groups</span><span class="op">)</span><span class="op">$</span><span class="va">id.list</span>
     
     <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">truthgene</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
