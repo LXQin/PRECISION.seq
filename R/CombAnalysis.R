@@ -38,7 +38,7 @@ precision.seq <- function(normalized.test) {
 #'
 #' @examples
 #' res <- pip.norm(data.test, data.group, "norm.TMM")
-pip.norm <- function(raw, groups, norm.method,
+pip.norm <- function(raw, groups, norm.method="all",
                      QN_filter = FALSE) {
   if(norm.method == "all") {
     data.norm <- list(
