@@ -1,3 +1,19 @@
+#' Full normalization assessment for given normalized test data
+#'
+#' @param normalized.test
+#'
+#' @return
+#' @export
+#'
+#' @examples
+precision.seq <- function(normalized.test) {
+  # Normalize test data using provided normalization functions
+  data.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
+}
+
+
+
+
 #' Normalization for RNASeq Data
 #'
 #' @param raw raw count data in the format of data frame or matrix, with columns
