@@ -6,9 +6,108 @@
 #' @export
 #'
 #' @examples
-precision.seq <- function(normalized.test) {
-  # Normalize test data using provided normalization functions
-  data.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
+precision.seq <- function(norm.counts, adjust.factors, method.name,
+                          DE.method="DE.voom", Pval=0.01) {
+  if(missing(method.name)) {
+    method.name <- "new"
+  }
+
+  ### Data Normalization
+  ## Convert normalized data to internal format
+  cat("Data normalization\n")
+
+  if(missing(adjust.factors)){
+    has.adjust <- F
+    cat("No adjustment factors\n")
+  } else {
+    has.adjust <- T
+    cat("Use adjustment factors\n")
+  }
+
+  if(has.adjust) {
+    norm.new <- list(dat.normed=norm.counts, adjust.factor=adjust.factors)
+    cat("Use adjustment factors\n")
+  } else {
+    norm.new <- list(dat.normed=norm.counts)
+    cat("No adjustment factors\n")
+  }
+
+  ## Normalize test data using internal normalization functions
+  test.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
+  # Append new (externally) normalized data
+  test.norm <- append(list(norm.new), test.norm)
+  names(test.norm)[1] <- method.name
+  # Append un-normalized data
+  test.norm <- append(test.norm, list(noNorm=list(dat.normed=data.test)))
+  # names of all tested normalization methods
+  norm.names <- names(test.norm)
+
+
+  ### Differential Expression Analysis
+
+  cat("\n\nDEA\n")
+
+  # Wrapper for DEA function
+  DEA <- function(RC, normalized = TRUE, adjust = NULL){
+    FUN <- match.fun(DE.method)
+    data.DE <- FUN(RC = RC, groups = data.group, Pval = Pval, normalized = normalized, adjust = adjust)
+    return(data.DE)
+  }
+
+  ## DE for new external normalization
+  if(has.adjust) {
+    cat("DEA of new norm using adjust factors\n")
+    new.DE <- DEA(RC=data.test, normalized=FALSE, adjust=norm.new$adjust.factor)
+  } else {
+    cat("DEA of new norm (no adjust)\n")
+    new.DE <- DEA(RC=norm.new$dat.normed)
+  }
+
+  ## DE for internal normalization
+  cat("DEA for provided norms\n")
+  test.DE <- list(
+    TMM = DEA(RC=test.norm$TMM$dat.normed),
+    TC = DEA(RC=test.norm$TC$dat.normed),
+    UQ = DEA(RC=test.norm$UQ$dat.normed),
+    med = DEA(RC=test.norm$med$dat.normed),
+    DESeq = DEA(RC=test.norm$DESeq$dat.normed),
+    PoissonSeq = DEA(RC=test.norm$PoissonSeq$dat.normed),
+    QN = DEA(RC=test.norm$QN$dat.normed),
+    RUVg = DEA(RC=data.test, normalized=FALSE, adjust=test.norm$RUVg$adjust.factor),
+    RUVs = DEA(RC=data.test, normalized=FALSE, adjust=test.norm$RUVs$adjust.factor),
+    RUVr = DEA(RC=data.test, normalized=FALSE, adjust=test.norm$RUVr$adjust.factor),
+    SVA = DEA(RC=data.test, normalized=FALSE, adjust=test.norm$SVA$adjust.factor),
+    noNorm = DEA(RC=data.test)
+  )
+  # Add new method to data.DE list
+  test.DE <- append(list(new.DE), test.DE)
+  names(test.DE)[1] <- method.name
+
+  ## DE for benchmark data
+  cat("DE for benchmark data\n")
+  bench.DE <- DEA(RC=data.benchmark)
+  truthgene <- DE.voom(data.benchmark, data.group)$id.list
+
+  ## Compute DE statistics
+  cat("Compute DE statistics")
+  test.DE.stats <- list()
+  for(DE.res in test.DE) {
+    test.DE.stats <-
+      append(test.DE.stats,
+             list(DE.statistics(markers=rownames(data.test),
+                                id.list=DE.res$id.list,
+                                truth=bench.DE$id.list,
+                                selected.marker=NULL)))
+    # TODO: Add option for selecting a subset of markers for DEA analysis.
+  }
+  names(test.DE.stats) <- names(test.DE)
+
+
+
+
+  return(list(data.norm=test.norm,
+              data.DE=test.DE,
+              data.DE.stats=test.DE.stats))
 }
 
 

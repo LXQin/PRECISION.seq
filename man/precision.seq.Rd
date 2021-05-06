@@ -4,7 +4,13 @@
 \alias{precision.seq}
 \title{Full normalization assessment for given normalized test data}
 \usage{
-precision.seq(normalized.test)
+precision.seq(
+  norm.counts,
+  adjust.factors,
+  method.name,
+  DE.method = "DE.voom",
+  Pval = 0.01
+)
 }
 \arguments{
 \item{normalized.test}{}
