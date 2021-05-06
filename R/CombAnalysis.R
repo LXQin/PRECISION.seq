@@ -113,12 +113,24 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
   names(p.volcano) <- names(test.DE.stats)
   p.volcano <- append(p.volcano, list(benchmark=fig.volcano(bench.DE, "benchmark")))
 
+  # RLE plots
+  cat("RLE plots\n")
+  p.RLE <- vector("list", length(test.norm))
+  for(i in 1:length(test.norm)) {
+    p.RLE[[i]] <- fig.RLE(test.norm[[i]]$dat.normed, data.group,
+                          paste0("RLE for ", names(test.DE)[i]))
+  }
+  names(p.RLE) <- names(test.norm)
+  p.RLE <- append(p.RLE, list(benchmark=fig.RLE(data.benchmark, data.group,
+                                                "RLE for benchmark")))
+
 
 
   return(list(data.norm=test.norm,
               data.DE=test.DE,
               data.DE.stats=test.DE.stats,
-              p.volcano=p.volcano))
+              p.volcano=p.volcano,
+              p.RLE=p.RLE))
 }
 
 
