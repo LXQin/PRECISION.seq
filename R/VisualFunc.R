@@ -50,10 +50,11 @@ fig.volcano <- function(DEA.res, title){
 #' @examples
 #' fig.RLE(data.test, data.group, "test without normalization")
 fig.RLE = function(data, groups, title) {
+  data <- ifelse(data<0, 0, data)  # Catch negative read counts and set them to 0
   raw.log <- log2(data + 1)
   rle <- t(apply(raw.log, 1, function(x) x - median(x)))
 
-  ylim = round(max(1.5*(apply(rle, 2, IQR)) + max(abs(apply(rle, 2, function(x) quantile(x, c(0.25, 0.75)))))), 1)
+  ylim = round(max(1.5*(apply(rle, 2, IQR)) + max(abs(apply(rle, 2, function(x) quantile(x, probs=c(0.25, 0.75), na.rm=TRUE))))), 1)
   #  color <- groups
   #  color[color == levels(factor(color))[1]] <- rainbow(2)[1]
   #  color[color == levels(factor(color))[2]] <- rainbow(2)[2]
