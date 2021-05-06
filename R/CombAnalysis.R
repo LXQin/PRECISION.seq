@@ -86,10 +86,9 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
   ## DE for benchmark data
   cat("DE for benchmark data\n")
   bench.DE <- DEA(RC=data.benchmark)
-  truthgene <- DE.voom(data.benchmark, data.group)$id.list
 
   ## Compute DE statistics
-  cat("Compute DE statistics")
+  cat("Compute DE statistics\n")
   test.DE.stats <- list()
   for(DE.res in test.DE) {
     test.DE.stats <-
@@ -103,11 +102,23 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
   names(test.DE.stats) <- names(test.DE)
 
 
+  ### Generate Figures
+
+  # Volcano plots
+  cat("Volcano plots\n")
+  p.volcano <- vector("list", length(test.DE.stats))
+  for(i in 1:length(test.DE.stats)) {
+    p.volcano[[i]] <- fig.volcano(test.DE[[i]], names(test.DE)[i])
+  }
+  names(p.volcano) <- names(test.DE.stats)
+  p.volcano <- append(p.volcano, list(benchmark=fig.volcano(bench.DE, "benchmark")))
+
 
 
   return(list(data.norm=test.norm,
               data.DE=test.DE,
-              data.DE.stats=test.DE.stats))
+              data.DE.stats=test.DE.stats,
+              p.volcano=p.volcano))
 }
 
 
