@@ -4,7 +4,7 @@
 \alias{pip.norm}
 \title{Normalization for RNASeq Data}
 \usage{
-pip.norm(raw, groups, norm.method, QN_filter = FALSE)
+pip.norm(raw, groups, norm.method = "all", QN_filter = FALSE)
 }
 \arguments{
 \item{raw}{raw count data in the format of data frame or matrix, with columns
