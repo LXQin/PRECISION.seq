@@ -200,14 +200,24 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
                        breaks = scales::pretty_breaks(n = 4)) +
     scale_y_continuous(labels = scales::percent, limits = c(0,1))
 
+  # Dendrogram
+  cat("Dendrogram plot\n")
+  genes <- rownames(data.test)
+  pval_frame <- data.frame(sapply(test.DE, function(x) x$p.val[genes]))
+  hc <- hclust(dist(t(-log10(pval_frame))), method = "ward.D")
+  p.dendro <- ggdendrogram(hc, rotate = FALSE, size = 2)
+  rm(genes, pval_frame, hc)
+
 
   return(list(data.norm=test.norm,
               data.DE=test.DE,
+              benchmark.DE=bench.DE,
               data.DE.stats=test.DE.stats,
               p.volcano=p.volcano,
               p.RLE=p.RLE,
               p.CAT=p.CAT,
-              p.FNR_FDR=p.FNR_FDR))
+              p.FNR_FDR=p.FNR_FDR,
+              p.dendro=p.dendro))
 }
 
 
