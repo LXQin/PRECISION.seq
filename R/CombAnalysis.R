@@ -1,6 +1,15 @@
+
 #' Full normalization assessment for given normalized test data
 #'
-#' @param normalized.test
+#' @param norm.counts Normalized counts of the test data for a
+#' user-provided normalization method.
+#' @param adjust.factors optional Adjustment factors for the normalization of the
+#' test data for a user-provided normalization method.
+#' @param method.name optional Name of the normalization method. Used for
+#' naming of data frames and plot legends.
+#' @param DE.method Method for computing differential expression statuses.
+#' Available: "DE.voom" and "DE.edgeR".
+#' @param Pval P-value cutoff for differential expression.
 #'
 #' @return
 #' @export
@@ -8,6 +17,13 @@
 #' @examples
 precision.seq <- function(norm.counts, adjust.factors, method.name,
                           DE.method="DE.voom", Pval=0.01) {
+
+  ### Check Inputs
+
+  if(!(DE.method %in% c("DE.voom", "DE.edgeR"))) {
+    stop("Unknown method for differential expression (DE). Options are \"DE.voom\" and \"DE.edgeR\".")
+  }
+
   if(missing(method.name)) {
     method.name <- "new"
   }
@@ -208,6 +224,21 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
   p.dendro <- ggdendrogram(hc, rotate = FALSE, size = 2)
   rm(genes, pval_frame, hc)
 
+  # Venn Diagrams
+  cat("Venn plots\n")
+  p.venn <- vector("list", length(test.DE))
+  bench.sig <- (bench.DE$p.val < Pval)
+  test.sig <- lapply(test.DE, function (x) (x$p.val[names(bench.sig)] < Pval))
+  for(i in 1:length(test.sig)) {
+    p.venn[[i]] <- as.ggplot(function() vennDiagram(
+      vennCounts(cbind(bench.sig, test.sig[[i]])),
+      names = c("Benchmark", names(test.sig)[i]),
+      cex = 1.5, counts.col = rainbow(1)))
+  }
+  names(p.venn) <- names(test.sig)
+  # TODO -> Shows empty white plot in output. Why?
+
+
 
   return(list(data.norm=test.norm,
               data.DE=test.DE,
@@ -217,7 +248,8 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
               p.RLE=p.RLE,
               p.CAT=p.CAT,
               p.FNR_FDR=p.FNR_FDR,
-              p.dendro=p.dendro))
+              p.dendro=p.dendro,
+              p.venn=p.venn))
 }
 
 
