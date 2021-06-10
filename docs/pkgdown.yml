@@ -1,10 +1,11 @@
-pandoc: 2.11.2
+pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  Full_Pipeline: Full_Pipeline.html
   Intro_Data: Intro_Data.html
   Intro_Figure: Intro_Figure.html
   Intro_Functions: Intro_Functions.html
   VSN_Example: VSN_Example.html
-last_built: 2021-03-22T04:01Z
+last_built: 2021-06-10T09:30Z
 

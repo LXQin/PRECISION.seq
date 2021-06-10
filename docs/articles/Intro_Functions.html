@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Full_Pipeline.html">Full_Pipeline</a>
+    </li>
+    <li>
       <a href="../articles/Intro_Data.html">Introduction to PRECISION.SEQ Data</a>
     </li>
     <li>
@@ -78,7 +81,7 @@
 
       
 
-      </header><script src="Intro_Functions_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="Intro_Functions_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to PRECISION.SEQ Functions</h1>
@@ -91,17 +94,17 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">precision.seq</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www-huber.embl.de/users/anders/DESeq">DESeq</a></span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www-huber.embl.de/users/anders/DESeq">DESeq</a></span><span class="op">)</span></pre></div>
 <p>One critical aspect of data normalization for transcriptomic sequencing is sequencing depth. In this package, we examine nine commonly-used methods for depth normalization and evaluate their performance for microRNA (miRNA) sequencing using a pair of datasets (benchmark data and test data) for the same set of tumor samples. Among these normalization methods, six are based on re-scaling and three are based on regression.</p>
 <div id="functions-for-depth-normalization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#functions-for-depth-normalization" class="anchor"></a>Functions for Depth Normalization</h2>
 <p>In this section, we demonstrate how to use the nine normalization functions. The input for each function includes (1) sequencing count data in the format of a data frame or a data matrix (with columns for samples and rows for miRNAs/markers) and (2) the sample groups in the form of a character vector. The output can take one of two forms depending on the type of the normalization method: for re-scaling-based methods, the output includes a matrix of the normalized data and a vector of the estimated sample-specific scaling factors; for regression-based methods, the output is a matrix of the un-normalized data and a vector of the estimated adjustment factors.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">test.TC</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/norm.TC.html">norm.TC</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="va">test.TC</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/norm.TC.html">norm.TC</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span><span class="op">)</span>
 <span class="va">test.UQ</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/norm.UQ.html">norm.UQ</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span><span class="op">)</span>
 <span class="va">test.med</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/norm.med.html">norm.med</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span><span class="op">)</span>
 <span class="va">test.TMM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/norm.TMM.html">norm.TMM</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span><span class="op">)</span>
@@ -149,14 +152,14 @@
 <span class="co">#&gt; hsa-let-7a*(2)   215.731738</span>
 <span class="co">#&gt; hsa-let-7b     13499.451384</span>
 <span class="co">#&gt; hsa-let-7b*       75.082684</span>
-<span class="co">#&gt; hsa-let-7c     11163.051990</span></code></pre></div>
+<span class="co">#&gt; hsa-let-7c     11163.051990</span></pre></div>
 </div>
 <div id="functions-for-differential-expression-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#functions-for-differential-expression-analysis" class="anchor"></a>Functions for Differential Expression Analysis</h2>
 <p>We include functions for two methods, edgeR and voom-limma, to assess differential expression. The input can be either the normalized dataset (from re-scaling normalization) or the un-normalized dataset with adjustment factor (from regression-based normalization). The output includes the p-values for the miRNAs/markers, and their group mean differences (log2 fold changes), and the names of the significantly differentially expressed miRNAs/markers (using a p-value cutoff specified by the user).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">edgeR.benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.edgeR.html">DE.edgeR</a></span><span class="op">(</span><span class="va">data.benchmark</span>, <span class="va">data.group</span><span class="op">)</span>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="va">edgeR.benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.edgeR.html">DE.edgeR</a></span><span class="op">(</span><span class="va">data.benchmark</span>, <span class="va">data.group</span><span class="op">)</span>
 <span class="va">voom.benchmark</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span><span class="va">data.benchmark</span>, <span class="va">data.group</span><span class="op">)</span>
 
 <span class="va">edgeR.test.TMM</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.edgeR.html">DE.edgeR</a></span><span class="op">(</span><span class="va">test.TMM</span><span class="op">$</span><span class="va">dat.normed</span>, <span class="va">data.group</span><span class="op">)</span>
@@ -185,14 +188,14 @@
 <span class="co">#&gt; hsa-miR-125b(2)     hsa-miR-99b    hsa-miR-99a*     hsa-miR-99a    hsa-miR-125a </span>
 <span class="co">#&gt;    1.138177e-07    1.177162e-07    3.501843e-07    6.603158e-07    2.243507e-06 </span>
 <span class="co">#&gt;    hsa-miR-146b </span>
-<span class="co">#&gt;    3.071453e-06</span></code></pre></div>
+<span class="co">#&gt;    3.071453e-06</span></pre></div>
 </div>
 <div id="functions-for-connecting-normalization-and-differential-expression-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#functions-for-connecting-normalization-and-differential-expression-analysis" class="anchor"></a>Functions for Connecting Normalization and Differential Expression Analysis</h2>
 <p>We connect the depth-normalization step and the differential-expression-analysis step with functions that combine the functions for these two steps. In addition, we include a function for computing the true positive rate, false positive rate, false discovery rate, and false negative rate using the significance result based on the benchmark data as the gold standard.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.norm.html">pip.norm</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"norm.TMM"</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="va">res.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.norm.html">pip.norm</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"norm.TMM"</span><span class="op">)</span>
 <span class="va">res.DE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.norm.DE.html">pip.norm.DE</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"norm.TMM"</span><span class="op">)</span>
 
 <span class="va">truthgene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span><span class="va">data.benchmark</span>, <span class="va">data.group</span><span class="op">)</span><span class="op">$</span><span class="va">id.list</span>
@@ -208,7 +211,7 @@
 <span class="co">#&gt; [1] 0.4871795</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $FNR</span>
-<span class="co">#&gt; [1] 0.6610169</span></code></pre></div>
+<span class="co">#&gt; [1] 0.6610169</span></pre></div>
 </div>
   </div>
 

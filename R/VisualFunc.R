@@ -155,6 +155,7 @@ fig.CAT <- function(MethodsCompare, benchmark = data.benchmark, test = data.test
 }
 
 
+# TODO Update this documentation
 #' Selection of normalization methods based on golden standards
 #'
 #' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.

@@ -1,0 +1,67 @@
+---
+title: "Full_Pipeline"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Full_Pipeline}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning = FALSE, message = FALSE}
+library(precision.seq)
+library(Biobase)
+library(vsn)
+```
+
+
+# VSN Normalization
+
+The test data is normalized by Variance Stabilizing Normalization (VSN) using function `justvsn`. Any the negative normalized counts are set to 1.
+
+```{r message = FALSE, echo = T, results = 'hide'}
+vsn.norm <- justvsn(data.test)
+vsn.norm <- ifelse(vsn.norm<0, 1, vsn.norm)
+```
+
+
+## precision.seq Normalization Assessment
+
+```{r message=FALSE, echo = T, results = 'hide'}
+res.vsn <- precision.seq(vsn.norm, method.name="vsn")
+```
+
+We investigate some results.
+
+```{r fig.width=5, fig.height=5}
+# Relative log expression
+print(res.vsn$p.RLE$noNorm)
+print(res.vsn$p.RLE$vsn)
+# Volcano plot for DE
+print(res.vsn$p.volcano$vsn)
+# Venn Diagram of DE statuses
+print(res.vsn$p.venn$noNorm)
+print(res.vsn$p.venn$vsn)
+# FNR-FDR plot
+print(res.vsn$p.FNR_FDR)
+```
+
+
+# SVA Normalization
+
+We repeat the results for a method that computes adjusting factors for the normalization. We use the (already included) method "sva".
+
+```{r message=FALSE, echo = T, results = 'hide'}
+sva.norm <- norm.SVA(data.test, data.group)
+res.sva <- precision.seq(sva.norm$dat.normed, 
+                         method.name="sva", 
+                         adjust.factors=sva.norm$adjust.factor, 
+                         DE.method="DE.voom", 
+                         Pval=0.01)
+```

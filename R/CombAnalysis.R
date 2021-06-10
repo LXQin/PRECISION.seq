@@ -11,10 +11,39 @@
 #' Available: "DE.voom" and "DE.edgeR".
 #' @param Pval P-value cutoff for differential expression.
 #'
-#' @return
+#' @return List of assessment statistics and plots (ggplot objects):
+#' \describe{
+#'   \item{data.norm}{List of Normalized test data containing the test data
+#'   for each package-supplied normalization methods and the normalized test data
+#'   provided by the user.}
+#'   \item{data.DE}{List of results of the differential expression analysis
+#'   using the differential expression method \code{DE.method} for each
+#'   normalization method using the test data.}
+#'   \item{benchmark.DE}{Results of the differential expression analysis using
+#'   the method \code{DE.method} for the benchmark data.}
+#'   \item{DE.stats}{List of statistics (true positive rate, false positive
+#'   rate, false discovery rate, and false negative rate) based on the
+#'   comparison of differential expression statuses between the normalized test
+#'   data and the unnormalized gold standard (the benchmark data).}
+#'   \item{p.volcano}{List of volcano plots from the differential expression
+#'   analysis for each normalization method.}
+#'   \item{p.RLE}{List of Relative Log Expression plots for the normalized
+#'   and un-normalized test data and the un-normalized benchmark data.}
+#'   \item{p.CAT}{Concordance At The Top plot containing all normalization
+#'   methods.}
+#'   \item{p.FNR_FDR}{Plot of the False Discovery Rate over the False Negative
+#'   Rate of the concordance of the differential expression statuses of the
+#'   normalized test data with the ones of the gold standard (the benchmark)
+#'   for each normalization method under study.}
+#'   \item{p.dendrogram}{Dendrogram from clustering p-values from the
+#'   differential expression analysis for each normalization method.}
+#'   \item{p.venn}{List of venn diagrams of the correspondance of differential
+#'   expression statuses between the normalized test data and the gold standard
+#'   (the benchmark).}
+#' }
 #' @export
 #'
-#' @examples
+#' @examples TODO
 precision.seq <- function(norm.counts, adjust.factors, method.name,
                           DE.method="DE.voom", Pval=0.01) {
 
@@ -143,21 +172,21 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
   # CAT plot
   cat("CAT plot\n")
   ## CAT plot function copied from DANA project
-  #' Comcordance at the top plot
-  #'
-  #' Function for generating concordance at the top plot, which compares the
-  #' concordance of the p-values for given differential expression analyzes
-  #' to an assumed truth (a benchmark).
-  #'
-  #' @param DEA result for the data under study
-  #' @param truth.DEA DEA result for the assumed truth (the gold standard)
-  #' @param title Plot title
-  #' @param maxrank Optionally specify the maximum size of top-ranked items
-  #' that you want to plot.
-  #' @param subset vector of a subset of genes/markers for this analysis
-  #'
-  #' @return a list of values about TPR, FPR, FDR, FNR
-  #'
+  # Comcordance at the top plot
+  #
+  # Function for generating concordance at the top plot, which compares the
+  # concordance of the p-values for given differential expression analyzes
+  # to an assumed truth (a benchmark).
+  #
+  # @param DEA result for the data under study
+  # @param truth.DEA DEA result for the assumed truth (the gold standard)
+  # @param title Plot title
+  # @param maxrank Optionally specify the maximum size of top-ranked items
+  # that you want to plot.
+  # @param subset vector of a subset of genes/markers for this analysis
+  #
+  # @return a list of values about TPR, FPR, FDR, FNR
+
   plot.CAT <- function(DEA, truth.DEA, title="", maxrank=100, subset=NULL){
     # Subset DEAs to a given set of miRNAs
     if (!is.null(subset)) {
@@ -243,12 +272,12 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
   return(list(data.norm=test.norm,
               data.DE=test.DE,
               benchmark.DE=bench.DE,
-              data.DE.stats=test.DE.stats,
+              DE.stats=test.DE.stats,
               p.volcano=p.volcano,
               p.RLE=p.RLE,
               p.CAT=p.CAT,
               p.FNR_FDR=p.FNR_FDR,
-              p.dendro=p.dendro,
+              p.dendrogram=p.dendro,
               p.venn=p.venn))
 }
 
