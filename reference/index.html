@@ -44,6 +44,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -55,9 +57,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -78,31 +86,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
-    </li>
-    <li>
-      <a href="../articles/Intro_Figure.html">Introduction to DepthNorm Figure Functions</a>
-    </li>
-    <li>
-      <a href="../articles/Intro_Functions.html">Introduction to DepthNorm Functions</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -149,6 +133,12 @@
           <p><code><a href="DE.edgeR.html">DE.edgeR()</a></code> </p>
         </td>
         <td><p>Differential Expression Analysis Using EdgeR</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="DE.statistics.html">DE.statistics()</a></code> </p>
+        </td>
+        <td><p>Statistics for DEA Results Based Golden Standards</p></td>
       </tr><tr>
         
         <td>
@@ -206,6 +196,18 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="fig.dendrogram.html">fig.dendrogram()</a></code> </p>
+        </td>
+        <td><p>Dendrogram for clustering p-values</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="fig.venn.html">fig.venn()</a></code> </p>
+        </td>
+        <td><p>Venn diagram for p-values</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="fig.volcano.html">fig.volcano()</a></code> </p>
         </td>
         <td><p>Volcano Figure</p></td>
@@ -230,9 +232,21 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="norm.RUV.html">norm.RUV()</a></code> </p>
+          <p><code><a href="norm.RUVg.html">norm.RUVg()</a></code> </p>
         </td>
-        <td><p>Normalization By Remove Unwanted Variation (RUV)</p></td>
+        <td><p>Normalization By Remove Unwanted Variation Using Control Genes (RUVg)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="norm.RUVr.html">norm.RUVr()</a></code> </p>
+        </td>
+        <td><p>Normalization By Remove Unwanted Variation Using Residuals (RUVr)</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="norm.RUVs.html">norm.RUVs()</a></code> </p>
+        </td>
+        <td><p>Normalization By Remove Unwanted Variation Using Replicate Samples (RUVs)</p></td>
       </tr><tr>
         
         <td>
@@ -272,15 +286,28 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="pip.statistics.html">pip.statistics()</a></code> </p>
+          <p><code><a href="pip.norm.html">pip.norm()</a></code> </p>
         </td>
-        <td><p>Statistics for DEA Results Based Golden Standards</p></td>
+        <td><p>Normalization for RNASeq Data</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="simu.html">simu()</a></code> </p>
+          <p><code><a href="precision.seq.html">precision.seq()</a></code> </p>
         </td>
-        <td><p>Simulated Data Generation</p></td>
+        <td><p>Full normalization assessment for given normalized test data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="simulated.data.html">simulated.data()</a></code> </p>
+        </td>
+        <td><p>Simulated Data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="simulation.algorithm.html">simulation.algorithm()</a></code> </p>
+        </td>
+        <td><p>The Algorithm for Obtaining the Simulation Plan
+This algorithm is tailored for the data.benchmark included in this package.</p></td>
       </tr>
     </tbody>
     </table>
@@ -296,11 +323,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Li-Xuan Qin, Jian Zou.</p>
+  <p><p>Developed by Jian Zou, Yannick Duren, Li-Xuan Qin.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -308,6 +335,8 @@
 
   
 
+
+  
 
   </body>
 </html>

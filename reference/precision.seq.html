@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sample Labels of the test and benchmark data — data.group • precision.seq</title>
+<title>Full normalization assessment for given normalized test data — precision.seq • precision.seq</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Sample Labels of the test and benchmark data — data.group" />
-<meta property="og:description" content="Sample Labels of the test and benchmark data" />
+<meta property="og:title" content="Full normalization assessment for given normalized test data — precision.seq" />
+<meta property="og:description" content="Full normalization assessment for given normalized test data" />
 
 
 
@@ -105,22 +105,90 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Sample Labels of the test and benchmark data</h1>
+    <h1>Full normalization assessment for given normalized test data</h1>
     
-    <div class="hidden name"><code>data.group.Rd</code></div>
+    <div class="hidden name"><code>precision.seq.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Sample Labels of the test and benchmark data</p>
+    <p>Full normalization assessment for given normalized test data</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='va'>data.group</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>precision.seq</span><span class='op'>(</span>
+  <span class='va'>norm.counts</span>,
+  <span class='va'>adjust.factors</span>,
+  <span class='va'>method.name</span>,
+  DE.method <span class='op'>=</span> <span class='st'>"DE.voom"</span>,
+  Pval <span class='op'>=</span> <span class='fl'>0.01</span>
+<span class='op'>)</span></code></pre></div>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>norm.counts</th>
+      <td><p>Normalized counts of the test data for a
+user-provided normalization method.</p></td>
+    </tr>
+    <tr>
+      <th>adjust.factors</th>
+      <td><p>optional Adjustment factors for the normalization of the
+test data for a user-provided normalization method.</p></td>
+    </tr>
+    <tr>
+      <th>method.name</th>
+      <td><p>optional Name of the normalization method. Used for
+naming of data frames and plot legends.</p></td>
+    </tr>
+    <tr>
+      <th>DE.method</th>
+      <td><p>Method for computing differential expression statuses.
+Available: "DE.voom" and "DE.edgeR".</p></td>
+    </tr>
+    <tr>
+      <th>Pval</th>
+      <td><p>P-value cutoff for differential expression.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>List of assessment statistics and plots (ggplot objects):</p><dl>
+  <dt>data.norm</dt><dd><p>List of Normalized test data containing the test data
+  for each package-supplied normalization methods and the normalized test data
+  provided by the user.</p></dd>
+  <dt>data.DE</dt><dd><p>List of results of the differential expression analysis
+  using the differential expression method <code>DE.method</code> for each
+  normalization method using the test data.</p></dd>
+  <dt>benchmark.DE</dt><dd><p>Results of the differential expression analysis using
+  the method <code>DE.method</code> for the benchmark data.</p></dd>
+  <dt>DE.stats</dt><dd><p>List of statistics (true positive rate, false positive
+  rate, false discovery rate, and false negative rate) based on the
+  comparison of differential expression statuses between the normalized test
+  data and the unnormalized gold standard (the benchmark data).</p></dd>
+  <dt>p.volcano</dt><dd><p>List of volcano plots from the differential expression
+  analysis for each normalization method.</p></dd>
+  <dt>p.RLE</dt><dd><p>List of Relative Log Expression plots for the normalized
+  and un-normalized test data and the un-normalized benchmark data.</p></dd>
+  <dt>p.CAT</dt><dd><p>Concordance At The Top plot containing all normalization
+  methods.</p></dd>
+  <dt>p.FNR_FDR</dt><dd><p>Plot of the False Discovery Rate over the False Negative
+  Rate of the concordance of the differential expression statuses of the
+  normalized test data with the ones of the gold standard (the benchmark)
+  for each normalization method under study.</p></dd>
+  <dt>p.dendrogram</dt><dd><p>Dendrogram from clustering p-values from the
+  differential expression analysis for each normalization method.</p></dd>
+  <dt>p.venn</dt><dd><p>List of venn diagrams of the correspondance of differential
+  expression statuses between the normalized test data and the gold standard
+  (the benchmark).</p></dd>
+
+</dl>
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A set of labels for the test and benchmark samples, either "MXF" (myxofibrosarcoma) or "PMFH" (pleomorphic malignant fibrous histiocytoma).</p>
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>TODO</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in eval(expr, envir, enclos)</span> object 'TODO' not found</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

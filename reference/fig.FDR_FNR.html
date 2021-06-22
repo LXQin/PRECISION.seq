@@ -45,6 +45,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -56,9 +58,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -79,31 +87,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
-    </li>
-    <li>
-      <a href="../articles/Intro_Figure.html">Introduction to DepthNorm Figure Functions</a>
-    </li>
-    <li>
-      <a href="../articles/Intro_Functions.html">Introduction to DepthNorm Functions</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -130,77 +114,33 @@
     <p>Selection of normalization methods based on golden standards</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fig.FDR_FNR</span>(
-  <span class='kw'>raw</span>,
-  <span class='kw'>groups</span>,
-  <span class='kw'>MethodsCompare</span>,
-  RUV_method = <span class='kw'>NULL</span>,
-  QN_filter = <span class='fl'>FALSE</span>,
-  DE.method = <span class='st'>"DE.voom"</span>,
-  Pval = <span class='fl'>0.01</span>,
-  <span class='kw'>truth</span>,
-  marker_selection = <span class='fl'>FALSE</span>,
-  selected_marker = <span class='kw'>NULL</span>
-)</pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fig.FDR_FNR</span><span class='op'>(</span><span class='va'>DEA</span>, <span class='va'>truth.DEA</span>, <span class='va'>title</span>, subset <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>raw</th>
-      <td><p>raw count data in the format of data frame or matrix, with columns for samples and raws for genes.</p></td>
+      <th>DEA</th>
+      <td><p>a list of differential expression analysis results with the element names to be the normalization methods</p></td>
     </tr>
     <tr>
-      <th>groups</th>
-      <td><p>vector of characters indicating the group for each sample (only 2 groups allowed).</p></td>
+      <th>truth.DEA</th>
+      <td><p>differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)</p></td>
     </tr>
     <tr>
-      <th>MethodsCompare</th>
-      <td><p>the vector of methods that researchers would like to compare with, and selected from  <code>norm.none</code>, <code>norm.TMM</code>, <code>norm.TC</code>, <code>norm.UQ</code>, <code>norm.med</code>, <code>norm.DESeq</code>, <code>norm.PoissonSeq</code>, <code>norm.QN</code>, <code>norm.SVA</code>, and <code>norm.RUV</code>.</p></td>
+      <th>title</th>
+      <td><p>figure title</p></td>
     </tr>
     <tr>
-      <th>RUV_method</th>
-      <td><p>the exact RUV method used from <code>RUVg</code>, <code>RUVr</code> and <code>RUVs</code> if <code>method = norm.RUV</code></p></td>
-    </tr>
-    <tr>
-      <th>QN_filter</th>
-      <td><p>whether the filtering is performed if <code>method = norm.QN</code>.</p></td>
-    </tr>
-    <tr>
-      <th>DE.method</th>
-      <td><p>the method for differential expression analysis from <code>DE.voom</code> and <code>DE.edgeR</code>, default to be <code>DE.voom</code>.</p></td>
-    </tr>
-    <tr>
-      <th>Pval</th>
-      <td><p>p-value for identifying DE genes, default to be 0.01</p></td>
-    </tr>
-    <tr>
-      <th>truth</th>
-      <td><p>vector of genes that are truly differential expressed</p></td>
-    </tr>
-    <tr>
-      <th>marker_selection</th>
-      <td><p>whether selecting a subset of genes/markers for this analysis</p></td>
-    </tr>
-    <tr>
-      <th>selected_marker</th>
+      <th>subset</th>
       <td><p>vector of a subset of genes/markers for this analysis</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>plotly figure for selection of normalization methods</p>
+    <p>figure for selection of normalization methods</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>truthgene</span> <span class='op'>&lt;-</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span>(<span class='kw'>data.benchmark</span>, <span class='kw'>data.group</span>)<span class='op'>$</span><span class='kw'>id.list</span>
-<span class='fu'>fig.FDR_FNR</span>(<span class='kw'>data.test</span>, <span class='kw'>data.group</span>, MethodsCompare = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"norm.none"</span>, <span class='st'>"norm.TMM"</span>, <span class='st'>"norm.SVA"</span>, <span class='st'>"norm.TC"</span>), truth = <span class='kw'>truthgene</span>)
-</div><div class='output co'>#&gt; Number of significant surrogate variables is:  1 
-#&gt; Iteration (out of 5 ):1  2  3  4  5  </div><div class='output co'>#&gt; <span class='warning'>Warning: `arrange_()` is deprecated as of dplyr 0.7.0.</span>
-#&gt; <span class='warning'>Please use `arrange()` instead.</span>
-#&gt; <span class='warning'>See vignette('programming') for more help</span>
-#&gt; <span class='warning'><span style='color: #555555;'>This warning is displayed once every 8 hours.</span><span></span>
-#&gt; <span class='warning'></span><span style='color: #555555;'>Call `lifecycle::last_warnings()` to see where this warning was generated.</span><span></span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -212,11 +152,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Li-Xuan Qin, Jian Zou.</p>
+  <p><p>Developed by Jian Zou, Yannick Duren, Li-Xuan Qin.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -224,6 +164,8 @@
 
   
 
+
+  
 
   </body>
 </html>

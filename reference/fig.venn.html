@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sample Labels of the test and benchmark data — data.group • precision.seq</title>
+<title>Venn diagram for p-values — fig.venn • precision.seq</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Sample Labels of the test and benchmark data — data.group" />
-<meta property="og:description" content="Sample Labels of the test and benchmark data" />
+<meta property="og:title" content="Venn diagram for p-values — fig.venn" />
+<meta property="og:description" content="Venn diagram is used to identify the performance of different normalization methods based on intersection of differential expressed genes." />
 
 
 
@@ -105,22 +105,44 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Sample Labels of the test and benchmark data</h1>
+    <h1>Venn diagram for p-values</h1>
     
-    <div class="hidden name"><code>data.group.Rd</code></div>
+    <div class="hidden name"><code>fig.venn.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Sample Labels of the test and benchmark data</p>
+    <p>Venn diagram is used to identify the performance of different normalization methods based on intersection of differential expressed genes.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='va'>data.group</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fig.venn</span><span class='op'>(</span><span class='va'>truth.DEA</span>, <span class='va'>DEA.res</span>, <span class='va'>Pvalue</span><span class='op'>)</span></code></pre></div>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>truth.DEA</th>
+      <td><p>differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)</p></td>
+    </tr>
+    <tr>
+      <th>DEA.res</th>
+      <td><p>the list of differential expression analysis results obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes).</p></td>
+    </tr>
+    <tr>
+      <th>Pvalue</th>
+      <td><p>Cut-off point for p-values for identifying significance</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A set of labels for the test and benchmark samples, either "MXF" (myxofibrosarcoma) or "PMFH" (pleomorphic malignant fibrous histiocytoma).</p>
+    <p>A Venn diagram</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>benchmark.voom</span> <span class='op'>&lt;-</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC <span class='op'>=</span> <span class='va'>data.benchmark</span>, groups <span class='op'>=</span> <span class='va'>data.group</span>, P <span class='op'>=</span> <span class='fl'>0.01</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>test.voom</span> <span class='op'>&lt;-</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC <span class='op'>=</span> <span class='va'>data.test</span>, groups <span class='op'>=</span> <span class='va'>data.group</span>, P <span class='op'>=</span> <span class='fl'>0.01</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>fig.venn</span><span class='op'>(</span><span class='va'>benchmark.voom</span><span class='op'>$</span><span class='va'>p.val</span>, <span class='va'>test.voom</span><span class='op'>$</span><span class='va'>p.val</span>, <span class='fl'>0.01</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error:</span> $ operator is invalid for atomic vectors</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

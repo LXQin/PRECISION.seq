@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Statistics for DEA Results Based Golden Standards — pip.statistics • precision.seq</title>
+<title>Normalization By Remove Unwanted Variation Using Control Genes (RUVg) — norm.RUVg • precision.seq</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,10 @@
 
 
 
-<meta property="og:title" content="Statistics for DEA Results Based Golden Standards — pip.statistics" />
-<meta property="og:description" content="Computing the true positive rate, false positive rate, false discovery rate, and false negative rate based on given golden standards." />
+<meta property="og:title" content="Normalization By Remove Unwanted Variation Using Control Genes (RUVg) — norm.RUVg" />
+<meta property="og:description" content="Normalize the dataset using RUV Using Control Genes, and return the normalized dataset with adjusting factor." />
+
+
 
 
 
@@ -56,9 +58,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -79,31 +87,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/Intro_Data.html">Introduction to DepthNorm Data</a>
-    </li>
-    <li>
-      <a href="../articles/Intro_Figure.html">Introduction to DepthNorm Figure Functions</a>
-    </li>
-    <li>
-      <a href="../articles/Intro_Functions.html">Introduction to DepthNorm Functions</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -121,27 +105,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Statistics for DEA Results Based Golden Standards</h1>
+    <h1>Normalization By Remove Unwanted Variation Using Control Genes (RUVg)</h1>
     
-    <div class="hidden name"><code>pip.statistics.Rd</code></div>
+    <div class="hidden name"><code>norm.RUVg.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Computing the true positive rate, false positive rate, false discovery rate, and false negative rate based on given golden standards.</p>
+    <p>Normalize the dataset using RUV Using Control Genes, and return the normalized dataset with adjusting factor.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pip.statistics</span>(
-  <span class='kw'>raw</span>,
-  <span class='kw'>groups</span>,
-  <span class='kw'>norm.method</span>,
-  RUV_method = <span class='kw'>NULL</span>,
-  QN_filter = <span class='fl'>FALSE</span>,
-  DE.method = <span class='st'>"DE.voom"</span>,
-  Pval = <span class='fl'>0.01</span>,
-  <span class='kw'>truth</span>,
-  marker_selection = <span class='fl'>FALSE</span>,
-  selected_marker = <span class='kw'>NULL</span>
-)</pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>norm.RUVg</span><span class='op'>(</span><span class='va'>raw</span>, <span class='va'>groups</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,51 +125,21 @@
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>vector of characters indicating the group for each sample (only 2 groups allowed).</p></td>
-    </tr>
-    <tr>
-      <th>norm.method</th>
-      <td><p>the method for normalization selected from <code>norm.none</code>, <code>norm.TMM</code>, <code>norm.TC</code>, <code>norm.UQ</code>, <code>norm.med</code>, <code>norm.DESeq</code>, <code>norm.PoissonSeq</code>, <code>norm.QN</code>, <code>norm.SVA</code>, and <code>norm.RUV</code>.</p></td>
-    </tr>
-    <tr>
-      <th>RUV_method</th>
-      <td><p>the exact RUV method used from <code>RUVg</code>, <code>RUVr</code> and <code>RUVs</code> if <code>method = norm.RUV</code></p></td>
-    </tr>
-    <tr>
-      <th>QN_filter</th>
-      <td><p>whether the filtering is performed if <code>method = norm.QN</code>.</p></td>
-    </tr>
-    <tr>
-      <th>DE.method</th>
-      <td><p>the method for differential expression analysis from <code>DE.voom</code> and <code>DE.edgeR</code>, default to be <code>DE.voom</code>.</p></td>
-    </tr>
-    <tr>
-      <th>Pval</th>
-      <td><p>p-value for identifying DE genes, default to be 0.01</p></td>
-    </tr>
-    <tr>
-      <th>truth</th>
-      <td><p>vector of genes that are truly differential expressed</p></td>
-    </tr>
-    <tr>
-      <th>marker_selection</th>
-      <td><p>whether selecting a subset of genes/markers for this analysis</p></td>
-    </tr>
-    <tr>
-      <th>selected_marker</th>
-      <td><p>vector of a subset of genes/markers for this analysis</p></td>
+      <td><p>vector of characters indicating the group for each sample.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list of values about TPR, FPR, FDR, FNR</p>
+    <p>list, containing <code>dat.normed</code> (normalized dataset), and the <code>adjust.factor</code> (adjusting factors) for the design matrix. The normalized dataset could only used for exploration, and adjusting factors are recommended as a covariate in the downstream analysis.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p><a href='http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf'>RUVSeq Tutorial</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>truthgene</span> <span class='op'>&lt;-</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span>(<span class='kw'>data.benchmark</span>, <span class='kw'>data.group</span>)<span class='op'>$</span><span class='kw'>id.list</span>
-<span class='kw'>stat</span> <span class='op'>&lt;-</span> <span class='fu'>pip.statistics</span>(<span class='kw'>data.test</span>, <span class='kw'>data.group</span>, <span class='st'>"norm.TMM"</span>, truth = <span class='kw'>truthgene</span>)
-
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='va'>test.RUVg</span> <span class='op'>&lt;-</span> <span class='fu'>norm.RUV</span><span class='op'>(</span><span class='va'>data.test</span>, <span class='va'>data.group</span><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in norm.RUV(data.test, data.group)</span> could not find function "norm.RUV"</span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -208,11 +151,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Li-Xuan Qin, Jian Zou.</p>
+  <p><p>Developed by Jian Zou, Yannick Duren, Li-Xuan Qin.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -220,6 +163,8 @@
 
   
 
+
+  
 
   </body>
 </html>
