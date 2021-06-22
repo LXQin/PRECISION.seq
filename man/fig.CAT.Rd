@@ -4,39 +4,18 @@
 \alias{fig.CAT}
 \title{Concordance At The Top Plot}
 \usage{
-fig.CAT(
-  MethodsCompare,
-  benchmark = data.benchmark,
-  test = data.test,
-  group = data.group,
-  DE.method = "DE.voom",
-  QN_filter = FALSE,
-  Pval = 0.01,
-  MethodNew,
-  pvalues,
-  Methods_visual = c(MethodsCompare, MethodNew)
-)
+fig.CAT(DEA, truth.DEA, title, maxrank = 100, subset = NULL)
 }
 \arguments{
-\item{MethodsCompare}{the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.}
+\item{DEA}{a list of differential expression analysis results with the element names to be the normalization methods}
 
-\item{benchmark}{benchmark data with the same format of data.benchmark, which are used for benchmark p-values, and is set to use data.benchmark by default}
+\item{truth.DEA}{differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)}
 
-\item{test}{test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default}
+\item{title}{figure title}
 
-\item{DE.method}{the DEA method selected from \code{DE.voom} and \code{DE.edgeR}, and default to be \code{DE.voom}.}
+\item{maxrank}{optionally specify the maximum size of top-ranked items that you want to plot.}
 
-\item{QN_filter}{whether the filtering is performed if \code{norm.QN} is used.}
-
-\item{Pval}{p-value cut-off point for identifying DE genes, default to be 0.01.}
-
-\item{MethodNew}{the name of the new method which will be presented in the legend.}
-
-\item{pvalues}{a vector of p values computed from DE analysis using the new method normalized test data.}
-
-\item{Methods_visual}{a vector of methods' names shown in the figure.}
-
-\item{groups}{vector of characters indicating the group for each sample.}
+\item{subset}{vector of a subset of genes/markers for this analysis}
 }
 \value{
 figure of concordance for comparison
@@ -44,9 +23,4 @@ figure of concordance for comparison
 \description{
 Function for generating concordance at the top plot, which compares concordance of the p-values obtained
 from benchmark data without normalization and normalized test data.
-}
-\examples{
-t <-  runif(1033)
-names(t) <-  rownames(data.test)
-fig.CAT(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)
 }

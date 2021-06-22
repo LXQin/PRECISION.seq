@@ -119,7 +119,6 @@ norm.med <- function(raw, groups) {
 #' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) for each sample.
 #'
 #' @import DESeq2
-#' @import DESeq
 #' @export
 #'
 #' @references \href{https://bioconductor.org/packages/release/bioc/vignettes/DESeq/inst/doc/DESeq.pdf}{DESeq Package}
@@ -127,8 +126,10 @@ norm.med <- function(raw, groups) {
 #' @examples
 #' test.DESeq <- norm.DESeq(data.test, data.group)
 norm.DESeq <- function(raw, groups) {
-  condition <- factor(groups)
-  dat.DGE <- estimateSizeFactors(DESeq::newCountDataSet(raw, condition))
+  condition <- data.frame(SampleName = colnames(raw), Condition = factor(groups))
+  rownames(condition) = colnames(raw)
+  dat.DGE <- DESeqDataSetFromMatrix(countData = raw, colData = condition, design = ~ Condition)
+  dat.DGE <- estimateSizeFactors(dat.DGE)
   scaling.factor <- sizeFactors(dat.DGE)
   dat.normed <- counts(dat.DGE, normalized = T)
   return(list(dat.normed = dat.normed,

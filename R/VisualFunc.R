@@ -54,14 +54,6 @@ fig.RLE = function(data, groups, title) {
   rle <- t(apply(raw.log, 1, function(x) x - median(x)))
 
   ylim = round(max(1.5*(apply(rle, 2, IQR)) + max(abs(apply(rle, 2, function(x) quantile(x, c(0.25, 0.75)))))), 1)
-  #  color <- groups
-  #  color[color == levels(factor(color))[1]] <- rainbow(2)[1]
-  #  color[color == levels(factor(color))[2]] <- rainbow(2)[2]
-  #  boxplot(rle, col = color, ylab = "RLE", ylim = c(-ylim, ylim),
-  #          outline = FALSE, xaxt = "n", main = title)
-  #  legend("topright",levels(factor(groups)), bty = "n",
-  #         pch = "x", cex = 1, col = c(rainbow(2)[1], rainbow(2)[2]))
-
   df <- tidyr::gather(as.data.frame(rle), Sample, RLE)
   df$group <- rep(groups, each = nrow(rle))
   df$Sample <- factor(df$Sample, levels = colnames(rle))
@@ -86,68 +78,59 @@ fig.RLE = function(data, groups, title) {
 #' from benchmark data without normalization and normalized test data.
 #'
 #'
-#' @param MethodsCompare the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.
-#' @param benchmark benchmark data with the same format of data.benchmark, which are used for benchmark p-values, and is set to use data.benchmark by default
-#' @param test test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default
-#' @param groups vector of characters indicating the group for each sample.
-#' @param DE.method the DEA method selected from \code{DE.voom} and \code{DE.edgeR}, and default to be \code{DE.voom}.
-#' @param QN_filter whether the filtering is performed if \code{norm.QN} is used.
-#' @param Pval p-value cut-off point for identifying DE genes, default to be 0.01.
-#' @param MethodNew the name of the new method which will be presented in the legend.
-#' @param pvalues a vector of p values computed from DE analysis using the new method normalized test data.
-#' @param Methods_visual a vector of methods' names shown in the figure.
-#'
+#' @param DEA a list of differential expression analysis results with the element names to be the normalization methods
+#' @param truth.DEA differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)
+#' @param title figure title
+#' @param maxrank optionally specify the maximum size of top-ranked items that you want to plot.
+#' @param subset vector of a subset of genes/markers for this analysis
+#
 #' @return figure of concordance for comparison
 #'
-#' @import ffpe
 #' @import ggplot2
 #'
 #' @export
 #'
 #' @examples
-#' t <-  runif(1033)
-#' names(t) <-  rownames(data.test)
-#' fig.CAT(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)
-fig.CAT <- function(MethodsCompare, benchmark = data.benchmark, test = data.test,
-                    group = data.group, DE.method = "DE.voom", QN_filter = FALSE,
-                    Pval = 0.01, MethodNew, pvalues, Methods_visual = c(MethodsCompare, MethodNew)){
-  DEFUN = match.fun(DE.method)
-  benchmark.p <-  DEFUN(benchmark, group)$p.val
-
-  if(is.null(MethodNew)){
-    numMethods <- length(MethodsCompare)
-    catplots <- vector("list", numMethods)
-    for (i in 1:numMethods) {
-      catplots[[i]] <- CATplot(pip.norm.DE(test, group, MethodsCompare[i],
-                                           QN_filter = QN_filter,
-                                           DE.method = DE.method, Pval = Pval)$p.val,
-                               benchmark.p, maxrank = 100, make.plot = F)
-    }
-  } else {
-    numMethods <- length(MethodsCompare) + 1
-    catplots <- vector("list", numMethods)
-    for (i in 1:(numMethods - 1)) {
-      catplots[[i]] <- CATplot(pip.norm.DE(test, group, MethodsCompare[i],
-                                           QN_filter = QN_filter,
-                                           DE.method = DE.method, Pval = Pval)$p.val,
-                               benchmark.p, maxrank = 100, make.plot = F)
-    }
-    catplots[[numMethods]] <- CATplot(pvalues, benchmark.p, maxrank = 100, make.plot = F)
+fig.CAT <- function(DEA, truth.DEA, title, maxrank=100, subset=NULL){
+  # Subset DEAs to a given set of miRNAs
+  if (!is.null(subset)) {
+    DEA <- DEA[subset, ]
+    truth.DEA <- truth.DEA[subset, ]
   }
+  # Reduce Data to named p.values
+  truth <- truth.DEA$p.val
+  names(truth) <- truth.DEA$id.list
+  compare <- list()
+  for(i in 1:length(DEA)) {
+    compare <- append(compare, list(DEA[[i]]$p.val))
+    names(compare[[i]]) <- DEA[[i]]$id.list
+  }
+  names(compare) <- names(DEA)
 
-  data_cat = data.frame(x = numeric(), y = numeric(), curve = character())
-  for(i in 1:numMethods){
+  catplots <- list()
+  for(i in 1:length(compare)) {
+    catplots <- append(catplots,
+                       list(CATplot(compare[[i]], truth,
+                                    maxrank = maxrank, make.plot=FALSE)))
+  }
+  names(catplots) <- names(compare)
+
+  data_cat <- data.frame(x = numeric(), y = numeric(), curve = character())
+  for(i in 1:length(catplots)){
     y = catplots[[i]][,2]
     x = 1:length(y)
-    data_cat = rbind(data_cat, data.frame(x, y, curve = Methods_visual[i]))
+    data_cat = rbind(data_cat, data.frame(x, y, curve = names(catplots)[i]))
   }
   data_cat$curve = factor(data_cat$curve)
 
-  p <- ggplot(data_cat, aes(x, y, color = curve)) +
-    geom_line() +
+  p <- ggplot(data_cat, aes(x, y, color = curve, linetype = curve)) +
+    theme(legend.title = element_blank()) +
+    geom_line(size=.75) +
     ylab("Rate of Agreement with Benchmark") +
     xlab("Significance Rank") +
-    ggtitle("CATplot") +
+    theme(legend.title=element_blank()) +
+    ggtitle(title) +
+    ylim(c(0,1)) +
     theme_bw()
 
   return(p)
@@ -156,15 +139,10 @@ fig.CAT <- function(MethodsCompare, benchmark = data.benchmark, test = data.test
 
 #' Selection of normalization methods based on golden standards
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
-#' @param groups vector of characters indicating the group for each sample (only 2 groups allowed).
-#' @param truth vector of genes that are truly differential expressed
-#' @param MethodsCompare the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.
-#' @param QN_filter whether the filtering is performed if \code{method = norm.QN}.
-#' @param DE.method the method for differential expression analysis from \code{DE.voom} and \code{DE.edgeR}, default to be \code{DE.voom}.
-#' @param Pval p-value for identifying DE genes, default to be 0.01
-#' @param selected.marker if given, vector of a subset of genes/markers for
-#' this analysis. Leave \code{NULL} if all markers are considered for the analysis.
+#' @param DEA a list of differential expression analysis results with the element names to be the normalization methods
+#' @param truth.DEA differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)
+#' @param title figure title
+#' @param subset vector of a subset of genes/markers for this analysis
 #'
 #' @return figure for selection of normalization methods
 #'
@@ -174,38 +152,23 @@ fig.CAT <- function(MethodsCompare, benchmark = data.benchmark, test = data.test
 #' @export
 #'
 #' @examples
-#' truthgene <- DE.voom(data.benchmark, data.group)$id.list
-#' fig.FDR_FNR(data.test, data.group, MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"), truth = truthgene)
-fig.FDR_FNR <- function(raw, groups, MethodsCompare, truth,
-                        QN_filter = FALSE,
-                        DE.method = "DE.voom", Pval = 0.01,
-                        MethodNew = NULL, new.norm.list = NULL,
-                        selected.marker = NULL) {
-  numMethods <- length(MethodsCompare)
-  FNR <- FDR <- c()
-  for (i in 1:numMethods){
-    temp <- pip.statistics(raw = raw, groups = groups, truth = truth,
-                           DE.method = DE.method,
-                           norm.method = MethodsCompare[i],
-                           QN_filter = QN_filter, Pval = Pval,
-                           selected.marker = selected.marker, new.norm.list = new.norm.list)
-    FNR <- c(FNR, temp$FNR)
-    FDR <- c(FDR, temp$FDR)
+fig.FDR_FNR <- function(DEA, truth.DEA, title, subset=NULL) {
+  DE.stats <- list()
+  for(DE.res in DEA) {
+    DE.stats <-
+      append(DE.stats,
+             list(DE.statistics(markers=names(truth.DEA$p.val),
+                                id.list=DE.res$id.list,
+                                truth=truth.DEA$id.list,
+                                selected.marker=subset)))
   }
-
-  if (!is.null(MethodNew) & !is.null(new.norm.list)) {
-    new.method.stat <- DE.statistics(markers=rownames(raw),
-                                     id.list=new.norm.list,
-                                     truth=truth,
-                                     selected.marker=selected.marker)
-    FNR <- c(FNR, new.method.stat$FNR)
-    FDR <- c(FDR, new.method.stat$FDR)
-    MethodsCompare <- c(MethodsCompare, MethodNew)
-  }
-
-  stat <- data.frame(FNR = FNR, FDR = FDR, names = MethodsCompare)
+  names(DE.stats) <- names(DEA)
+  FNR <- sapply(1:length(names(DE.stats)), function(x)DE.stats[[x]]$FNR)
+  FDR <- sapply(1:length(names(DE.stats)), function(x)DE.stats[[x]]$FDR)
+  stat <- data.frame(FNR = FNR, FDR = FDR, names = names(DE.stats))
   p <- ggplot(stat, aes(FNR, FDR, label = names)) + geom_point(color = "red") +
-    geom_text_repel() + theme_bw()
+    geom_text_repel() + theme_bw() +
+    ggtitle(title)
 
   return(p)
 }
@@ -214,8 +177,8 @@ fig.FDR_FNR <- function(raw, groups, MethodsCompare, truth,
 #' Venn diagram for p-values
 #'
 #' Venn diagram is used to identify the performance of different normalization methods based on intersection of differential expressed genes.
-#' @param benchmark.pval p-values obtained from benchmark data
-#' @param test.pval p-values obtained from normalized test data
+#' @param truth.DEA differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)
+#' @param DEA.res the list of differential expression analysis results obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes).
 #' @param Pvalue Cut-off point for p-values for identifying significance
 #'
 #' @return A Venn diagram
@@ -228,9 +191,9 @@ fig.FDR_FNR <- function(raw, groups, MethodsCompare, truth,
 #' benchmark.voom <- DE.voom(RC = data.benchmark, groups = data.group, P = 0.01)
 #' test.voom <- DE.voom(RC = data.test, groups = data.group, P = 0.01)
 #' fig.venn(benchmark.voom$p.val, test.voom$p.val, 0.01)
-fig.venn <- function(benchmark.pval, test.pval, Pvalue){
-  bench.sig <- (benchmark.pval < Pvalue)
-  test.sig <- (test.pval[names(benchmark.pval)] < Pvalue)
+fig.venn <- function(truth.DEA, DEA.res, Pvalue){
+  bench.sig <- (truth.DEA$p.val < Pvalue)
+  test.sig <- (DEA.res$p.val[names(truth.DEA$p.val)] < Pvalue)
   venn <- vennCounts(cbind(bench.sig, test.sig))
   p <- as.ggplot(function() vennDiagram(venn,
                                         names = c("Benchmark", "Test"),
@@ -244,14 +207,9 @@ fig.venn <- function(benchmark.pval, test.pval, Pvalue){
 #'
 #' Function for clustering normalization methods based on the p-values pattern calculated from the same dataset.
 #'
-#' @param MethodsCompare the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.
-#' @param DE.method the DEA method selected from \code{DE.voom} and \code{DE.edgeR}, and default to be \code{DE.voom}.
-#' @param QN_filter whether the filtering is performed if \code{norm.QN} is used.
-#' @param MethodNew the name of the new method which will be presented in the legend.
-#' @param pvalues a vector of p values computed from DE analysis using the new method normalized test data.
-#' @param test test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default
-#' @param group vector of characters indicating the group for each sample (only 2 groups allowed).
-#'
+#' @param DEA a list of differential expression analysis results with the element names to be the normalization methods
+#' @param title figure title
+#' @param subset vector of a subset of genes/markers for this analysis
 #' @return figure of dendrogram
 #'
 #' @import ggdendro
@@ -262,23 +220,15 @@ fig.venn <- function(benchmark.pval, test.pval, Pvalue){
 #' t <-  runif(1033)
 #' names(t) <-  rownames(data.test)
 #' fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)
-fig.dendrogram <- function(MethodsCompare, DE.method = "DE.voom", QN_filter = FALSE,
-                           Pval = 0.01, MethodNew, pvalues, Methods_visual = c(MethodsCompare, MethodNew),
-                           test = data.test, group = data.group){
-  pval.index = rownames(test)
-  numMethods <- length(MethodsCompare) + 1
-  pval_list <- vector("list", numMethods)
-  for (i in 1:(numMethods - 1)) {
-    pval_list[[i]] <- pip.norm.DE(test, group, MethodsCompare[i],
-                                  QN_filter = QN_filter,
-                                  DE.method = DE.method, Pval = Pval)$p.val[pval.index]
+fig.dendrogram <- function(DEA, title, subset=NULL){
+  if(is.null(subset)){
+    genes <- names(DEA[[1]]$p.val)
+  } else{
+    genes <- subset
   }
-  pval_list[[numMethods]] <- pvalues[pval.index]
-  pval_frame <- data.frame(matrix(unlist(pval_list), nrow = length(pval.index), byrow=T))
-  colnames(pval_frame) <- c(MethodsCompare, MethodNew)
-  dendrogram.p <- t(-log10(pval_frame))
-  ds <- dist(dendrogram.p)
-  hc <- hclust(ds, method = "ward.D")
-  p <- ggdendrogram(hc, rotate = FALSE, size = 2)
-  return(p)
+  pval_frame <- data.frame(sapply(DEA, function(x) x$p.val[genes]))
+  hc <- hclust(dist(t(-log10(pval_frame))), method = "ward.D")
+  p.dendro <- ggdendrogram(hc, rotate = FALSE, size = 2) + ggtitle(title)
+  rm(genes, pval_frame, hc)
+  return(p.dendro)
 }

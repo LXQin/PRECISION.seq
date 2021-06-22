@@ -4,32 +4,14 @@
 \alias{fig.dendrogram}
 \title{Dendrogram for clustering p-values}
 \usage{
-fig.dendrogram(
-  MethodsCompare,
-  DE.method = "DE.voom",
-  QN_filter = FALSE,
-  Pval = 0.01,
-  MethodNew,
-  pvalues,
-  Methods_visual = c(MethodsCompare, MethodNew),
-  test = data.test,
-  group = data.group
-)
+fig.dendrogram(DEA, title, subset = NULL)
 }
 \arguments{
-\item{MethodsCompare}{the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.}
+\item{DEA}{a list of differential expression analysis results with the element names to be the normalization methods}
 
-\item{DE.method}{the DEA method selected from \code{DE.voom} and \code{DE.edgeR}, and default to be \code{DE.voom}.}
+\item{title}{figure title}
 
-\item{QN_filter}{whether the filtering is performed if \code{norm.QN} is used.}
-
-\item{MethodNew}{the name of the new method which will be presented in the legend.}
-
-\item{pvalues}{a vector of p values computed from DE analysis using the new method normalized test data.}
-
-\item{test}{test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default}
-
-\item{group}{vector of characters indicating the group for each sample (only 2 groups allowed).}
+\item{subset}{vector of a subset of genes/markers for this analysis}
 }
 \value{
 figure of dendrogram

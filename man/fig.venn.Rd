@@ -4,12 +4,12 @@
 \alias{fig.venn}
 \title{Venn diagram for p-values}
 \usage{
-fig.venn(benchmark.pval, test.pval, Pvalue)
+fig.venn(truth.DEA, DEA.res, Pvalue)
 }
 \arguments{
-\item{benchmark.pval}{p-values obtained from benchmark data}
+\item{truth.DEA}{differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)}
 
-\item{test.pval}{p-values obtained from normalized test data}
+\item{DEA.res}{the list of differential expression analysis results obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes).}
 
 \item{Pvalue}{Cut-off point for p-values for identifying significance}
 }

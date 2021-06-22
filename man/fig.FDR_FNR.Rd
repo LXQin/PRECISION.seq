@@ -4,44 +4,20 @@
 \alias{fig.FDR_FNR}
 \title{Selection of normalization methods based on golden standards}
 \usage{
-fig.FDR_FNR(
-  raw,
-  groups,
-  MethodsCompare,
-  truth,
-  QN_filter = FALSE,
-  DE.method = "DE.voom",
-  Pval = 0.01,
-  MethodNew = NULL,
-  new.norm.list = NULL,
-  selected.marker = NULL
-)
+fig.FDR_FNR(DEA, truth.DEA, title, subset = NULL)
 }
 \arguments{
-\item{raw}{raw count data in the format of data frame or matrix, with columns for samples and raws for genes.}
+\item{DEA}{a list of differential expression analysis results with the element names to be the normalization methods}
 
-\item{groups}{vector of characters indicating the group for each sample (only 2 groups allowed).}
+\item{truth.DEA}{differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)}
 
-\item{MethodsCompare}{the vector of methods that researchers would like to compare with, and selected from  \code{norm.none}, \code{norm.TMM}, \code{norm.TC}, \code{norm.UQ}, \code{norm.med}, \code{norm.DESeq}, \code{norm.PoissonSeq}, \code{norm.QN}, \code{norm.SVA}, and \code{norm.RUV}.}
+\item{title}{figure title}
 
-\item{truth}{vector of genes that are truly differential expressed}
-
-\item{QN_filter}{whether the filtering is performed if \code{method = norm.QN}.}
-
-\item{DE.method}{the method for differential expression analysis from \code{DE.voom} and \code{DE.edgeR}, default to be \code{DE.voom}.}
-
-\item{Pval}{p-value for identifying DE genes, default to be 0.01}
-
-\item{selected.marker}{if given, vector of a subset of genes/markers for
-this analysis. Leave \code{NULL} if all markers are considered for the analysis.}
+\item{subset}{vector of a subset of genes/markers for this analysis}
 }
 \value{
 figure for selection of normalization methods
 }
 \description{
 Selection of normalization methods based on golden standards
-}
-\examples{
-truthgene <- DE.voom(data.benchmark, data.group)$id.list
-fig.FDR_FNR(data.test, data.group, MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC"), truth = truthgene)
 }
