@@ -87,6 +87,7 @@ fig.RLE = function(data, groups, title) {
 #' @return figure of concordance for comparison
 #'
 #' @import ggplot2
+#' @import ffpe
 #'
 #' @export
 #'
@@ -231,4 +232,48 @@ fig.dendrogram <- function(DEA, title, subset=NULL){
   p.dendro <- ggdendrogram(hc, rotate = FALSE, size = 2) + ggtitle(title)
   rm(genes, pval_frame, hc)
   return(p.dendro)
+}
+
+
+#' Boxplot of FDR and FNR for Simulated data
+#'
+#' @param DEA.list a list with each element as a normalization method including the differential expression analysis (DEA) results from multiple simulated data
+#' @param truth.DEA.list a list of DEA results of benchmark data for multiple simulated dataset
+#' @param title the title of the figure
+#' @param subset a vector of a subset of genes/markers for this analysis
+#'
+#' @import ggplot2
+#' @return
+#' @export
+#'
+#' @examples
+fig.FDR_FNR.boxplot <- function(DEA.list, truth.DEA.list, title, subset=NULL){
+  DE.stats <- list(); num.simuated.set <- length(truth.DEA.list)
+  for(DE.res in DEA.list) {
+    DE.stats <- append(DE.stats,
+                       list(lapply(1:num.simuated.set,
+                                   function(x) DE.statistics(markers=names(truth.DEA.list[[x]]$p.val),
+                                                             id.list=DE.res[[x]]$id.list,
+                                                             truth=truth.DEA.list[[x]]$id.list,
+                                                             selected.marker=subset))))
+  }
+  names(DE.stats) <- names(DEA.list)
+
+  FNR <- FDR <- list()
+  for (element in DE.stats){
+    FNR <- c(FNR, list(c(sapply(1:num.simuated.set, function(x) element[[x]]$FNR))))
+    FDR <- c(FDR, list(c(sapply(1:num.simuated.set, function(x) element[[x]]$FDR))))
+  }
+  names(FDR) = names(FNR) = names(DEA.list)
+
+  FNR_FDR_tab <- data.frame(rbind(reshape2::melt(FDR), reshape2::melt(FNR)))
+  FNR_FDR_tab$stat <- c(rep("FDR", nrow(reshape2::melt(FDR))), rep("FNR", nrow(reshape2::melt(FNR))))
+
+  p <- ggplot(data = FNR_FDR_tab , aes(x=L1, y=value)) +
+    geom_boxplot(aes(fill=stat))  +
+    theme_bw() +
+    ggtitle(title) + scale_fill_manual(values = c("white", "grey")) +
+    xlab("") + ylab("")
+
+  return(p)
 }

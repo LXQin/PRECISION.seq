@@ -133,54 +133,26 @@
     <p>Selection of normalization methods based on golden standards</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fig.FDR_FNR</span><span class='op'>(</span>
-  <span class='va'>raw</span>,
-  <span class='va'>groups</span>,
-  <span class='va'>MethodsCompare</span>,
-  <span class='va'>truth</span>,
-  QN_filter <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  DE.method <span class='op'>=</span> <span class='st'>"DE.voom"</span>,
-  Pval <span class='op'>=</span> <span class='fl'>0.01</span>,
-  MethodNew <span class='op'>=</span> <span class='cn'>NULL</span>,
-  new.norm.list <span class='op'>=</span> <span class='cn'>NULL</span>,
-  selected.marker <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>fig.FDR_FNR</span><span class='op'>(</span><span class='va'>DEA</span>, <span class='va'>truth.DEA</span>, <span class='va'>title</span>, subset <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>raw</th>
-      <td><p>raw count data in the format of data frame or matrix, with columns for samples and raws for genes.</p></td>
+      <th>DEA</th>
+      <td><p>a list of differential expression analysis results with the element names to be the normalization methods</p></td>
     </tr>
     <tr>
-      <th>groups</th>
-      <td><p>vector of characters indicating the group for each sample (only 2 groups allowed).</p></td>
+      <th>truth.DEA</th>
+      <td><p>differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)</p></td>
     </tr>
     <tr>
-      <th>MethodsCompare</th>
-      <td><p>the vector of methods that researchers would like to compare with, and selected from  <code>norm.none</code>, <code>norm.TMM</code>, <code>norm.TC</code>, <code>norm.UQ</code>, <code>norm.med</code>, <code>norm.DESeq</code>, <code>norm.PoissonSeq</code>, <code>norm.QN</code>, <code>norm.SVA</code>, and <code>norm.RUV</code>.</p></td>
+      <th>title</th>
+      <td><p>figure title</p></td>
     </tr>
     <tr>
-      <th>truth</th>
-      <td><p>vector of genes that are truly differential expressed</p></td>
-    </tr>
-    <tr>
-      <th>QN_filter</th>
-      <td><p>whether the filtering is performed if <code>method = norm.QN</code>.</p></td>
-    </tr>
-    <tr>
-      <th>DE.method</th>
-      <td><p>the method for differential expression analysis from <code>DE.voom</code> and <code>DE.edgeR</code>, default to be <code>DE.voom</code>.</p></td>
-    </tr>
-    <tr>
-      <th>Pval</th>
-      <td><p>p-value for identifying DE genes, default to be 0.01</p></td>
-    </tr>
-    <tr>
-      <th>selected.marker</th>
-      <td><p>if given, vector of a subset of genes/markers for
-this analysis. Leave <code>NULL</code> if all markers are considered for the analysis.</p></td>
+      <th>subset</th>
+      <td><p>vector of a subset of genes/markers for this analysis</p></td>
     </tr>
     </table>
 
@@ -188,11 +160,6 @@ this analysis. Leave <code>NULL</code> if all markers are considered for the ana
 
     <p>figure for selection of normalization methods</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>truthgene</span> <span class='op'>&lt;-</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span><span class='va'>data.benchmark</span>, <span class='va'>data.group</span><span class='op'>)</span><span class='op'>$</span><span class='va'>id.list</span>
-<span class='fu'>fig.FDR_FNR</span><span class='op'>(</span><span class='va'>data.test</span>, <span class='va'>data.group</span>, MethodsCompare <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"norm.none"</span>, <span class='st'>"norm.TMM"</span>, <span class='st'>"norm.SVA"</span>, <span class='st'>"norm.TC"</span><span class='op'>)</span>, truth <span class='op'>=</span> <span class='va'>truthgene</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Number of significant surrogate variables is:  1 
-#&gt; Iteration (out of 5 ):1  2  3  4  5  </div><div class='img'><img src='fig.FDR_FNR-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -131,7 +131,7 @@ norm.DESeq <- function(raw, groups) {
   dat.DGE <- DESeqDataSetFromMatrix(countData = raw, colData = condition, design = ~ Condition)
   dat.DGE <- estimateSizeFactors(dat.DGE)
   scaling.factor <- sizeFactors(dat.DGE)
-  dat.normed <- counts(dat.DGE, normalized = T)
+  dat.normed <- DESeq2::counts(dat.DGE, normalized = T)
   return(list(dat.normed = dat.normed,
               scaling.factor = scaling.factor))
 }
@@ -256,7 +256,7 @@ norm.RUVg <- function(raw, groups) {
                                                     row.names = colnames(dat.ruv)))
   design <- model.matrix(~ condition, data = data.frame(condition,
                                                         row.names = colnames(dat.ruv)))
-  y <- DGEList(counts = counts(set), group = condition)
+  y <- DGEList(counts = DESeq2::counts(set), group = condition)
   y <- calcNormFactors(y, method = "upperquartile")
   y <- estimateGLMCommonDisp(y, design)
   y <- estimateGLMTagwiseDisp(y, design)
@@ -351,7 +351,7 @@ norm.RUVr <- function(raw, groups) {
                                                     row.names = colnames(dat.ruv)))
   design <- model.matrix(~ condition, data = data.frame(condition,
                                                         row.names = colnames(dat.ruv)))
-  y <- DGEList(counts = counts(set), group = condition)
+  y <- DGEList(counts = DESeq2::counts(set), group = condition)
   y <- calcNormFactors(y, method = "upperquartile")
   y <- estimateGLMCommonDisp(y, design)
   y <- estimateGLMTagwiseDisp(y, design)
@@ -361,7 +361,7 @@ norm.RUVr <- function(raw, groups) {
   spikes <- rownames(set)[which(!(rownames(set) %in% rownames(top)[1:0.15*nrow(raw)]))]
 
   design <- model.matrix(~ condition, data = pData(set))
-  y <- DGEList(counts = counts(set), group = condition)
+  y <- DGEList(counts = DESeq2::counts(set), group = condition)
   y <- calcNormFactors(y, method = "upperquartile")
   y <- estimateGLMCommonDisp(y, design)
   y <- estimateGLMTagwiseDisp(y, design)

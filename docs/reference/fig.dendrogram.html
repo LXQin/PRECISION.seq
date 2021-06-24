@@ -133,48 +133,22 @@
     <p>Function for clustering normalization methods based on the p-values pattern calculated from the same dataset.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fig.dendrogram</span><span class='op'>(</span>
-  <span class='va'>MethodsCompare</span>,
-  DE.method <span class='op'>=</span> <span class='st'>"DE.voom"</span>,
-  QN_filter <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  Pval <span class='op'>=</span> <span class='fl'>0.01</span>,
-  <span class='va'>MethodNew</span>,
-  <span class='va'>pvalues</span>,
-  Methods_visual <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>MethodsCompare</span>, <span class='va'>MethodNew</span><span class='op'>)</span>,
-  test <span class='op'>=</span> <span class='va'>data.test</span>,
-  group <span class='op'>=</span> <span class='va'>data.group</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>fig.dendrogram</span><span class='op'>(</span><span class='va'>DEA</span>, <span class='va'>title</span>, subset <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>MethodsCompare</th>
-      <td><p>the vector of methods that researchers would like to compare with, and selected from  <code>norm.none</code>, <code>norm.TMM</code>, <code>norm.TC</code>, <code>norm.UQ</code>, <code>norm.med</code>, <code>norm.DESeq</code>, <code>norm.PoissonSeq</code>, <code>norm.QN</code>, <code>norm.SVA</code>, and <code>norm.RUV</code>.</p></td>
+      <th>DEA</th>
+      <td><p>a list of differential expression analysis results with the element names to be the normalization methods</p></td>
     </tr>
     <tr>
-      <th>DE.method</th>
-      <td><p>the DEA method selected from <code>DE.voom</code> and <code>DE.edgeR</code>, and default to be <code>DE.voom</code>.</p></td>
+      <th>title</th>
+      <td><p>figure title</p></td>
     </tr>
     <tr>
-      <th>QN_filter</th>
-      <td><p>whether the filtering is performed if <code>norm.QN</code> is used.</p></td>
-    </tr>
-    <tr>
-      <th>MethodNew</th>
-      <td><p>the name of the new method which will be presented in the legend.</p></td>
-    </tr>
-    <tr>
-      <th>pvalues</th>
-      <td><p>a vector of p values computed from DE analysis using the new method normalized test data.</p></td>
-    </tr>
-    <tr>
-      <th>test</th>
-      <td><p>test data with the same format of data.test, which are used for test p-values, and is set to use data.test by default</p></td>
-    </tr>
-    <tr>
-      <th>group</th>
-      <td><p>vector of characters indicating the group for each sample (only 2 groups allowed).</p></td>
+      <th>subset</th>
+      <td><p>vector of a subset of genes/markers for this analysis</p></td>
     </tr>
     </table>
 
@@ -186,8 +160,7 @@
     <pre class="examples"><div class='input'><span class='va'>t</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>1033</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>data.test</span><span class='op'>)</span>
 <span class='fu'>fig.dendrogram</span><span class='op'>(</span>MethodsCompare <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"norm.none"</span>, <span class='st'>"norm.TMM"</span>, <span class='st'>"norm.SVA"</span>, <span class='st'>"norm.TC"</span>, <span class='st'>"norm.RUVr"</span><span class='op'>)</span>, MethodNew <span class='op'>=</span> <span class='st'>"Example"</span>, pvalues <span class='op'>=</span> <span class='va'>t</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Number of significant surrogate variables is:  1 
-#&gt; Iteration (out of 5 ):1  2  3  4  5  </div><div class='output co'>#&gt; <span class='error'>Error in h(simpleError(msg, call)): error in evaluating the argument 'object' in selecting a method for function 'annotatedDataFrameFrom': could not find function "counts"</span></div></pre>
+</div><div class='output co'>#&gt; <span class='error'>Error in fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA",     "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t): unused arguments (MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

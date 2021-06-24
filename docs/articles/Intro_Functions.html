@@ -78,7 +78,7 @@
 
       
 
-      </header><script src="Intro_Functions_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="Intro_Functions_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to PRECISION.SEQ Functions</h1>
@@ -94,7 +94,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">precision.seq</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www-huber.embl.de/users/anders/DESeq">DESeq</a></span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mikelove/DESeq2">DESeq2</a></span><span class="op">)</span></code></pre></div>
 <p>One critical aspect of data normalization for transcriptomic sequencing is sequencing depth. In this package, we examine nine commonly-used methods for depth normalization and evaluate their performance for microRNA (miRNA) sequencing using a pair of datasets (benchmark data and test data) for the same set of tumor samples. Among these normalization methods, six are based on re-scaling and three are based on regression.</p>
 <div id="functions-for-depth-normalization" class="section level2">
 <h2 class="hasAnchor">
@@ -190,25 +190,10 @@
 <div id="functions-for-connecting-normalization-and-differential-expression-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#functions-for-connecting-normalization-and-differential-expression-analysis" class="anchor"></a>Functions for Connecting Normalization and Differential Expression Analysis</h2>
-<p>We connect the depth-normalization step and the differential-expression-analysis step with functions that combine the functions for these two steps. In addition, we include a function for computing the true positive rate, false positive rate, false discovery rate, and false negative rate using the significance result based on the benchmark data as the gold standard.</p>
+<p>We connect the depth-normalization step and the differential-expression-analysis step with functions that combine the functions for these two steps.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.norm.html">pip.norm</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"norm.TMM"</span><span class="op">)</span>
-<span class="va">res.DE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.norm.DE.html">pip.norm.DE</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"norm.TMM"</span><span class="op">)</span>
-
-<span class="va">truthgene</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span><span class="va">data.benchmark</span>, <span class="va">data.group</span><span class="op">)</span><span class="op">$</span><span class="va">id.list</span>
-<span class="va">stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.statistics.html">pip.statistics</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, truth<span class="op">=</span><span class="va">truthgene</span>, DE.method<span class="op">=</span><span class="st">"DE.voom"</span>, norm.method<span class="op">=</span><span class="st">"norm.TMM"</span><span class="op">)</span>
-<span class="va">stat</span>
-<span class="co">#&gt; $TPR</span>
-<span class="co">#&gt; [1] 0.3389831</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $FPR</span>
-<span class="co">#&gt; [1] 0.01950719</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $FDR</span>
-<span class="co">#&gt; [1] 0.4871795</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $FNR</span>
-<span class="co">#&gt; [1] 0.6610169</span></code></pre></div>
+<span class="va">res.DE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.norm.DE.html">pip.norm.DE</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"norm.TMM"</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
 

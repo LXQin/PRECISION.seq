@@ -4,18 +4,16 @@
 \alias{simulated.data}
 \title{Simulated Data}
 \usage{
-simulated.data(proportion_L, proportion_R, median_L, median_R, numsets)
+simulated.data(proportion, median, numsets)
 }
 \arguments{
-\item{proportion_L}{the lowest proportion of DE for simulated dataset filtering}
+\item{proportion}{the range of proportion of DE for simulated dataset filtering}
 
-\item{proportion_R}{the highest proportion of DE for simulated dataset filtering}
-
-\item{median_L}{the lowest median of mean difference for simulated dataset filtering}
-
-\item{median_R}{the highest median of mean difference for simulated dataset filtering}
+\item{median}{the range of median of mean difference for simulated dataset filtering}
 
 \item{numsets}{number of simulated datasets requested for returning (randomly drawn from the available sets). If it exceeds the maximum of availiable datasets, all the availiable sets will be returned.}
+
+\item{median_R}{the highest median of mean difference for simulated dataset filtering}
 }
 \value{
 list containing list of simulated benchmark data and test data
