@@ -1,0 +1,107 @@
+---
+title: "PRECISION.SEQ Example Usage"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{VSN_Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning = FALSE, message = FALSE}
+rm(list = ls())
+library(precision.seq)
+library(Biobase)
+library(vsn)
+```
+
+Test data is normalized by Variance Stabilizing Normalization (VSN) using function `justvsn`, and the negative normalized values are set to 1. Voom-limma is used for the differential expression analysis.
+```{r}
+vsn.norm <- justvsn(data.test)
+vsn.norm <- ifelse(vsn.norm<0, 1, vsn.norm)
+vsn.pval <- DE.voom(vsn.norm, data.group)
+
+test.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
+test.DE <- list(
+  TMM = DE.voom(RC=test.norm$TMM$dat.normed, groups = data.group),
+  TC = DE.voom(RC=test.norm$TC$dat.normed, groups = data.group),
+  UQ = DE.voom(RC=test.norm$UQ$dat.normed, groups = data.group),
+  med = DE.voom(RC=test.norm$med$dat.normed, groups = data.group),
+  DESeq = DE.voom(RC=test.norm$DESeq$dat.normed, groups = data.group),
+  PoissonSeq = DE.voom(RC=test.norm$PoissonSeq$dat.normed, groups = data.group),
+  QN = DE.voom(RC=test.norm$QN$dat.normed, groups = data.group),
+  RUVg = DE.voom(RC=data.test, groups = data.group,normalized=FALSE, adjust=test.norm$RUVg$adjust.factor),
+  RUVs = DE.voom(RC=data.test, groups = data.group,normalized=FALSE, adjust=test.norm$RUVs$adjust.factor),
+  RUVr = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVr$adjust.factor),
+  SVA = DE.voom(RC=data.test, groups = data.group,normalized=FALSE, adjust=test.norm$SVA$adjust.factor),
+  noNorm = DE.voom(RC=data.test, groups = data.group),
+  VSN = vsn.pval)
+benchmark.DE <- DE.voom(RC=data.benchmark, groups = data.group)
+```
+
+
+# Empirical Data Analysis
+## Relative Log Expression Plot
+```{r}
+fig.RLE(data.test, data.group, "test without normalization")
+fig.RLE(vsn.norm, data.group, "test with VSN normalization")
+```
+
+## Scatterplot for FNR and FDR
+```{r}
+fig.FDR_FNR(test.DE, benchmark.DE, title = "")
+```
+
+
+## Concordance at The Top Plot
+```{r}
+fig.CAT(test.DE, benchmark.DE, title = "")
+```
+
+
+## Dendrogram for clustering p-values
+```{r}
+fig.dendrogram(test.DE, title = "")
+```
+
+
+# Simulation Data Analysis
+## Data Simulation
+```{r}
+set.seed(12345)
+sim.groups = c(rep('MXF',27),rep('PMFH',27))
+simulated <- simulated.data(proportion = c(0.15, 0.25),  median = c(2, 4), numsets = 100)
+```
+
+## Boxplot for FDR and FNR
+```{r warning = FALSE, message = FALSE, results = FALSE}
+test.norm.list = lapply(1:100, function(x) pip.norm(raw=simulated[[x]]$simulated_test, groups=sim.groups, norm.method = "all"))
+for (i in 1:100){vsn.norm <- justvsn(simulated[[i]]$simulated_test);test.norm.list[[i]]$VSN$dat.normed = ifelse(vsn.norm<0, 1, vsn.norm)}
+test.DE.list <- list(
+  TMM = lapply(1:100, function(x) DE.voom(RC=test.norm.list[[x]]$TMM$dat.normed, groups = sim.groups)),
+  TC = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$TC$dat.normed, groups = sim.groups)),
+  UQ = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$UQ$dat.normed, groups = sim.groups)),
+  med = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$med$dat.normed, groups = sim.groups)),
+  DESeq = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$DESeq$dat.normed, groups = sim.groups)),
+  PoissonSeq = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$PoissonSeq$dat.normed, groups = sim.groups)),
+  QN = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$QN$dat.normed, groups = sim.groups)),
+  RUVg = lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE,
+                                          adjust=test.norm.list[[x]]$RUVg$adjust.factor)),
+  RUVs = lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE,
+                                          adjust=test.norm.list[[x]]$RUVs$adjust.factor)),
+  RUVr = lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups, normalized=FALSE,
+                                          adjust=test.norm.list[[x]]$RUVr$adjust.factor)),
+  SVA = lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE,
+                                         adjust=test.norm.list[[x]]$SVA$adjust.factor)),
+  noNorm = lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups)),
+  VSN = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$VSN$dat.normed, groups = sim.groups)))
+benchmark.DE.list <- lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_benchmark, groups = sim.groups))
+
+fig.FDR_FNR.boxplot(test.DE.list, benchmark.DE.list, title = "DE = 20%, median mean-diff = 3")
+```

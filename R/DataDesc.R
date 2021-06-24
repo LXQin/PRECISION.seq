@@ -46,9 +46,8 @@
 #' Function for provding simulated datasets according to different proportions of DE and medians of mean difference.
 #' The range of DE proportion availiable is between 0 and 0.387, and the range of median of mean difference is between -2.52 and 4.59.
 #'
-#' @param proportion_L the lowest proportion of DE for simulated dataset filtering
-#' @param proportion_R the highest proportion of DE for simulated dataset filtering
-#' @param median_L the lowest median of mean difference for simulated dataset filtering
+#' @param proportion the range of proportion of DE for simulated dataset filtering
+#' @param median the range of median of mean difference for simulated dataset filtering
 #' @param median_R the highest median of mean difference for simulated dataset filtering
 #' @param numsets number of simulated datasets requested for returning (randomly drawn from the available sets). If it exceeds the maximum of availiable datasets, all the availiable sets will be returned.
 #'
@@ -59,7 +58,13 @@
 #'
 #' @examples
 #' simulated <- simulated.data(0.0175, 0.0225, -0.5, 0.5, 10)
-simulated.data <- function(proportion_L, proportion_R, median_L, median_R, numsets){
+simulated.data <- function(proportion, median, numsets){
+
+  proportion_L <- proportion[1]
+  proportion_R <- proportion[2]
+  median_L <- median[1]
+  median_R <- median[2]
+
   if (proportion_L <=0 | proportion_R >= 0.387 | median_L <= -2.52 | median_R >= 4.59) {
     stop("The range exceeds the availability.")
   }
@@ -74,8 +79,8 @@ simulated.data <- function(proportion_L, proportion_R, median_L, median_R, numse
   rowselect <- if(nrow(s) > numsets){
     sample(nrow(s), numsets)
   }else{
-      1:nrow(s)
-      warning("Number of datasets that can be provided is less than the demand.")
+    1:nrow(s)
+    warning("Number of datasets that can be provided is less than the demand.")
   }
 
   s <- as.matrix(s[rowselect, 1:54])

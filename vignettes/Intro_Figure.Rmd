@@ -1,0 +1,82 @@
+---
+title: "Introduction to PRECISION.SEQ Figure Functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Intro_Figure}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning = FALSE, message = FALSE}
+rm(list = ls())
+library(precision.seq)
+library(Biobase)
+library(vsn)
+library(limma)
+library(ggplotify)
+```
+
+We include a number of functions for comparing the data distribution and differential-expression-analysis results for the test data (before and after normalization) with these for the benchmark data in this package.
+
+## Differential Expression Analysis List
+There are three types of objects needed for figures -- 1) raw data; 2) single list of DEA results; 3) list of multiple DEA results for different normalization methods.
+```{r}
+## Normalize test data using internal normalization functions
+test.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
+test.DE <- list(
+  TMM = DE.voom(RC=test.norm$TMM$dat.normed, groups = data.group),
+  TC = DE.voom(RC=test.norm$TC$dat.normed, groups = data.group),
+  UQ = DE.voom(RC=test.norm$UQ$dat.normed, groups = data.group),
+  med = DE.voom(RC=test.norm$med$dat.normed, groups = data.group),
+  DESeq = DE.voom(RC=test.norm$DESeq$dat.normed, groups = data.group),
+  PoissonSeq = DE.voom(RC=test.norm$PoissonSeq$dat.normed, groups = data.group),
+  QN = DE.voom(RC=test.norm$QN$dat.normed, groups = data.group),
+  RUVg = DE.voom(RC=data.test, groups = data.group,normalized=FALSE, adjust=test.norm$RUVg$adjust.factor),
+  RUVs = DE.voom(RC=data.test, groups = data.group,normalized=FALSE, adjust=test.norm$RUVs$adjust.factor),
+  RUVr = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVr$adjust.factor),
+  SVA = DE.voom(RC=data.test, groups = data.group,normalized=FALSE, adjust=test.norm$SVA$adjust.factor),
+  noNorm = DE.voom(RC=data.test, groups = data.group))
+benchmark.DE <- DE.voom(RC=data.benchmark, groups = data.group)
+```
+
+## Relative Log Expression Plot
+Relative log expression plot is the sample-specific boxplots showing the data deviation of each sample from the median counts across all samples.
+```{r}
+fig.RLE(data.test, data.group, "test without normalization")
+```
+
+
+## Venn Diagram
+Venn diagram is used to identify the performance of different normalization methods based on intersection of DE genes using a pair of data.
+```{r warning=FALSE, message=FALSE}
+fig.venn(benchmark.DE, test.DE[[1]], Pvalue = 0.01)
+```
+
+
+## Scatterplot for FNR and FDR
+False Negative Rate (FNR) and False Discovery Rate (FDR) are calculated for each normalization method in the test data by comparing against the differential expression status based on the benchmark data as a gold standard. Scatter plot is used to plot the FNRs and FDRs among the normalization methods under study. Besides the benchmark-data-based gold standard, users also have the option of inputting an alternative golden standard (in the form of a list of miRNA/marker names). 
+```{r warning=FALSE, message=FALSE}
+fig.FDR_FNR(test.DE, benchmark.DE, title = "")
+```
+
+
+## Concordance at The Top Plot
+Concordance at the top plot compares the concordance of the p-values for differential expression assessed in the test data (before and after normalization) versus that in the benchmark data. Besides the nine normalization methods included in this package, additional normalization methods implemented by the user can also be used and assessed against the benchmark through inputting the p-values of DEA.
+```{r warning=FALSE, message=FALSE}
+fig.CAT(test.DE, benchmark.DE, title = "")
+```
+
+
+## Dendrogram for Method Clustering 
+Dendrogram clusters the p-values for differential expression on the same dataset obtained through different normalization methods, which could be used to visualize the similarity among different normalization methods.
+```{r warning=FALSE, message=FALSE}
+fig.dendrogram(test.DE, title="")
+```
+

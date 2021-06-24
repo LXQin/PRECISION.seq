@@ -8,6 +8,7 @@ Authors@R: as.person(c(
     "Li-Xuan Qin <qinl@mskcc.org> [aut, ths]"))
 Description: We propose the well-prepared datasets and pack commonly used normalization methods/functions in this package. The workflow of this package is: (1) Input dataset in the format of data frame or matrix with with columns for samples and raws for genes; (2) Indicate the group for each sample using a vector of characters; (3) Ensure the normalization and DEA method; (4) Obtain the output including the DE genes and p values for each gene.
 License: GPL-2
+Depends: R (>= 3.6.0)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
