@@ -42,7 +42,7 @@ fig.volcano <- function(DEA.res, title){
 #' @param groups vector of characters indicating the group for each sample (only 2 groups are allowed).
 #' @param title the title of the figure
 #'
-#' @return boxplot for relative log expression
+#' @return ggplot boxplot for relative log expression
 #' @import ggplot2
 #'
 #' @export
@@ -179,8 +179,10 @@ fig.FDR_FNR <- function(DEA, truth.DEA, title, subset=NULL) {
 #'
 #' Venn diagram is used to identify the performance of different normalization methods based on intersection of differential expressed genes.
 #' @param truth.DEA differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)
-#' @param DEA.res the list of differential expression analysis results obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes).
-#' @param Pvalue Cut-off point for p-values for identifying significance
+#' @param DEA.res p-values as a result from prior differential expression
+#' analysis, e.g. using \code{\link{DE.voom}} or \code{\link{DE.edge}}.
+#' @param Pvalue Cut-off point for p-values for identifying significant
+#' differential expression.
 #'
 #' @return A Venn diagram
 #' @import limma
@@ -264,7 +266,7 @@ fig.FDR_FNR.boxplot <- function(DEA.list, truth.DEA.list, title, subset=NULL){
     FNR <- c(FNR, list(c(sapply(1:num.simuated.set, function(x) element[[x]]$FNR))))
     FDR <- c(FDR, list(c(sapply(1:num.simuated.set, function(x) element[[x]]$FDR))))
   }
-  names(FDR) = names(FNR) = names(DEA.list)
+  names(FDR) <- names(FNR) <- names(DEA.list)
 
   FNR_FDR_tab <- data.frame(rbind(reshape2::melt(FDR), reshape2::melt(FNR)))
   FNR_FDR_tab$stat <- c(rep("FDR", nrow(reshape2::melt(FDR))), rep("FNR", nrow(reshape2::melt(FNR))))

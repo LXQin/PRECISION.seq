@@ -14,7 +14,7 @@ fig.RLE(data, groups, title)
 \item{title}{the title of the figure}
 }
 \value{
-boxplot for relative log expression
+ggplot boxplot for relative log expression
 }
 \description{
 Function for generating relative log expression plot using the read count data as the input.

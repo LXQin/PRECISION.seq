@@ -40,7 +40,9 @@
 
 
 <meta property="og:title" content="Differential Expression Analysis Using Voom-limma Pipeline — DE.voom" />
-<meta property="og:description" content="Perform DEA by voom-limma pipeline on normalized dataset or dataset with adjusting factor." />
+<meta property="og:description" content="Perform DEA using the voom-limma pipeline on a normalized dataset.
+The normalized data can be provided as normalized counts or by adjusting
+factor for the original count data." />
 
 
 
@@ -80,7 +82,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -130,7 +132,9 @@
     </div>
 
     <div class="ref-description">
-    <p>Perform DEA by voom-limma pipeline on normalized dataset or dataset with adjusting factor.</p>
+    <p>Perform DEA using the voom-limma pipeline on a normalized dataset.
+The normalized data can be provided as normalized counts or by adjusting
+factor for the original count data.</p>
     </div>
 
     <pre class="usage"><span class='fu'>DE.voom</span><span class='op'>(</span><span class='va'>RC</span>, <span class='va'>groups</span>, Pval <span class='op'>=</span> <span class='fl'>0.01</span>, normalized <span class='op'>=</span> <span class='cn'>TRUE</span>, adjust <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -140,23 +144,27 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>RC</th>
-      <td><p>data in the format of data frame or matrix, with columns for samples and raws for genes.</p></td>
+      <td><p>Data in the format of a data frame or matrix, with columns for samples and rows for genes.</p></td>
     </tr>
     <tr>
       <th>groups</th>
-      <td><p>vector of characters indicating the group for each sample.</p></td>
+      <td><p>Vector of characters indicating the group for each sample.</p></td>
     </tr>
     <tr>
       <th>Pval</th>
-      <td><p>cut-off point for p-values to identify DE genes.</p></td>
+      <td><p>Cut-off point for p-values to identify differentially expressed genes.</p></td>
     </tr>
     <tr>
       <th>normalized</th>
-      <td><p>whether the dataset is normalized (by scaling method)</p></td>
+      <td><p>Logical, whether the data is provided as normalized counts.
+If set to FALSE, adjustment factors must be provided using the <code>adjust</code>
+parameter.</p></td>
     </tr>
     <tr>
       <th>adjust</th>
-      <td><p>the adjusting factor if the dataset itself is not normalized</p></td>
+      <td><p>Adjusting factors for normalizing the count data. Must be
+provided if the data is not normalized beforehand as indicated by the
+<code>normalized</code> parameter.</p></td>
     </tr>
     </table>
 

@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -139,6 +139,10 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>markers</th>
+      <td><p>vector of all markers considered in the analysis.</p></td>
+    </tr>
+    <tr>
       <th>id.list</th>
       <td><p>vector of genes that are differentially expressed given a DEA
 using voom or edgeR.</p></td>
@@ -151,10 +155,6 @@ using voom or edgeR.</p></td>
       <th>selected.marker</th>
       <td><p>if given, vector of a subset of genes/markers for
 this analysis. Leave <code>NULL</code> if all markers are considered for the analysis.</p></td>
-    </tr>
-    <tr>
-      <th>merkers</th>
-      <td><p>vector of all markers considered in the analysis.</p></td>
     </tr>
     </table>
 

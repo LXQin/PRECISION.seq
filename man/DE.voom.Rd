@@ -7,21 +7,27 @@
 DE.voom(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL)
 }
 \arguments{
-\item{RC}{data in the format of data frame or matrix, with columns for samples and raws for genes.}
+\item{RC}{Data in the format of a data frame or matrix, with columns for samples and rows for genes.}
 
-\item{groups}{vector of characters indicating the group for each sample.}
+\item{groups}{Vector of characters indicating the group for each sample.}
 
-\item{Pval}{cut-off point for p-values to identify DE genes.}
+\item{Pval}{Cut-off point for p-values to identify differentially expressed genes.}
 
-\item{normalized}{whether the dataset is normalized (by scaling method)}
+\item{normalized}{Logical, whether the data is provided as normalized counts.
+If set to FALSE, adjustment factors must be provided using the \code{adjust}
+parameter.}
 
-\item{adjust}{the adjusting factor if the dataset itself is not normalized}
+\item{adjust}{Adjusting factors for normalizing the count data. Must be
+provided if the data is not normalized beforehand as indicated by the
+\code{normalized} parameter.}
 }
 \value{
 list, containing \code{id.list} (names of DE genes), \code{p.val}, and \code{log2.FC}.
 }
 \description{
-Perform DEA by voom-limma pipeline on normalized dataset or dataset with adjusting factor.
+Perform DEA using the voom-limma pipeline on a normalized dataset.
+The normalized data can be provided as normalized counts or by adjusting
+factor for the original count data.
 }
 \examples{
 voom.benchmark <- DE.voom(data.benchmark, data.group)

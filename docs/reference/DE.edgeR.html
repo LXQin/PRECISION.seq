@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -152,11 +152,15 @@
     </tr>
     <tr>
       <th>normalized</th>
-      <td><p>whether the dataset is normalized (by scaling method)</p></td>
+      <td><p>Logical, whether the data is provided as normalized counts.
+If set to FALSE, adjustment factors must be provided using the <code>adjust</code>
+parameter.</p></td>
     </tr>
     <tr>
       <th>adjust</th>
-      <td><p>the adjusting factor if the dataset itself is not normalized</p></td>
+      <td><p>Adjusting factors for normalizing the count data. Must be
+provided if the data is not normalized beforehand as indicated by the
+<code>normalized</code> parameter.</p></td>
     </tr>
     </table>
 

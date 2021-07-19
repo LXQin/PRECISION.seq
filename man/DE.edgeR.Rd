@@ -13,9 +13,13 @@ DE.edgeR(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL)
 
 \item{Pval}{cut-off point for p-values to identify DE genes.}
 
-\item{normalized}{whether the dataset is normalized (by scaling method)}
+\item{normalized}{Logical, whether the data is provided as normalized counts.
+If set to FALSE, adjustment factors must be provided using the \code{adjust}
+parameter.}
 
-\item{adjust}{the adjusting factor if the dataset itself is not normalized}
+\item{adjust}{Adjusting factors for normalizing the count data. Must be
+provided if the data is not normalized beforehand as indicated by the
+\code{normalized} parameter.}
 }
 \value{
 list, containing \code{id.list} (names of DE genes), \code{p.val}, and \code{log2.FC}.

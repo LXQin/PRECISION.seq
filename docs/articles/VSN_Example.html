@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -78,7 +78,7 @@
 
       
 
-      </header><script src="VSN_Example_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="VSN_Example_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>PRECISION.SEQ Example Usage</h1>
@@ -91,14 +91,14 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/rm.html">rm</a></span><span class="op">(</span>list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ls.html">ls</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">precision.seq</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">Biobase</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.r-project.org">vsn</a></span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.r-project.org">vsn</a></span><span class="op">)</span></pre></div>
 <p>Test data is normalized by Variance Stabilizing Normalization (VSN) using function <code>justvsn</code>, and the negative normalized values are set to 1. Voom-limma is used for the differential expression analysis.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vsn/man/justvsn.html">justvsn</a></span><span class="op">(</span><span class="va">data.test</span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vsn/man/justvsn.html">justvsn</a></span><span class="op">(</span><span class="va">data.test</span><span class="op">)</span>
 <span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">vsn.norm</span><span class="op">&lt;</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="va">vsn.norm</span><span class="op">)</span>
 <span class="va">vsn.pval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span><span class="va">vsn.norm</span>, <span class="va">data.group</span><span class="op">)</span>
 
@@ -120,41 +120,41 @@
   SVA <span class="op">=</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC<span class="op">=</span><span class="va">data.test</span>, groups <span class="op">=</span> <span class="va">data.group</span>,normalized<span class="op">=</span><span class="cn">FALSE</span>, adjust<span class="op">=</span><span class="va">test.norm</span><span class="op">$</span><span class="va">SVA</span><span class="op">$</span><span class="va">adjust.factor</span><span class="op">)</span>,
   noNorm <span class="op">=</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC<span class="op">=</span><span class="va">data.test</span>, groups <span class="op">=</span> <span class="va">data.group</span><span class="op">)</span>,
   VSN <span class="op">=</span> <span class="va">vsn.pval</span><span class="op">)</span>
-<span class="va">benchmark.DE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC<span class="op">=</span><span class="va">data.benchmark</span>, groups <span class="op">=</span> <span class="va">data.group</span><span class="op">)</span></code></pre></div>
+<span class="va">benchmark.DE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC<span class="op">=</span><span class="va">data.benchmark</span>, groups <span class="op">=</span> <span class="va">data.group</span><span class="op">)</span></pre></div>
 <div id="empirical-data-analysis" class="section level1">
 <h1 class="hasAnchor">
 <a href="#empirical-data-analysis" class="anchor"></a>Empirical Data Analysis</h1>
 <div id="relative-log-expression-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#relative-log-expression-plot" class="anchor"></a>Relative Log Expression Plot</h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fig.RLE.html">fig.RLE</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"test without normalization"</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Removed 367 rows containing non-finite values (stat_boxplot).</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="../reference/fig.RLE.html">fig.RLE</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"test without normalization"</span><span class="op">)</span>
+<span class="co">#&gt; Warning: Removed 367 rows containing non-finite values (stat_boxplot).</span></pre></div>
 <p><img src="VSN_Example_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fig.RLE.html">fig.RLE</a></span><span class="op">(</span><span class="va">vsn.norm</span>, <span class="va">data.group</span>, <span class="st">"test with VSN normalization"</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Removed 1465 rows containing non-finite values (stat_boxplot).</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="../reference/fig.RLE.html">fig.RLE</a></span><span class="op">(</span><span class="va">vsn.norm</span>, <span class="va">data.group</span>, <span class="st">"test with VSN normalization"</span><span class="op">)</span>
+<span class="co">#&gt; Warning: Removed 1465 rows containing non-finite values (stat_boxplot).</span></pre></div>
 <p><img src="VSN_Example_files/figure-html/unnamed-chunk-3-2.png" width="700"></p>
 </div>
 <div id="scatterplot-for-fnr-and-fdr" class="section level2">
 <h2 class="hasAnchor">
 <a href="#scatterplot-for-fnr-and-fdr" class="anchor"></a>Scatterplot for FNR and FDR</h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fig.FDR_FNR.html">fig.FDR_FNR</a></span><span class="op">(</span><span class="va">test.DE</span>, <span class="va">benchmark.DE</span>, title <span class="op">=</span> <span class="st">""</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="../reference/fig.FDR_FNR.html">fig.FDR_FNR</a></span><span class="op">(</span><span class="va">test.DE</span>, <span class="va">benchmark.DE</span>, title <span class="op">=</span> <span class="st">""</span><span class="op">)</span></pre></div>
 <p><img src="VSN_Example_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </div>
 <div id="concordance-at-the-top-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#concordance-at-the-top-plot" class="anchor"></a>Concordance at The Top Plot</h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fig.CAT.html">fig.CAT</a></span><span class="op">(</span><span class="va">test.DE</span>, <span class="va">benchmark.DE</span>, title <span class="op">=</span> <span class="st">""</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="../reference/fig.CAT.html">fig.CAT</a></span><span class="op">(</span><span class="va">test.DE</span>, <span class="va">benchmark.DE</span>, title <span class="op">=</span> <span class="st">""</span><span class="op">)</span></pre></div>
 <p><img src="VSN_Example_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
 <div id="dendrogram-for-clustering-p-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#dendrogram-for-clustering-p-values" class="anchor"></a>Dendrogram for clustering p-values</h2>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/fig.dendrogram.html">fig.dendrogram</a></span><span class="op">(</span><span class="va">test.DE</span>, title <span class="op">=</span> <span class="st">""</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="../reference/fig.dendrogram.html">fig.dendrogram</a></span><span class="op">(</span><span class="va">test.DE</span>, title <span class="op">=</span> <span class="st">""</span><span class="op">)</span></pre></div>
 <p><img src="VSN_Example_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 </div>
 </div>
@@ -164,16 +164,16 @@
 <div id="data-simulation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-simulation" class="anchor"></a>Data Simulation</h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span>
 <span class="va">sim.groups</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">'MXF'</span>,<span class="fl">27</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">'PMFH'</span>,<span class="fl">27</span><span class="op">)</span><span class="op">)</span>
-<span class="va">simulated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulated.data.html">simulated.data</a></span><span class="op">(</span>proportion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="fl">0.25</span><span class="op">)</span>,  median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, numsets <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
+<span class="va">simulated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulated.data.html">simulated.data</a></span><span class="op">(</span>proportion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.15</span>, <span class="fl">0.25</span><span class="op">)</span>,  median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, numsets <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></pre></div>
 </div>
 <div id="boxplot-for-fdr-and-fnr" class="section level2">
 <h2 class="hasAnchor">
 <a href="#boxplot-for-fdr-and-fnr" class="anchor"></a>Boxplot for FDR and FNR</h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">test.norm.list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="../reference/pip.norm.html">pip.norm</a></span><span class="op">(</span>raw<span class="op">=</span><span class="va">simulated</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">simulated_test</span>, groups<span class="op">=</span><span class="va">sim.groups</span>, norm.method <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="va">test.norm.list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="../reference/pip.norm.html">pip.norm</a></span><span class="op">(</span>raw<span class="op">=</span><span class="va">simulated</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">simulated_test</span>, groups<span class="op">=</span><span class="va">sim.groups</span>, norm.method <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span><span class="op">{</span><span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vsn/man/justvsn.html">justvsn</a></span><span class="op">(</span><span class="va">simulated</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">simulated_test</span><span class="op">)</span>;<span class="va">test.norm.list</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">VSN</span><span class="op">$</span><span class="va">dat.normed</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">vsn.norm</span><span class="op">&lt;</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="va">vsn.norm</span><span class="op">)</span><span class="op">}</span>
 <span class="va">test.DE.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
   TMM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC<span class="op">=</span><span class="va">test.norm.list</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">TMM</span><span class="op">$</span><span class="va">dat.normed</span>, groups <span class="op">=</span> <span class="va">sim.groups</span><span class="op">)</span><span class="op">)</span>,
@@ -195,7 +195,7 @@
   VSN <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC<span class="op">=</span><span class="va">test.norm.list</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">VSN</span><span class="op">$</span><span class="va">dat.normed</span>, groups <span class="op">=</span> <span class="va">sim.groups</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="va">benchmark.DE.list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="../reference/DE.voom.html">DE.voom</a></span><span class="op">(</span>RC<span class="op">=</span><span class="va">simulated</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">simulated_benchmark</span>, groups <span class="op">=</span> <span class="va">sim.groups</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/fig.FDR_FNR.boxplot.html">fig.FDR_FNR.boxplot</a></span><span class="op">(</span><span class="va">test.DE.list</span>, <span class="va">benchmark.DE.list</span>, title <span class="op">=</span> <span class="st">"DE = 20%, median mean-diff = 3"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../reference/fig.FDR_FNR.boxplot.html">fig.FDR_FNR.boxplot</a></span><span class="op">(</span><span class="va">test.DE.list</span>, <span class="va">benchmark.DE.list</span>, title <span class="op">=</span> <span class="st">"DE = 20%, median mean-diff = 3"</span><span class="op">)</span></pre></div>
 <p><img src="VSN_Example_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>

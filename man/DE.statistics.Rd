@@ -7,6 +7,8 @@
 DE.statistics(markers, id.list, truth, selected.marker = NULL)
 }
 \arguments{
+\item{markers}{vector of all markers considered in the analysis.}
+
 \item{id.list}{vector of genes that are differentially expressed given a DEA
 using voom or edgeR.}
 
@@ -14,8 +16,6 @@ using voom or edgeR.}
 
 \item{selected.marker}{if given, vector of a subset of genes/markers for
 this analysis. Leave \code{NULL} if all markers are considered for the analysis.}
-
-\item{merkers}{vector of all markers considered in the analysis.}
 }
 \value{
 a list of values about TPR, FPR, FDR, FNR

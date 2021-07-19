@@ -19,8 +19,8 @@ simulated.data(proportion, median, numsets)
 list containing list of simulated benchmark data and test data
 }
 \description{
-Function for provding simulated datasets according to different proportions of DE and medians of mean difference.
-The range of DE proportion availiable is between 0 and 0.387, and the range of median of mean difference is between -2.52 and 4.59.
+Function for providing simulated datasets according to different proportions of DE and medians of mean difference.
+The range of DE proportion available is between 0 and 0.387, and the range of median of mean difference is between -2.52 and 4.59.
 }
 \examples{
 simulated <- simulated.data(0.0175, 0.0225, -0.5, 0.5, 10)

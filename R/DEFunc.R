@@ -1,12 +1,18 @@
 #' Differential Expression Analysis Using Voom-limma Pipeline
 #'
-#' Perform DEA by voom-limma pipeline on normalized dataset or dataset with adjusting factor.
+#' Perform DEA using the voom-limma pipeline on a normalized dataset.
+#' The normalized data can be provided as normalized counts or by adjusting
+#' factor for the original count data.
 #'
-#' @param RC data in the format of data frame or matrix, with columns for samples and raws for genes.
-#' @param groups vector of characters indicating the group for each sample.
-#' @param Pval cut-off point for p-values to identify DE genes.
-#' @param normalized whether the dataset is normalized (by scaling method)
-#' @param adjust the adjusting factor if the dataset itself is not normalized
+#' @param RC Data in the format of a data frame or matrix, with columns for samples and rows for genes.
+#' @param groups Vector of characters indicating the group for each sample.
+#' @param Pval Cut-off point for p-values to identify differentially expressed genes.
+#' @param normalized Logical, whether the data is provided as normalized counts.
+#' If set to FALSE, adjustment factors must be provided using the \code{adjust}
+#' parameter.
+#' @param adjust Adjusting factors for normalizing the count data. Must be
+#' provided if the data is not normalized beforehand as indicated by the
+#' \code{normalized} parameter.
 #'
 #' @return list, containing \code{id.list} (names of DE genes), \code{p.val}, and \code{log2.FC}.
 #'
@@ -23,7 +29,10 @@ DE.voom <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) {
   if (normalized == TRUE) {
     design <- model.matrix(~ 0 + event)
     colnames(design) <- levels(event)
-    } else {
+  } else {
+    if(is.null(adjust)) {
+      stop("Error in DE.voom: If the data is not normalized (normalized=FALSE), adjustment factors must be provided using the adjust parameter.")
+    }
     design <- model.matrix(~ 0 + event + adjust)
     colnames(design)[1:2] <- levels(event)
   }
@@ -53,8 +62,12 @@ DE.voom <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) {
 #' @param RC data in the format of data frame or matrix, with columns for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample.
 #' @param Pval cut-off point for p-values to identify DE genes.
-#' @param normalized whether the dataset is normalized (by scaling method)
-#' @param adjust the adjusting factor if the dataset itself is not normalized
+#' @param normalized Logical, whether the data is provided as normalized counts.
+#' If set to FALSE, adjustment factors must be provided using the \code{adjust}
+#' parameter.
+#' @param adjust Adjusting factors for normalizing the count data. Must be
+#' provided if the data is not normalized beforehand as indicated by the
+#' \code{normalized} parameter.
 #'
 #' @return list, containing \code{id.list} (names of DE genes), \code{p.val}, and \code{log2.FC}.
 #'
@@ -73,6 +86,9 @@ DE.edgeR <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) 
     design <- model.matrix(~ 0 + event)
     colnames(design) <- levels(event)
   } else {
+    if(is.null(adjust)) {
+      stop("Error in DE.voom: If the data is not normalized (normalized=FALSE), adjustment factors must be provided using the adjust parameter.")
+    }
     design <- model.matrix(~ 0 + event + adjust)
     colnames(design)[1:2] <- levels(event)
   }
@@ -93,7 +109,7 @@ DE.edgeR <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) 
 #'
 #' Computing the true positive rate, false positive rate, false discovery rate, and false negative rate based on given golden standards.
 #'
-#' @param merkers vector of all markers considered in the analysis.
+#' @param markers vector of all markers considered in the analysis.
 #' @param id.list vector of genes that are differentially expressed given a DEA
 #' using voom or edgeR.
 #' @param truth vector of genes that are truly differential expressed
