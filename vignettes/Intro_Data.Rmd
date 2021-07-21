@@ -2,7 +2,7 @@
 title: "Introduction to PRECISION.SEQ Data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Intro_Data}
+  %\VignetteIndexEntry{The precision.seq Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

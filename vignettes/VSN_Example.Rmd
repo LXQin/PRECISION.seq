@@ -2,7 +2,7 @@
 title: "PRECISION.SEQ Example Usage"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{VSN_Example}
+  %\VignetteIndexEntry{The Full Analysis Pipeline}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -22,7 +22,7 @@ CRAN.packages <- function(pkg){
     if (length(new.pkg)) 
         install.packages(new.pkg, dependencies = TRUE)
 }
-CRAN.packages(c("PoissonSeq", "DescTools", "BiocManager", "readr"))
+CRAN.packages(c("PoissonSeq", "DescTools", "BiocManager", "readr", "magrittr", "ggplot2", "ggrepel", "ggdendro", "data.table", "tidyr", "dplyr", "ggplotify", "cluster"))
 
 ## from Bioconductor
 Bioconductor.packages <- function(pkg){
@@ -30,7 +30,7 @@ Bioconductor.packages <- function(pkg){
     if (length(new.pkg)) 
         BiocManager::install(new.pkg, dependencies = TRUE)
 }
-Bioconductor.packages(c("DESeq", "edgeR", "affy", "sva", "RUVSeq", "EDASeq", "limma", "preprocessCore", "ffpe", "Biobase", "vsn"))
+Bioconductor.packages(c("DESeq2", "edgeR", "affy", "sva", "RUVSeq", "EDASeq", "limma", "preprocessCore", "ffpe", "Biobase", "vsn"))
 ```
 
 The original R code and figures for the paper [*Statistical Assessment of Depth Normalization for Small RNA Sequencing*](https://pubmed.ncbi.nlm.nih.gov/32598180/) are included in the article *Pipeline of the Paper* for reference.

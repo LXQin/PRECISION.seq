@@ -2,7 +2,7 @@
 title: "Introduction to PRECISION.SEQ Figure Functions"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Intro_Figure}
+  %\VignetteIndexEntry{The precision.seq Plotting Functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
