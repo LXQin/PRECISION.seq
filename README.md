@@ -7,7 +7,7 @@ We propose the well-prepared datasets and pack commonly used normalization metho
 * Obtain the output including the DE genes and p-values for each gene;
 * Visualize the outputs for methods comparision.
 
-The package can be installed in R.
+The package can be installed in R. The full *package documentation* can be found [here](https://lxqin.github.io/PRECISION.seq/).
 
 ```R
 devtools::install_github("LXQin/precision.seq")
