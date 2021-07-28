@@ -251,10 +251,11 @@ fig.dendrogram <- function(DEA, title, subset=NULL){
 #'
 #' @examples
 fig.FDR_FNR.boxplot <- function(DEA.list, truth.DEA.list, title, subset=NULL){
-  DE.stats <- list(); num.simuated.set <- length(truth.DEA.list)
+  DE.stats <- list()
+  num.simulated.sets <- length(truth.DEA.list)
   for(DE.res in DEA.list) {
     DE.stats <- append(DE.stats,
-                       list(lapply(1:num.simuated.set,
+                       list(lapply(1:num.simulated.sets,
                                    function(x) DE.statistics(markers=names(truth.DEA.list[[x]]$p.val),
                                                              id.list=DE.res[[x]]$id.list,
                                                              truth=truth.DEA.list[[x]]$id.list,
@@ -264,8 +265,8 @@ fig.FDR_FNR.boxplot <- function(DEA.list, truth.DEA.list, title, subset=NULL){
 
   FNR <- FDR <- list()
   for (element in DE.stats){
-    FNR <- c(FNR, list(c(sapply(1:num.simuated.set, function(x) element[[x]]$FNR))))
-    FDR <- c(FDR, list(c(sapply(1:num.simuated.set, function(x) element[[x]]$FDR))))
+    FNR <- c(FNR, list(c(sapply(1:num.simulated.sets, function(x) element[[x]]$FNR))))
+    FDR <- c(FDR, list(c(sapply(1:num.simulated.sets, function(x) element[[x]]$FDR))))
   }
   names(FDR) <- names(FNR) <- names(DEA.list)
 

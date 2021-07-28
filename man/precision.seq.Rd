@@ -62,6 +62,3 @@ List of assessment statistics and plots (ggplot objects):
 \description{
 Full normalization assessment for given normalized test data
 }
-\examples{
-TODO
-}

@@ -1,3 +1,245 @@
+#' Full pipeline function
+#'
+#' This internal function performs the full precision.seq pipeline.
+#' It is used by the functions \code{\link{precision.seq}} and
+#' \code{\link{pip.simulated.data}}.
+#' @keywords internal
+full.pipeline <- function(bench.data, test.data, groups.data,
+                          norm.counts, adjust.factors,
+                          method.name, DE.method, Pval, generate.plots) {
+  ### Check Inputs
+
+  if(any(dim(bench.data) != dim(test.data))) {
+    stop("Dimensions of benchmark and test data must agree.")
+  }
+
+  if(!(DE.method %in% c("DE.voom", "DE.edgeR"))) {
+    stop("Unknown method for differential expression (DE). Options are \"DE.voom\" and \"DE.edgeR\".")
+  }
+
+  if(missing(method.name)) {
+    method.name <- "new"
+  }
+
+  ### Data Normalization
+  ## Convert normalized data to internal format
+
+  if(missing(adjust.factors)){
+    has.adjust <- F
+  } else {
+    has.adjust <- T
+  }
+
+  if(has.adjust) {
+    norm.new <- list(dat.normed=norm.counts, adjust.factor=adjust.factors)
+  } else {
+    norm.new <- list(dat.normed=norm.counts)
+  }
+
+  ## Normalize test data using internal normalization functions
+  test.norm <- pip.norm(raw=test.data, groups=groups.data, norm.method = "all")
+  # Append new (externally) normalized data
+  test.norm <- append(list(norm.new), test.norm)
+  names(test.norm)[1] <- method.name
+  # Append un-normalized data
+  test.norm <- append(test.norm, list(noNorm=list(dat.normed=test.data)))
+  # names of all tested normalization methods
+  norm.names <- names(test.norm)
+
+
+  ### Differential Expression Analysis
+
+  # Wrapper for DEA function
+  DEA <- function(RC, normalized = TRUE, adjust = NULL){
+    FUN <- match.fun(DE.method)
+    data.DE <- FUN(RC = RC, groups = groups.data, Pval = Pval, normalized = normalized, adjust = adjust)
+    return(data.DE)
+  }
+
+  ## DE for new external normalization
+  if(has.adjust) {
+    new.DE <- DEA(RC=test.data, normalized=FALSE, adjust=norm.new$adjust.factor)
+  } else {
+    new.DE <- DEA(RC=norm.new$dat.normed)
+  }
+
+  ## DE for internal normalization
+  test.DE <- list(
+    TMM = DEA(RC=test.norm$TMM$dat.normed),
+    TC = DEA(RC=test.norm$TC$dat.normed),
+    UQ = DEA(RC=test.norm$UQ$dat.normed),
+    med = DEA(RC=test.norm$med$dat.normed),
+    DESeq = DEA(RC=test.norm$DESeq$dat.normed),
+    PoissonSeq = DEA(RC=test.norm$PoissonSeq$dat.normed),
+    QN = DEA(RC=test.norm$QN$dat.normed),
+    RUVg = DEA(RC=test.data, normalized=FALSE, adjust=test.norm$RUVg$adjust.factor),
+    RUVs = DEA(RC=test.data, normalized=FALSE, adjust=test.norm$RUVs$adjust.factor),
+    RUVr = DEA(RC=test.data, normalized=FALSE, adjust=test.norm$RUVr$adjust.factor),
+    SVA = DEA(RC=test.data, normalized=FALSE, adjust=test.norm$SVA$adjust.factor),
+    noNorm = DEA(RC=test.data)
+  )
+  # Add new method to data.DE list
+  test.DE <- append(list(new.DE), test.DE)
+  names(test.DE)[1] <- method.name
+
+  ## DE for benchmark data
+  bench.DE <- DEA(RC=bench.data)
+
+  ## Compute DE statistics
+  test.DE.stats <- list()
+  for(DE.res in test.DE) {
+    test.DE.stats <-
+      append(test.DE.stats,
+             list(DE.statistics(markers=rownames(test.data),
+                                id.list=DE.res$id.list,
+                                truth=bench.DE$id.list,
+                                selected.marker=NULL)))
+    # TODO: Add option for selecting a subset of markers for DEA analysis.
+  }
+  names(test.DE.stats) <- names(test.DE)
+
+
+  ### Generate Figures
+
+  if(generate.plots) {  # Case: Generate additional plots
+
+    # Volcano plots
+    p.volcano <- vector("list", length(test.DE.stats))
+    for(i in 1:length(test.DE.stats)) {
+      p.volcano[[i]] <- fig.volcano(test.DE[[i]], names(test.DE)[i])
+    }
+    names(p.volcano) <- names(test.DE.stats)
+    p.volcano <- append(p.volcano, list(benchmark=fig.volcano(bench.DE, "benchmark")))
+
+    # RLE plots
+    p.RLE <- vector("list", length(test.norm))
+    for(i in 1:length(test.norm)) {
+      p.RLE[[i]] <- fig.RLE(test.norm[[i]]$dat.normed, groups.data,
+                            paste0("RLE for ", names(test.DE)[i]))
+    }
+    names(p.RLE) <- names(test.norm)
+    p.RLE <- append(p.RLE, list(benchmark=fig.RLE(bench.data, groups.data,
+                                                  "RLE for benchmark")))
+
+    # CAT plot
+
+    ## CAT plot function copied from DANA project
+    # Comcordance at the top plot
+    #
+    # Function for generating concordance at the top plot, which compares the
+    # concordance of the p-values for given differential expression analyzes
+    # to an assumed truth (a benchmark).
+    #
+    # @param DEA result for the data under study
+    # @param truth.DEA DEA result for the assumed truth (the gold standard)
+    # @param title Plot title
+    # @param maxrank Optionally specify the maximum size of top-ranked items
+    # that you want to plot.
+    # @param subset vector of a subset of genes/markers for this analysis
+    #
+    # @return a list of values about TPR, FPR, FDR, FNR
+
+    plot.CAT <- function(DEA, truth.DEA, title="", maxrank=100, subset=NULL){
+      # Subset DEAs to a given set of miRNAs
+      if (!is.null(subset)) {
+        DEA <- DEA[subset, ]
+        truth.DEA <- truth.DEA[subset, ]
+      }
+      # Reduce Data to named p.values
+      truth <- truth.DEA$p.val
+      names(truth) <- truth.DEA$id.list
+      compare <- list()
+      for(i in 1:length(DEA)) {
+        compare <- append(compare, list(DEA[[i]]$p.val))
+        names(compare[[i]]) <- DEA[[i]]$id.list
+      }
+      names(compare) <- names(DEA)
+
+      catplots <- list()
+      for(i in 1:length(compare)) {
+        catplots <- append(catplots,
+                           list(CATplot(compare[[i]], truth,
+                                        maxrank = maxrank, make.plot=FALSE)))
+      }
+      names(catplots) <- names(compare)
+
+      data_cat <- data.frame(x = numeric(), y = numeric(), curve = character())
+      for(i in 1:length(catplots)){
+        y = catplots[[i]][,2]
+        x = 1:length(y)
+        data_cat = rbind(data_cat, data.frame(x, y, curve = names(catplots)[i]))
+      }
+      data_cat$curve = factor(data_cat$curve)
+
+      return(ggplot(data_cat, aes(x, y, color = curve, linetype = curve)) +
+               theme(legend.title = element_blank()) +
+               geom_line(size=.75) +
+               ylab("Rate of Agreement with Benchmark") +
+               xlab("Significance Rank") +
+               theme(legend.title=element_blank()) +
+               ggtitle(title) +
+               ylim(c(0,1)) +
+               theme_bw())
+    }
+    p.CAT <- plot.CAT(test.DE, bench.DE, title="Corncordance at the top")
+
+    # Scatterplot (FNR-FDR)
+    test.DEA.res <- data.frame(method=names(test.DE.stats),
+                               FDR=sapply(test.DE.stats, function(x) x$FDR),
+                               FNR=sapply(test.DE.stats, function(x) x$FNR))
+    p.FNR_FDR <- ggplot(test.DEA.res, aes(x=FNR, y=FDR, label=method)) +
+      theme_bw() +
+      geom_point(alpha=1, color = "red") +
+      xlab("FNR") + # True positive rate(1-FNR)
+      ylab("FDR") + # Positive predictive value (1-FDR)
+      geom_text_repel(aes(label = method)) +
+      scale_x_continuous(labels = scales::percent, limits=c(0,1),
+                         breaks = scales::pretty_breaks(n = 4)) +
+      scale_y_continuous(labels = scales::percent, limits = c(0,1))
+
+    # Dendrogram
+    genes <- rownames(test.data)
+    pval_frame <- data.frame(sapply(test.DE, function(x) x$p.val[genes]))
+    hc <- hclust(dist(t(-log10(pval_frame))), method = "ward.D")
+    p.dendro <- ggdendrogram(hc, rotate = FALSE, size = 2)
+    rm(genes, pval_frame, hc)
+
+    # Venn Diagrams
+    p.venn <- vector("list", length(test.DE))
+    bench.sig <- (bench.DE$p.val < Pval)
+    test.sig <- lapply(test.DE, function (x) (x$p.val[names(bench.sig)] < Pval))
+    for(i in 1:length(test.sig)) {
+      p.venn[[i]] <- as.ggplot(function() vennDiagram(
+        vennCounts(cbind(bench.sig, test.sig[[i]])),
+        names = c("Benchmark", names(test.sig)[i]),
+        cex = 1.5, counts.col = rainbow(1)))
+    }
+    names(p.venn) <- names(test.sig)
+
+    # List of return values
+    res <- list(data.norm=test.norm,
+                data.DE=test.DE,
+                benchmark.DE=bench.DE,
+                DE.stats=test.DE.stats,
+                p.volcano=p.volcano,
+                p.RLE=p.RLE,
+                p.CAT=p.CAT,
+                p.FNR_FDR=p.FNR_FDR,
+                p.dendrogram=p.dendro,
+                p.venn=p.venn)
+  } else {
+    # Case: Dont generate plots
+    # List of return values
+    res <- list(data.norm=test.norm,
+                data.DE=test.DE,
+                benchmark.DE=bench.DE,
+                DE.stats=test.DE.stats)
+  }
+
+
+  return(res)
+}
+
 
 #' Full normalization assessment for given normalized test data
 #'
@@ -42,227 +284,38 @@
 #'   (the benchmark).}
 #' }
 #' @export
-#'
-#' @examples TODO
 precision.seq <- function(norm.counts, adjust.factors, method.name,
                           DE.method="DE.voom", Pval=0.01) {
 
   ### Check Inputs
 
-  if(!(DE.method %in% c("DE.voom", "DE.edgeR"))) {
-    stop("Unknown method for differential expression (DE). Options are \"DE.voom\" and \"DE.edgeR\".")
-  }
-
   if(missing(method.name)) {
     method.name <- "new"
   }
 
-  ### Data Normalization
-  ## Convert normalized data to internal format
-
-  if(missing(adjust.factors)){
-    has.adjust <- F
+  # Compute full precision seq pipeline using the full.pipeline function
+  if(missing(adjust.factors)) {
+    res <- full.pipeline(bench.data=data.benchmark,
+                         test.data=data.test,
+                         groups.data = data.group,
+                         norm.counts=norm.counts,
+                         method.name=method.name,
+                         DE.method=DE.method,
+                         Pval=Pval,
+                         generate.plots=TRUE)
   } else {
-    has.adjust <- T
+    res <- full.pipeline(bench.data=data.benchmark,
+                         test.data=data.test,
+                         groups.data = data.group,
+                         norm.counts=norm.counts,
+                         adjust.factors=adjust.factors,
+                         method.name=method.name,
+                         DE.method=DE.method,
+                         Pval=Pval,
+                         generate.plots=TRUE)
   }
 
-  if(has.adjust) {
-    norm.new <- list(dat.normed=norm.counts, adjust.factor=adjust.factors)
-  } else {
-    norm.new <- list(dat.normed=norm.counts)
-  }
-
-  ## Normalize test data using internal normalization functions
-  test.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
-  # Append new (externally) normalized data
-  test.norm <- append(list(norm.new), test.norm)
-  names(test.norm)[1] <- method.name
-  # Append un-normalized data
-  test.norm <- append(test.norm, list(noNorm=list(dat.normed=data.test)))
-  # names of all tested normalization methods
-  norm.names <- names(test.norm)
-
-
-  ### Differential Expression Analysis
-
-  # Wrapper for DEA function
-  DEA <- function(RC, normalized = TRUE, adjust = NULL){
-    FUN <- match.fun(DE.method)
-    data.DE <- FUN(RC = RC, groups = data.group, Pval = Pval, normalized = normalized, adjust = adjust)
-    return(data.DE)
-  }
-
-  ## DE for new external normalization
-  if(has.adjust) {
-    new.DE <- DEA(RC=data.test, normalized=FALSE, adjust=norm.new$adjust.factor)
-  } else {
-    new.DE <- DEA(RC=norm.new$dat.normed)
-  }
-
-  ## DE for internal normalization
-  test.DE <- list(
-    TMM = DEA(RC=test.norm$TMM$dat.normed),
-    TC = DEA(RC=test.norm$TC$dat.normed),
-    UQ = DEA(RC=test.norm$UQ$dat.normed),
-    med = DEA(RC=test.norm$med$dat.normed),
-    DESeq = DEA(RC=test.norm$DESeq$dat.normed),
-    PoissonSeq = DEA(RC=test.norm$PoissonSeq$dat.normed),
-    QN = DEA(RC=test.norm$QN$dat.normed),
-    RUVg = DEA(RC=data.test, normalized=FALSE, adjust=test.norm$RUVg$adjust.factor),
-    RUVs = DEA(RC=data.test, normalized=FALSE, adjust=test.norm$RUVs$adjust.factor),
-    RUVr = DEA(RC=data.test, normalized=FALSE, adjust=test.norm$RUVr$adjust.factor),
-    SVA = DEA(RC=data.test, normalized=FALSE, adjust=test.norm$SVA$adjust.factor),
-    noNorm = DEA(RC=data.test)
-  )
-  # Add new method to data.DE list
-  test.DE <- append(list(new.DE), test.DE)
-  names(test.DE)[1] <- method.name
-
-  ## DE for benchmark data
-  bench.DE <- DEA(RC=data.benchmark)
-
-  ## Compute DE statistics
-  test.DE.stats <- list()
-  for(DE.res in test.DE) {
-    test.DE.stats <-
-      append(test.DE.stats,
-             list(DE.statistics(markers=rownames(data.test),
-                                id.list=DE.res$id.list,
-                                truth=bench.DE$id.list,
-                                selected.marker=NULL)))
-    # TODO: Add option for selecting a subset of markers for DEA analysis.
-  }
-  names(test.DE.stats) <- names(test.DE)
-
-
-  ### Generate Figures
-
-  # Volcano plots
-  p.volcano <- vector("list", length(test.DE.stats))
-  for(i in 1:length(test.DE.stats)) {
-    p.volcano[[i]] <- fig.volcano(test.DE[[i]], names(test.DE)[i])
-  }
-  names(p.volcano) <- names(test.DE.stats)
-  p.volcano <- append(p.volcano, list(benchmark=fig.volcano(bench.DE, "benchmark")))
-
-  # RLE plots
-  p.RLE <- vector("list", length(test.norm))
-  for(i in 1:length(test.norm)) {
-    p.RLE[[i]] <- fig.RLE(test.norm[[i]]$dat.normed, data.group,
-                          paste0("RLE for ", names(test.DE)[i]))
-  }
-  names(p.RLE) <- names(test.norm)
-  p.RLE <- append(p.RLE, list(benchmark=fig.RLE(data.benchmark, data.group,
-                                                "RLE for benchmark")))
-
-  # CAT plot
-
-  ## CAT plot function copied from DANA project
-  # Comcordance at the top plot
-  #
-  # Function for generating concordance at the top plot, which compares the
-  # concordance of the p-values for given differential expression analyzes
-  # to an assumed truth (a benchmark).
-  #
-  # @param DEA result for the data under study
-  # @param truth.DEA DEA result for the assumed truth (the gold standard)
-  # @param title Plot title
-  # @param maxrank Optionally specify the maximum size of top-ranked items
-  # that you want to plot.
-  # @param subset vector of a subset of genes/markers for this analysis
-  #
-  # @return a list of values about TPR, FPR, FDR, FNR
-
-  plot.CAT <- function(DEA, truth.DEA, title="", maxrank=100, subset=NULL){
-    # Subset DEAs to a given set of miRNAs
-    if (!is.null(subset)) {
-      DEA <- DEA[subset, ]
-      truth.DEA <- truth.DEA[subset, ]
-    }
-    # Reduce Data to named p.values
-    truth <- truth.DEA$p.val
-    names(truth) <- truth.DEA$id.list
-    compare <- list()
-    for(i in 1:length(DEA)) {
-      compare <- append(compare, list(DEA[[i]]$p.val))
-      names(compare[[i]]) <- DEA[[i]]$id.list
-    }
-    names(compare) <- names(DEA)
-
-    catplots <- list()
-    for(i in 1:length(compare)) {
-      catplots <- append(catplots,
-                         list(CATplot(compare[[i]], truth,
-                                      maxrank = maxrank, make.plot=FALSE)))
-    }
-    names(catplots) <- names(compare)
-
-    data_cat <- data.frame(x = numeric(), y = numeric(), curve = character())
-    for(i in 1:length(catplots)){
-      y = catplots[[i]][,2]
-      x = 1:length(y)
-      data_cat = rbind(data_cat, data.frame(x, y, curve = names(catplots)[i]))
-    }
-    data_cat$curve = factor(data_cat$curve)
-
-    return(ggplot(data_cat, aes(x, y, color = curve, linetype = curve)) +
-             theme(legend.title = element_blank()) +
-             geom_line(size=.75) +
-             ylab("Rate of Agreement with Benchmark") +
-             xlab("Significance Rank") +
-             theme(legend.title=element_blank()) +
-             ggtitle(title) +
-             ylim(c(0,1)) +
-             theme_bw())
-  }
-  p.CAT <- plot.CAT(test.DE, bench.DE, title="Corncordance at the top")
-
-  # Scatterplot (FNR-FDR)
-  test.DEA.res <- data.frame(method=names(test.DE.stats),
-                             FDR=sapply(test.DE.stats, function(x) x$FDR),
-                             FNR=sapply(test.DE.stats, function(x) x$FNR))
-  p.FNR_FDR <- ggplot(test.DEA.res, aes(x=FNR, y=FDR, label=method)) +
-    theme_bw() +
-    geom_point(alpha=1, color = "red") +
-    xlab("FNR") + # True positive rate(1-FNR)
-    ylab("FDR") + # Positive predictive value (1-FDR)
-    geom_text_repel(aes(label = method)) +
-    scale_x_continuous(labels = scales::percent, limits=c(0,1),
-                       breaks = scales::pretty_breaks(n = 4)) +
-    scale_y_continuous(labels = scales::percent, limits = c(0,1))
-
-  # Dendrogram
-  genes <- rownames(data.test)
-  pval_frame <- data.frame(sapply(test.DE, function(x) x$p.val[genes]))
-  hc <- hclust(dist(t(-log10(pval_frame))), method = "ward.D")
-  p.dendro <- ggdendrogram(hc, rotate = FALSE, size = 2)
-  rm(genes, pval_frame, hc)
-
-  # Venn Diagrams
-  p.venn <- vector("list", length(test.DE))
-  bench.sig <- (bench.DE$p.val < Pval)
-  test.sig <- lapply(test.DE, function (x) (x$p.val[names(bench.sig)] < Pval))
-  for(i in 1:length(test.sig)) {
-    p.venn[[i]] <- as.ggplot(function() vennDiagram(
-      vennCounts(cbind(bench.sig, test.sig[[i]])),
-      names = c("Benchmark", names(test.sig)[i]),
-      cex = 1.5, counts.col = rainbow(1)))
-  }
-  names(p.venn) <- names(test.sig)
-  # TODO -> Shows empty white plot in output. Why?
-
-
-
-  return(list(data.norm=test.norm,
-              data.DE=test.DE,
-              benchmark.DE=bench.DE,
-              DE.stats=test.DE.stats,
-              p.volcano=p.volcano,
-              p.RLE=p.RLE,
-              p.CAT=p.CAT,
-              p.FNR_FDR=p.FNR_FDR,
-              p.dendrogram=p.dendro,
-              p.venn=p.venn))
+  return(res)
 }
 
 
@@ -403,3 +456,123 @@ pip.norm.DE <- function(raw, groups, norm.method, QN_filter = FALSE, DE.method =
 
   return(data.DE = data.DE)
 }
+
+#' Full normalization assessment for simulated data
+#'
+#' Simulated data can be sampled using the function \code{\link{simulated.data}}.
+#'
+#' @param data list of paired data sets. Each pair must consist of
+#' a benchmark data set "simulated_benchmark" and a test data set
+#' "simulated_test".
+#' @groups Sample groups in the simulated test and benchmark data sets.
+#' Must be the same across all pairs.
+#' @param norm.counts Normalized counts of each simulated test data set for a
+#' user-provided normalization method.
+#' @param adjust.factors optional Adjustment factors for the normalization of the
+#' test data for a user-provided normalization method.
+#' @param method.name optional Name of the normalization method. Used for
+#' naming of data frames and plot legends.
+#' @param DE.method Method for computing differential expression statuses.
+#' Available: "DE.voom" and "DE.edgeR".
+#' @param Pval P-value cutoff for differential expression.
+#'
+#'
+#' @return List of assessment statistics and plots (ggplot objects):
+#' \describe{
+#'   \item{DE.stats}{List of statistics (true positive rate, false positive
+#'   rate, false discovery rate, and false negative rate) based on the
+#'   comparison of differential expression statuses between the normalized test
+#'   data and the unnormalized gold standard (the benchmark data).
+#'   Contains results for each pair of simulated data sets.}
+#'   \item{p.boxplot}{Boxplot for False Negative Rate (FNR) and False
+#'   Discovery Rate (FDR) of the agreement of DE statuses between the simulated
+#'   test and benchmark data sets.}
+#' }
+#'
+#' @export
+pip.simulated.data <- function(data, groups, norm.counts, adjust.factors, method.name,
+                               DE.method="DE.voom", Pval=0.01) {
+  ### Check Inputs
+  if(!is.list(data)) {
+    stop("Unknown data. Must be a list of pairs of data sets containing simulated_benchmark and simulated_test.")
+  }
+  if(names(data[[1]]) != c("simulated_benchmark", "simulated_test")) {
+    stop("Unknown data. Must be a list of pairs of data sets containing simulated_benchmark and simulated_test.")
+  }
+  num.datasets <- length(data)
+
+  if(num.datasets != length(norm.counts)) {
+    stop("Number of normalized data sets (", length(norm.counts), ") does not correspond to the number of un-nomrlized data sets (", num.datasets, ")")
+  }
+
+  if(!(DE.method %in% c("DE.voom", "DE.edgeR"))) {
+    stop("Unknown method for differential expression (DE). Options are \"DE.voom\" and \"DE.edgeR\".")
+  }
+
+  if(missing(method.name)) {
+    method.name <- "new"
+  }
+
+  ### Data Normalization
+  ## Convert normalized data to internal format
+
+  if(missing(adjust.factors)){
+    has.adjust <- F
+  } else {
+    has.adjust <- T
+    if(num.datasets != length(adjust.factors)) {
+      stop("Number of sets of adjustment factors (", length(adjust.factors), ") does not correspond to the number of un-nomrlized data sets (", num.datasets, ")")
+    }
+  }
+
+  DE.stats <- list()
+  for(i in 1:num.datasets) {
+    if(has.adjust) {
+      # Case: using adjustment factors
+      pipeline.res <- full.pipeline(bench.data=data[[i]]$simulated_benchmark,
+                                    test.data=data[[i]]$simulated_test,
+                                    groups.data = groups,
+                                    norm.counts=norm.counts[[i]],
+                                    adjust.factors=adjust.factors[[i]],
+                                    method.name=method.name,
+                                    DE.method=DE.method,
+                                    Pval=Pval,
+                                    generate.plots=FALSE)
+    } else {
+      # Case: normalized counts only (no adjustment factors)
+      pipeline.res <- full.pipeline(bench.data=data[[i]]$simulated_benchmark,
+                                    test.data=data[[i]]$simulated_test,
+                                    groups.data = groups,
+                                    norm.counts=norm.counts[[i]],
+                                    method.name=method.name,
+                                    DE.method=DE.method,
+                                    Pval=Pval,
+                                    generate.plots=FALSE)
+    }
+    DE.stats <- append(DE.stats, list(pipeline.res$DE.stats))
+  }
+
+  FNR <- FDR <- data.frame()
+  for(element in DE.stats){
+    FNR <- rbind(FNR, data.frame(lapply(element, function(x) x$FNR)))
+    FDR <- rbind(FDR, data.frame(lapply(element, function(x) x$FDR)))
+  }
+
+  FNR_FDR_tab <- data.frame(
+    value=c(unname(unlist(FDR)), unname(unlist(FNR))),
+    method=rep(as.vector(sapply(colnames(FNR), function(x) rep(x,num.datasets))),2),
+    stat=c(rep("FDR", length(unlist(FDR))), rep("FNR", length(unlist(FDR)))))
+
+
+  p <- ggplot(data = FNR_FDR_tab , aes(x=method, y=value)) +
+    geom_boxplot(aes(fill=stat))  +
+    theme_bw() +
+    scale_fill_manual(values = c("white", "grey")) +
+    xlab("") + ylab("")
+
+
+
+  return(list(DE.stats=DE.stats,
+              p.boxplot=p))
+}
+

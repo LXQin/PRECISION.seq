@@ -40,7 +40,6 @@ First, we load the PRECISION.SEQ package as well as the Biobase and vsn packages
 
 
 ```{r setup, warning = FALSE, message = FALSE}
-rm(list = ls())
 library(precision.seq)
 library(Biobase)
 library(vsn)
@@ -117,38 +116,50 @@ simulated <- simulated.data(proportion = c(0.15, 0.25),
 
 ### Boxplot for FDR and FNR
 
-We normalize each simulated test data set using `vsn` and all included method.
-We then compute differential expression by the voom method using the included wrapper function [`DE.voom`](../reference/DE.voom.html)
+We normalize each simulated test data set using `vsn` normaliztion.
+We then use the pipeline function [`pip.simulated.data`](../reference/pip.simulated.data.html) to compute the agreement of differential expression statuses for each simulated data set.
+The results are summarized in a boxplot diagram, which is returned by the pipeline function.
 
 
 ```{r warning = FALSE, message = FALSE, results = FALSE}
-test.norm.list = lapply(1:num.sets, function(x) pip.norm(raw=simulated[[x]]$simulated_test, groups=sim.groups, norm.method = "all"))
+vsn.norm <- list()
 for (i in 1:num.sets) {
-  vsn.norm <- justvsn(simulated[[i]]$simulated_test)
-  test.norm.list[[i]]$VSN$dat.normed = ifelse(vsn.norm<0, 1, vsn.norm)
+  vsn.norm <- append(vsn.norm, list(justvsn(simulated[[i]]$simulated_test)))
 }
-test.DE.list <- list(
-  TMM = lapply(1:num.sets, function(x) DE.voom(RC=test.norm.list[[x]]$TMM$dat.normed, groups = sim.groups)),
-  TC = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$TC$dat.normed, groups = sim.groups)),
-  UQ = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$UQ$dat.normed, groups = sim.groups)),
-  med = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$med$dat.normed, groups = sim.groups)),
-  DESeq = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$DESeq$dat.normed, groups = sim.groups)),
-  PoissonSeq = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$PoissonSeq$dat.normed, groups = sim.groups)),
-  QN = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$QN$dat.normed, groups = sim.groups)),
-  RUVg = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE,
-                                          adjust=test.norm.list[[x]]$RUVg$adjust.factor)),
-  RUVs = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE,
-                                          adjust=test.norm.list[[x]]$RUVs$adjust.factor)),
-  RUVr = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups, normalized=FALSE,
-                                          adjust=test.norm.list[[x]]$RUVr$adjust.factor)),
-  SVA = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE,
-                                         adjust=test.norm.list[[x]]$SVA$adjust.factor)),
-  noNorm = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups)),
-  VSN = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$VSN$dat.normed, groups = sim.groups)))
-benchmark.DE.list <- lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_benchmark, groups = sim.groups))
-
-fig.FDR_FNR.boxplot(test.DE.list, benchmark.DE.list, title = "DE = 20%, median mean-diff = 3")
+vsn.norm <- lapply(vsn.norm, function(x) ifelse(x<0, 1, x))
+res <- pip.simulated.data(data=simulated, groups=sim.groups, norm.counts=vsn.norm, method.name="vsn")
+print(res$p.boxplot)
 ```
+
+
+<!-- ```{r warning = FALSE, message = FALSE, results = FALSE} -->
+<!-- test.norm.list = lapply(1:num.sets, function(x) pip.norm(raw=simulated[[x]]$simulated_test, groups=sim.groups, norm.method = "all")) -->
+<!-- for (i in 1:num.sets) { -->
+<!--   vsn.norm <- justvsn(simulated[[i]]$simulated_test) -->
+<!--   test.norm.list[[i]]$VSN$dat.normed = ifelse(vsn.norm<0, 1, vsn.norm) -->
+<!-- } -->
+<!-- test.DE.list <- list( -->
+<!--   TMM = lapply(1:num.sets, function(x) DE.voom(RC=test.norm.list[[x]]$TMM$dat.normed, groups = sim.groups)), -->
+<!--   TC = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$TC$dat.normed, groups = sim.groups)), -->
+<!--   UQ = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$UQ$dat.normed, groups = sim.groups)), -->
+<!--   med = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$med$dat.normed, groups = sim.groups)), -->
+<!--   DESeq = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$DESeq$dat.normed, groups = sim.groups)), -->
+<!--   PoissonSeq = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$PoissonSeq$dat.normed, groups = sim.groups)), -->
+<!--   QN = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$QN$dat.normed, groups = sim.groups)), -->
+<!--   RUVg = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE, -->
+<!--                                           adjust=test.norm.list[[x]]$RUVg$adjust.factor)), -->
+<!--   RUVs = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE, -->
+<!--                                           adjust=test.norm.list[[x]]$RUVs$adjust.factor)), -->
+<!--   RUVr = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups, normalized=FALSE, -->
+<!--                                           adjust=test.norm.list[[x]]$RUVr$adjust.factor)), -->
+<!--   SVA = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE, -->
+<!--                                          adjust=test.norm.list[[x]]$SVA$adjust.factor)), -->
+<!--   noNorm = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups)), -->
+<!--   VSN = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$VSN$dat.normed, groups = sim.groups))) -->
+<!-- benchmark.DE.list <- lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_benchmark, groups = sim.groups)) -->
+
+<!-- fig.FDR_FNR.boxplot(test.DE.list, benchmark.DE.list, title = "DE = 20%, median mean-diff = 3") -->
+<!-- ``` -->
 
 
 # Example usage for SVA Normalization
