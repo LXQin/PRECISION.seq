@@ -10,7 +10,7 @@ fig.venn(truth.DEA, DEA.res, Pvalue)
 \item{truth.DEA}{differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)}
 
 \item{DEA.res}{p-values as a result from prior differential expression
-analysis, e.g. using \code{\link{DE.voom}} or \code{\link{DE.edge}}.}
+analysis, e.g. using \code{\link{DE.voom}} or \code{\link{DE.edgeR}}.}
 
 \item{Pvalue}{Cut-off point for p-values for identifying significant
 differential expression.}
