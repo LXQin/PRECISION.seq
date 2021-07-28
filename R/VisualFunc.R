@@ -50,10 +50,11 @@ fig.volcano <- function(DEA.res, title){
 #' @examples
 #' fig.RLE(data.test, data.group, "test without normalization")
 fig.RLE = function(data, groups, title) {
+  data <- ifelse(data<0, 0, data)  # Catch negative read counts and set them to 0
   raw.log <- log2(data + 1)
   rle <- t(apply(raw.log, 1, function(x) x - median(x)))
 
-  ylim = round(max(1.5*(apply(rle, 2, IQR)) + max(abs(apply(rle, 2, function(x) quantile(x, c(0.25, 0.75)))))), 1)
+  ylim = round(max(1.5*(apply(rle, 2, IQR)) + max(abs(apply(rle, 2, function(x) quantile(x, probs=c(0.25, 0.75), na.rm=TRUE))))), 1)
   df <- tidyr::gather(as.data.frame(rle), Sample, RLE)
   df$group <- rep(groups, each = nrow(rle))
   df$Sample <- factor(df$Sample, levels = colnames(rle))
@@ -180,7 +181,7 @@ fig.FDR_FNR <- function(DEA, truth.DEA, title, subset=NULL) {
 #' Venn diagram is used to identify the performance of different normalization methods based on intersection of differential expressed genes.
 #' @param truth.DEA differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)
 #' @param DEA.res p-values as a result from prior differential expression
-#' analysis, e.g. using \code{\link{DE.voom}} or \code{\link{DE.edge}}.
+#' analysis, e.g. using \code{\link{DE.voom}} or \code{\link{DE.edgeR}}.
 #' @param Pvalue Cut-off point for p-values for identifying significant
 #' differential expression.
 #'
