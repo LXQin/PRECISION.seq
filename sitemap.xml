@@ -70,6 +70,9 @@
     <loc>/reference/fig.volcano.html</loc>
   </url>
   <url>
+    <loc>/reference/full.pipeline.html</loc>
+  </url>
+  <url>
     <loc>/reference/index.html</loc>
   </url>
   <url>
@@ -110,6 +113,9 @@
   </url>
   <url>
     <loc>/reference/pip.norm.html</loc>
+  </url>
+  <url>
+    <loc>/reference/pip.simulated.data.html</loc>
   </url>
   <url>
     <loc>/reference/precision.seq.html</loc>
