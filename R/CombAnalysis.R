@@ -59,22 +59,17 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
 
   ### Data Normalization
   ## Convert normalized data to internal format
-  cat("Data normalization\n")
 
   if(missing(adjust.factors)){
     has.adjust <- F
-    cat("No adjustment factors\n")
   } else {
     has.adjust <- T
-    cat("Use adjustment factors\n")
   }
 
   if(has.adjust) {
     norm.new <- list(dat.normed=norm.counts, adjust.factor=adjust.factors)
-    cat("Use adjustment factors\n")
   } else {
     norm.new <- list(dat.normed=norm.counts)
-    cat("No adjustment factors\n")
   }
 
   ## Normalize test data using internal normalization functions
@@ -90,8 +85,6 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
 
   ### Differential Expression Analysis
 
-  cat("\n\nDEA\n")
-
   # Wrapper for DEA function
   DEA <- function(RC, normalized = TRUE, adjust = NULL){
     FUN <- match.fun(DE.method)
@@ -101,15 +94,12 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
 
   ## DE for new external normalization
   if(has.adjust) {
-    cat("DEA of new norm using adjust factors\n")
     new.DE <- DEA(RC=data.test, normalized=FALSE, adjust=norm.new$adjust.factor)
   } else {
-    cat("DEA of new norm (no adjust)\n")
     new.DE <- DEA(RC=norm.new$dat.normed)
   }
 
   ## DE for internal normalization
-  cat("DEA for provided norms\n")
   test.DE <- list(
     TMM = DEA(RC=test.norm$TMM$dat.normed),
     TC = DEA(RC=test.norm$TC$dat.normed),
@@ -129,11 +119,9 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
   names(test.DE)[1] <- method.name
 
   ## DE for benchmark data
-  cat("DE for benchmark data\n")
   bench.DE <- DEA(RC=data.benchmark)
 
   ## Compute DE statistics
-  cat("Compute DE statistics\n")
   test.DE.stats <- list()
   for(DE.res in test.DE) {
     test.DE.stats <-
@@ -150,7 +138,6 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
   ### Generate Figures
 
   # Volcano plots
-  cat("Volcano plots\n")
   p.volcano <- vector("list", length(test.DE.stats))
   for(i in 1:length(test.DE.stats)) {
     p.volcano[[i]] <- fig.volcano(test.DE[[i]], names(test.DE)[i])
@@ -159,7 +146,6 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
   p.volcano <- append(p.volcano, list(benchmark=fig.volcano(bench.DE, "benchmark")))
 
   # RLE plots
-  cat("RLE plots\n")
   p.RLE <- vector("list", length(test.norm))
   for(i in 1:length(test.norm)) {
     p.RLE[[i]] <- fig.RLE(test.norm[[i]]$dat.normed, data.group,
@@ -170,7 +156,7 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
                                                 "RLE for benchmark")))
 
   # CAT plot
-  cat("CAT plot\n")
+
   ## CAT plot function copied from DANA project
   # Comcordance at the top plot
   #
@@ -246,7 +232,6 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
     scale_y_continuous(labels = scales::percent, limits = c(0,1))
 
   # Dendrogram
-  cat("Dendrogram plot\n")
   genes <- rownames(data.test)
   pval_frame <- data.frame(sapply(test.DE, function(x) x$p.val[genes]))
   hc <- hclust(dist(t(-log10(pval_frame))), method = "ward.D")
@@ -254,7 +239,6 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
   rm(genes, pval_frame, hc)
 
   # Venn Diagrams
-  cat("Venn plots\n")
   p.venn <- vector("list", length(test.DE))
   bench.sig <- (bench.DE$p.val < Pval)
   test.sig <- lapply(test.DE, function (x) (x$p.val[names(bench.sig)] < Pval))
