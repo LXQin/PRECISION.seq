@@ -82,8 +82,8 @@ fig.RLE = function(data, groups, title) {
 #' @param DEA a list of differential expression analysis results with the element names to be the normalization methods
 #' @param truth.DEA differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)
 #' @param title figure title
-#' @param maxrank optionally specify the maximum size of top-ranked items that you want to plot.
-#' @param subset vector of a subset of genes/markers for this analysis
+#' @param maxrank optional specify the maximum size of top-ranked items that you want to plot.
+#' @param subset optional vector of a subset of genes/markers for this analysis
 #
 #' @return figure of concordance for comparison
 #'
@@ -211,10 +211,12 @@ fig.venn <- function(truth.DEA, DEA.res, Pvalue){
 #'
 #' Function for clustering normalization methods based on the p-values pattern calculated from the same dataset.
 #'
-#' @param DEA a list of differential expression analysis results with the element names to be the normalization methods
-#' @param title figure title
-#' @param subset vector of a subset of genes/markers for this analysis
-#' @return figure of dendrogram
+#' @param DEA A list of differential expression analysis results with the element names to be the normalization methods
+#' @param title optional Figure title
+#' @param subset optional Vector of a subset of markers.
+#' If given, the dendrogram analysis will be limited to the given subset
+#' of markers. Leave \code{NULL} if all markers should be considered.
+#' @return Figure of dendrogram
 #'
 #' @import ggdendro
 #' @import Biobase
@@ -225,6 +227,9 @@ fig.venn <- function(truth.DEA, DEA.res, Pvalue){
 #' names(t) <-  rownames(data.test)
 #' fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)
 fig.dendrogram <- function(DEA, title, subset=NULL){
+  if(missing(title)) {
+    title <- ""
+  }
   if(is.null(subset)){
     genes <- names(DEA[[1]]$p.val)
   } else{
@@ -240,10 +245,10 @@ fig.dendrogram <- function(DEA, title, subset=NULL){
 
 #' Boxplot of FDR and FNR for Simulated data
 #'
-#' @param DEA.list a list with each element as a normalization method including the differential expression analysis (DEA) results from multiple simulated data
-#' @param truth.DEA.list a list of DEA results of benchmark data for multiple simulated dataset
-#' @param title the title of the figure
-#' @param subset a vector of a subset of genes/markers for this analysis
+#' @param DEA.list A list with each element as a normalization method including the differential expression analysis (DEA) results from multiple simulated data
+#' @param truth.DEA.list A list of DEA results of benchmark data for multiple simulated dataset
+#' @param title The title of the figure
+#' @param subset optional A vector of a subset of genes/markers for this analysis
 #'
 #' @import ggplot2
 #' @return

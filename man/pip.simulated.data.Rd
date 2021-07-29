@@ -19,6 +19,9 @@ pip.simulated.data(
 a benchmark data set "simulated_benchmark" and a test data set
 "simulated_test".}
 
+\item{groups}{Sample groups in the simulated test and benchmark data sets.
+Must be the same across all pairs.}
+
 \item{norm.counts}{Normalized counts of each simulated test data set for a
 user-provided normalization method.}
 

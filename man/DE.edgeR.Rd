@@ -26,9 +26,12 @@ list, containing \code{id.list} (names of DE genes), \code{p.val}, and \code{log
 }
 \description{
 Perform DEA by EdgeR on normalized dataset or dataset with adjusting factor.
+The normalized data can be provided as normalized counts or by adjusting
+factor for the original count data.
 }
 \examples{
 edgeR.benchmark <- DE.edgeR(data.benchmark, data.group)
+str(edgeR.benchmark)
 }
 \references{
 \url{https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html}

@@ -13,9 +13,9 @@ fig.CAT(DEA, truth.DEA, title, maxrank = 100, subset = NULL)
 
 \item{title}{figure title}
 
-\item{maxrank}{optionally specify the maximum size of top-ranked items that you want to plot.}
+\item{maxrank}{optional specify the maximum size of top-ranked items that you want to plot.}
 
-\item{subset}{vector of a subset of genes/markers for this analysis}
+\item{subset}{optional vector of a subset of genes/markers for this analysis}
 }
 \value{
 figure of concordance for comparison

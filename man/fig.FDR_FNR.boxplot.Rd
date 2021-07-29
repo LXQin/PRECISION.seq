@@ -7,13 +7,13 @@
 fig.FDR_FNR.boxplot(DEA.list, truth.DEA.list, title, subset = NULL)
 }
 \arguments{
-\item{DEA.list}{a list with each element as a normalization method including the differential expression analysis (DEA) results from multiple simulated data}
+\item{DEA.list}{A list with each element as a normalization method including the differential expression analysis (DEA) results from multiple simulated data}
 
-\item{truth.DEA.list}{a list of DEA results of benchmark data for multiple simulated dataset}
+\item{truth.DEA.list}{A list of DEA results of benchmark data for multiple simulated dataset}
 
-\item{title}{the title of the figure}
+\item{title}{The title of the figure}
 
-\item{subset}{a vector of a subset of genes/markers for this analysis}
+\item{subset}{optional A vector of a subset of genes/markers for this analysis}
 }
 \value{
 

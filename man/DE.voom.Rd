@@ -31,6 +31,7 @@ factor for the original count data.
 }
 \examples{
 voom.benchmark <- DE.voom(data.benchmark, data.group)
+str(voom.benchmark)
 }
 \references{
 \href{https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html}{Differential Expression with Limma-Voom}

@@ -24,6 +24,7 @@
 #'
 #' @examples
 #' voom.benchmark <- DE.voom(data.benchmark, data.group)
+#' str(voom.benchmark)
 DE.voom <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) {
   event <- factor(groups)
   if (normalized == TRUE) {
@@ -58,6 +59,8 @@ DE.voom <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) {
 #' Differential Expression Analysis Using EdgeR
 #'
 #' Perform DEA by EdgeR on normalized dataset or dataset with adjusting factor.
+#' The normalized data can be provided as normalized counts or by adjusting
+#' factor for the original count data.
 #'
 #' @param RC data in the format of data frame or matrix, with columns for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample.
@@ -80,6 +83,7 @@ DE.voom <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) {
 #'
 #' @examples
 #' edgeR.benchmark <- DE.edgeR(data.benchmark, data.group)
+#' str(edgeR.benchmark)
 DE.edgeR <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) {
   event <- factor(groups);
   if (normalized == TRUE) {
@@ -107,18 +111,45 @@ DE.edgeR <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) 
 
 #' Statistics for DEA Results Based Golden Standards
 #'
-#' Computing the true positive rate, false positive rate, false discovery rate, and false negative rate based on given golden standards.
+#' Computes the agreement of differential expression (DE) wihtin one data set
+#' with an assumed true DE status usually given based on a gold standard.
+#' The following statistics are computed based of the differentially expressed
+#' markers \code{id.list} compared to the list truly differentially expressed
+#' markers \code{truth}:
+#' \itemize{
+#'   \item False Discovery Rate (FDR)
+#'   \item False Negative Rate (FNR)
+#'   \item True Positive Rate (TPR)
+#'   \item False Positive Rate (FPR)
+#' }
+#' Both, \code{id.list} and \code{truth} are a subset of markers from
+#' \code{markers}.
 #'
-#' @param markers vector of all markers considered in the analysis.
-#' @param id.list vector of genes that are differentially expressed given a DEA
-#' using voom or edgeR.
-#' @param truth vector of genes that are truly differential expressed
-#' @param selected.marker if given, vector of a subset of genes/markers for
-#' this analysis. Leave \code{NULL} if all markers are considered for the analysis.
+#' @param markers Vector of all markers considered in the analysis.
+#' @param id.list Vector of markers that are differentially expressed in a
+#' data set --- typically in the data set \code{\link{data.test}}.
+#' Differential expression can be computed via \code{\link{DE.edgeR}}
+#' or \code{\link{DE.voom}}.
+#' @param truth Vector of genes that are (assumedly) truly differential
+#' expressed, e.g. basen on a gold standard --- typically the data set
+#' \code{\link{data.benchmark}}.
+#' @param selected.marker optional Vector of a subset of \code{markers}.
+#' If given, the analysis will be limited to the given subset.
+#' Leave \code{NULL} if all markers are considered for the analysis.
 #'
-#' @return a list of values about TPR, FPR, FDR, FNR
+#' @return A list of:
+#' \describe{
+#'   \item{TPR} True positive Rate
+#'   \item{FPR} False Positive Rate
+#'   \item{FDR} False Discovery Rate
+#'   \item{FNR} False Negative Rate
+#' }
 #' @export
-#'
+#' @examples
+#' DE.bench <- DE.voom(data.benchmark, data.group)
+#' DE.test <- DE.voom(data.test, data.group)
+#' stats <- DE.statistics(rownames(data.benchmark), DE.test$id.list, DE.bench$id.list)
+#' print(stats)
 DE.statistics <- function(markers, id.list, truth, selected.marker=NULL) {
 
   if (!is.null(selected.marker)) {
@@ -137,3 +168,7 @@ DE.statistics <- function(markers, id.list, truth, selected.marker=NULL) {
               FDR = fp/(tp + fp),
               FNR = fn/(tp + fn)))
 }
+
+
+
+

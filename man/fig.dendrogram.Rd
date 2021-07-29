@@ -7,14 +7,16 @@
 fig.dendrogram(DEA, title, subset = NULL)
 }
 \arguments{
-\item{DEA}{a list of differential expression analysis results with the element names to be the normalization methods}
+\item{DEA}{A list of differential expression analysis results with the element names to be the normalization methods}
 
-\item{title}{figure title}
+\item{title}{optional Figure title}
 
-\item{subset}{vector of a subset of genes/markers for this analysis}
+\item{subset}{optional Vector of a subset of markers.
+If given, the dendrogram analysis will be limited to the given subset
+of markers. Leave \code{NULL} if all markers should be considered.}
 }
 \value{
-figure of dendrogram
+Figure of dendrogram
 }
 \description{
 Function for clustering normalization methods based on the p-values pattern calculated from the same dataset.

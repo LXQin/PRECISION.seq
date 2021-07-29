@@ -7,19 +7,48 @@
 DE.statistics(markers, id.list, truth, selected.marker = NULL)
 }
 \arguments{
-\item{markers}{vector of all markers considered in the analysis.}
+\item{markers}{Vector of all markers considered in the analysis.}
 
-\item{id.list}{vector of genes that are differentially expressed given a DEA
-using voom or edgeR.}
+\item{id.list}{Vector of markers that are differentially expressed in a
+data set --- typically in the data set \code{\link{data.test}}.
+Differential expression can be computed via \code{\link{DE.edgeR}}
+or \code{\link{DE.voom}}.}
 
-\item{truth}{vector of genes that are truly differential expressed}
+\item{truth}{Vector of genes that are (assumedly) truly differential
+expressed, e.g. basen on a gold standard --- typically the data set
+\code{\link{data.benchmark}}.}
 
-\item{selected.marker}{if given, vector of a subset of genes/markers for
-this analysis. Leave \code{NULL} if all markers are considered for the analysis.}
+\item{selected.marker}{optional Vector of a subset of \code{markers}.
+If given, the analysis will be limited to the given subset.
+Leave \code{NULL} if all markers are considered for the analysis.}
 }
 \value{
-a list of values about TPR, FPR, FDR, FNR
+A list of:
+\describe{
+  \item{TPR} True positive Rate
+  \item{FPR} False Positive Rate
+  \item{FDR} False Discovery Rate
+  \item{FNR} False Negative Rate
+}
 }
 \description{
-Computing the true positive rate, false positive rate, false discovery rate, and false negative rate based on given golden standards.
+Computes the agreement of differential expression (DE) wihtin one data set
+with an assumed true DE status usually given based on a gold standard.
+The following statistics are computed based of the differentially expressed
+markers \code{id.list} compared to the list truly differentially expressed
+markers \code{truth}:
+\itemize{
+  \item False Discovery Rate (FDR)
+  \item False Negative Rate (FNR)
+  \item True Positive Rate (TPR)
+  \item False Positive Rate (FPR)
+}
+Both, \code{id.list} and \code{truth} are a subset of markers from
+\code{markers}.
+}
+\examples{
+DE.bench <- DE.voom(data.benchmark, data.group)
+DE.test <- DE.voom(data.test, data.group)
+stats <- DE.statistics(rownames(data.benchmark), DE.test$id.list, DE.bench$id.list)
+print(stats)
 }
