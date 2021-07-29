@@ -40,8 +40,11 @@
 
 
 <meta property="og:title" content="Concordance At The Top Plot — fig.CAT" />
-<meta property="og:description" content="Function for generating concordance at the top plot, which compares concordance of the p-values obtained
-from benchmark data without normalization and normalized test data." />
+<meta property="og:description" content="Function for generating a concordance at the top plot, which compares
+concordance of the p-values of differential expression --- typically from the
+normalized or raw data set data.test --- to the p-values of
+differential expression of a gold standard --- typically
+the data set data.benchmark." />
 
 
 
@@ -133,8 +136,11 @@ from benchmark data without normalization and normalized test data." />
     </div>
 
     <div class="ref-description">
-    <p>Function for generating concordance at the top plot, which compares concordance of the p-values obtained
-from benchmark data without normalization and normalized test data.</p>
+    <p>Function for generating a concordance at the top plot, which compares
+concordance of the p-values of differential expression --- typically from the
+normalized or raw data set <code><a href='data.test.html'>data.test</a></code> --- to the p-values of
+differential expression of a gold standard --- typically
+the data set <code><a href='data.benchmark.html'>data.benchmark</a></code>.</p>
     </div>
 
     <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fig.CAT</span><span class='op'>(</span><span class='va'>DEA</span>, <span class='va'>truth.DEA</span>, <span class='va'>title</span>, maxrank <span class='op'>=</span> <span class='fl'>100</span>, subset <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre></div>
@@ -144,23 +150,30 @@ from benchmark data without normalization and normalized test data.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>DEA</th>
-      <td><p>a list of differential expression analysis results with the element names to be the normalization methods</p></td>
+      <td><p>Results of a differential expression analysis using the
+included methods <code><a href='DE.voom.html'>DE.voom</a></code> or <code><a href='DE.edgeR.html'>DE.edgeR</a></code>.
+Must be a list including</p><dl>
+  <dt>id.list</dt><dd><p>List of differentially expressed markers</p></dd>
+  <dt>p.val</dt><dd><p>p-values for differential expression</p></dd>
+
+</dl></td>
     </tr>
     <tr>
       <th>truth.DEA</th>
-      <td><p>differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)</p></td>
+      <td><p>Gold standard (assumed truth) for differential expression.
+Must be of the same type as <code>DEA</code>.</p></td>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>figure title</p></td>
+      <td><p>optional Figure title</p></td>
     </tr>
     <tr>
       <th>maxrank</th>
-      <td><p>optionally specify the maximum size of top-ranked items that you want to plot.</p></td>
+      <td><p>optional specify the maximum size of top-ranked items that you want to plot.</p></td>
     </tr>
     <tr>
       <th>subset</th>
-      <td><p>vector of a subset of genes/markers for this analysis</p></td>
+      <td><p>optional vector of a subset of genes/markers for this analysis</p></td>
     </tr>
     </table>
 
