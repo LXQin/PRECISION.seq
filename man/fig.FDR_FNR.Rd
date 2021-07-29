@@ -11,9 +11,11 @@ fig.FDR_FNR(DEA, truth.DEA, title, subset = NULL)
 
 \item{truth.DEA}{differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)}
 
-\item{title}{figure title}
+\item{title}{Figure title}
 
-\item{subset}{vector of a subset of genes/markers for this analysis}
+\item{subset}{optional Vector of a subset of markers.
+If given, the plot will be limited to the given subset
+of markers. Leave \code{NULL} if all markers should be considered.}
 }
 \value{
 figure for selection of normalization methods

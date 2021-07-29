@@ -25,10 +25,10 @@ Leave \code{NULL} if all markers are considered for the analysis.}
 \value{
 A list of:
 \describe{
-  \item{TPR} True positive Rate
-  \item{FPR} False Positive Rate
-  \item{FDR} False Discovery Rate
-  \item{FNR} False Negative Rate
+  \item{TPR}{True positive Rate}
+  \item{FPR}{False Positive Rate}
+  \item{FDR}{False Discovery Rate}
+  \item{FNR}{False Negative Rate}
 }
 }
 \description{
@@ -43,6 +43,8 @@ markers \code{truth}:
   \item True Positive Rate (TPR)
   \item False Positive Rate (FPR)
 }
+}
+\details{
 Both, \code{id.list} and \code{truth} are a subset of markers from
 \code{markers}.
 }

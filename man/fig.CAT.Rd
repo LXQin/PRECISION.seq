@@ -7,11 +7,18 @@
 fig.CAT(DEA, truth.DEA, title, maxrank = 100, subset = NULL)
 }
 \arguments{
-\item{DEA}{a list of differential expression analysis results with the element names to be the normalization methods}
+\item{DEA}{Results of a differential expression analysis using the
+included methods \code{\link{DE.voom}} or \code{\link{DE.edgeR}}.
+Must be a list including
+\describe{
+  \item{id.list}{List of differentially expressed markers}
+  \item{p.val}{p-values for differential expression}
+}}
 
-\item{truth.DEA}{differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)}
+\item{truth.DEA}{Gold standard (assumed truth) for differential expression.
+Must be of the same type as \code{DEA}.}
 
-\item{title}{figure title}
+\item{title}{optional Figure title}
 
 \item{maxrank}{optional specify the maximum size of top-ranked items that you want to plot.}
 
@@ -21,6 +28,9 @@ fig.CAT(DEA, truth.DEA, title, maxrank = 100, subset = NULL)
 figure of concordance for comparison
 }
 \description{
-Function for generating concordance at the top plot, which compares concordance of the p-values obtained
-from benchmark data without normalization and normalized test data.
+Function for generating a concordance at the top plot, which compares
+concordance of the p-values of differential expression --- typically from the
+normalized or raw data set \code{\link{data.test}} --- to the p-values of
+differential expression of a gold standard --- typically
+the data set \code{\link{data.benchmark}}.
 }

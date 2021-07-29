@@ -4,20 +4,30 @@
 \alias{fig.volcano}
 \title{Volcano Figure}
 \usage{
-fig.volcano(DEA.res, title)
+fig.volcano(DEA.res, Pval = 0.01, title)
 }
 \arguments{
-\item{DEA.res}{the list of differential expression analysis results obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes).}
+\item{DEA.res}{Results of a differential expression analysis using the
+included methods \code{\link{DE.voom}} or \code{\link{DE.edgeR}}.
+Must be a list including
+\describe{
+  \item{p.val}{p-values for differential expression}
+  \item{log2.FC}{Fold change on a log2 scale}
+}}
 
-\item{title}{the title of the figure}
+\item{Pval}{optional p-value cutoff for differential expression}
+
+\item{title}{optional Figure title}
 }
 \value{
-volcano plot
+volcano plot (ggplot2 object)
 }
 \description{
-Function for generating volcano figures with log fold change as x-axis and -log10(p-value) as y-axis.
+Function for generating volcano plot with log fold change as x-axis and
+-log10(p-value) as y-axis. Volcano plots are typically used for evaluation
+of differential expression statuses in a data set.
 }
 \examples{
 voom.benchmark <- DE.voom(data.benchmark, data.group)
-fig.volcano(voom.benchmark, title = "Volcano Plot")
+fig.volcano(voom.benchmark, title = "Benchmark data (differential expression)")
 }

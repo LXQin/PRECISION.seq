@@ -106,10 +106,10 @@ full.pipeline <- function(bench.data, test.data, groups.data,
     # Volcano plots
     p.volcano <- vector("list", length(test.DE.stats))
     for(i in 1:length(test.DE.stats)) {
-      p.volcano[[i]] <- fig.volcano(test.DE[[i]], names(test.DE)[i])
+      p.volcano[[i]] <- fig.volcano(test.DE[[i]], title=names(test.DE)[i])
     }
     names(p.volcano) <- names(test.DE.stats)
-    p.volcano <- append(p.volcano, list(benchmark=fig.volcano(bench.DE, "benchmark")))
+    p.volcano <- append(p.volcano, list(benchmark=fig.volcano(bench.DE, title="benchmark")))
 
     # RLE plots
     p.RLE <- vector("list", length(test.norm))

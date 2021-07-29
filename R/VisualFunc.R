@@ -1,21 +1,32 @@
 #' Volcano Figure
 #'
-#' Function for generating volcano figures with log fold change as x-axis and -log10(p-value) as y-axis.
+#' Function for generating volcano plot with log fold change as x-axis and
+#' -log10(p-value) as y-axis. Volcano plots are typically used for evaluation
+#' of differential expression statuses in a data set.
 #'
-#' @param DEA.res the list of differential expression analysis results obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes).
-#' @param title the title of the figure
+#' @param DEA.res Results of a differential expression analysis using the
+#' included methods \code{\link{DE.voom}} or \code{\link{DE.edgeR}}.
+#' Must be a list including
+#' \describe{
+#'   \item{p.val}{p-values for differential expression}
+#'   \item{log2.FC}{Fold change on a log2 scale}
+#' }
+#' @param Pval optional p-value cutoff for differential expression
+#' @param title optional Figure title
 #'
-#' @return volcano plot
+#' @return volcano plot (ggplot2 object)
 #' @export
 #'
 #' @examples
 #' voom.benchmark <- DE.voom(data.benchmark, data.group)
-#' fig.volcano(voom.benchmark, title = "Volcano Plot")
-fig.volcano <- function(DEA.res, title){
-  DE.list <- DEA.res$id.list
+#' fig.volcano(voom.benchmark, title = "Benchmark data (differential expression)")
+fig.volcano <- function(DEA.res, Pval=0.01, title){
+  if(missing(title)) {
+    title <- ""
+  }
   dat.DE.frame <- data.frame(dm = DEA.res$log2.FC,
                              p.value = DEA.res$p.val)
-  mask <- with(dat.DE.frame, p.value < .01)
+  mask <- with(dat.DE.frame, p.value < Pval)
   cols <- ifelse(mask, "red", "black")
 
   xlim = round(1.15 * max(abs(dat.DE.frame$dm)), 1)
@@ -23,7 +34,7 @@ fig.volcano <- function(DEA.res, title){
 
   p <- ggplot(aes(x = dm, y = -log10(p.value)), data = dat.DE.frame) +
     geom_point(color = cols) +
-    geom_hline(yintercept = 2, lty = 2) +
+    geom_hline(yintercept = -log10(Pval), lty = 2) +
     xlim(-xlim, xlim) +
     ylim(0, ylim) +
     xlab("Mean Difference") +
@@ -36,11 +47,13 @@ fig.volcano <- function(DEA.res, title){
 
 #' Relative Log Expression Plot
 #'
-#' Function for generating relative log expression plot using the read count data as the input.
+#' Function for generating relative log expression plots based on raw or
+#' normalized count data as the input.
 #'
-#' @param data normalized testing using the method which the researchers desire to compare with the other methods
-#' @param groups vector of characters indicating the group for each sample (only 2 groups are allowed).
-#' @param title the title of the figure
+#' @param data Raw or normalized count data
+#' @param groups vector of characters indicating the group for each sample
+#' (only 2 groups are allowed).
+#' @param title optional Figure title
 #'
 #' @return ggplot boxplot for relative log expression
 #' @import ggplot2
@@ -48,8 +61,11 @@ fig.volcano <- function(DEA.res, title){
 #' @export
 #'
 #' @examples
-#' fig.RLE(data.test, data.group, "test without normalization")
+#' fig.RLE(data.test, data.group, title="test data (no normalization)")
 fig.RLE = function(data, groups, title) {
+  if(missing(title)) {
+    title <- ""
+  }
   data <- ifelse(data<0, 0, data)  # Catch negative read counts and set them to 0
   raw.log <- log2(data + 1)
   rle <- t(apply(raw.log, 1, function(x) x - median(x)))
@@ -75,13 +91,23 @@ fig.RLE = function(data, groups, title) {
 
 #' Concordance At The Top Plot
 #'
-#' Function for generating concordance at the top plot, which compares concordance of the p-values obtained
-#' from benchmark data without normalization and normalized test data.
+#' Function for generating a concordance at the top plot, which compares
+#' concordance of the p-values of differential expression --- typically from the
+#' normalized or raw data set \code{\link{data.test}} --- to the p-values of
+#' differential expression of a gold standard --- typically
+#' the data set \code{\link{data.benchmark}}.
 #'
 #'
-#' @param DEA a list of differential expression analysis results with the element names to be the normalization methods
-#' @param truth.DEA differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)
-#' @param title figure title
+#' @param DEA Results of a differential expression analysis using the
+#' included methods \code{\link{DE.voom}} or \code{\link{DE.edgeR}}.
+#' Must be a list including
+#' \describe{
+#'   \item{id.list}{List of differentially expressed markers}
+#'   \item{p.val}{p-values for differential expression}
+#' }
+#' @param truth.DEA Gold standard (assumed truth) for differential expression.
+#' Must be of the same type as \code{DEA}.
+#' @param title optional Figure title
 #' @param maxrank optional specify the maximum size of top-ranked items that you want to plot.
 #' @param subset optional vector of a subset of genes/markers for this analysis
 #
@@ -94,6 +120,9 @@ fig.RLE = function(data, groups, title) {
 #'
 #' @examples
 fig.CAT <- function(DEA, truth.DEA, title, maxrank=100, subset=NULL){
+  if(missing(title)) {
+    title <- ""
+  }
   # Subset DEAs to a given set of miRNAs
   if (!is.null(subset)) {
     DEA <- DEA[subset, ]
@@ -143,8 +172,10 @@ fig.CAT <- function(DEA, truth.DEA, title, maxrank=100, subset=NULL){
 #'
 #' @param DEA a list of differential expression analysis results with the element names to be the normalization methods
 #' @param truth.DEA differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)
-#' @param title figure title
-#' @param subset vector of a subset of genes/markers for this analysis
+#' @param title Figure title
+#' @param subset optional Vector of a subset of markers.
+#' If given, the plot will be limited to the given subset
+#' of markers. Leave \code{NULL} if all markers should be considered.
 #'
 #' @return figure for selection of normalization methods
 #'

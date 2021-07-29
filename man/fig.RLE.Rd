@@ -7,18 +7,20 @@
 fig.RLE(data, groups, title)
 }
 \arguments{
-\item{data}{normalized testing using the method which the researchers desire to compare with the other methods}
+\item{data}{Raw or normalized count data}
 
-\item{groups}{vector of characters indicating the group for each sample (only 2 groups are allowed).}
+\item{groups}{vector of characters indicating the group for each sample
+(only 2 groups are allowed).}
 
-\item{title}{the title of the figure}
+\item{title}{optional Figure title}
 }
 \value{
 ggplot boxplot for relative log expression
 }
 \description{
-Function for generating relative log expression plot using the read count data as the input.
+Function for generating relative log expression plots based on raw or
+normalized count data as the input.
 }
 \examples{
-fig.RLE(data.test, data.group, "test without normalization")
+fig.RLE(data.test, data.group, title="test data (no normalization)")
 }

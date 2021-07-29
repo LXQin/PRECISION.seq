@@ -122,6 +122,7 @@ DE.edgeR <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) 
 #'   \item True Positive Rate (TPR)
 #'   \item False Positive Rate (FPR)
 #' }
+#'
 #' Both, \code{id.list} and \code{truth} are a subset of markers from
 #' \code{markers}.
 #'
@@ -139,11 +140,12 @@ DE.edgeR <- function(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL) 
 #'
 #' @return A list of:
 #' \describe{
-#'   \item{TPR} True positive Rate
-#'   \item{FPR} False Positive Rate
-#'   \item{FDR} False Discovery Rate
-#'   \item{FNR} False Negative Rate
+#'   \item{TPR}{True positive Rate}
+#'   \item{FPR}{False Positive Rate}
+#'   \item{FDR}{False Discovery Rate}
+#'   \item{FNR}{False Negative Rate}
 #' }
+#'
 #' @export
 #' @examples
 #' DE.bench <- DE.voom(data.benchmark, data.group)

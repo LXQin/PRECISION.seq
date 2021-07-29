@@ -177,7 +177,13 @@ provided if the data is not normalized beforehand as indicated by the
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>voom.benchmark</span> <span class='op'>&lt;-</span> <span class='fu'>DE.voom</span><span class='op'>(</span><span class='va'>data.benchmark</span>, <span class='va'>data.group</span><span class='op'>)</span>
-</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>voom.benchmark</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; List of 3
+#&gt;  $ id.list: chr [1:59] "hsa-miR-99a*" "hsa-miR-26a-2*" "hsa-miR-146b" "hsa-miR-7(3)" ...
+#&gt;  $ p.val  : Named num [1:1033] 2.02e-05 4.22e-05 7.17e-05 7.32e-05 8.71e-05 ...
+#&gt;   ..- attr(*, "names")= chr [1:1033] "hsa-miR-99a*" "hsa-miR-26a-2*" "hsa-miR-146b" "hsa-miR-7(3)" ...
+#&gt;  $ log2.FC: Named num [1:1033] -1.765 -0.943 1.501 1.211 3.149 ...
+#&gt;   ..- attr(*, "names")= chr [1:1033] "hsa-miR-99a*" "hsa-miR-26a-2*" "hsa-miR-146b" "hsa-miR-7(3)" ...</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
