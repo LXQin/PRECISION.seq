@@ -21,5 +21,7 @@ of markers. Leave \code{NULL} if all markers should be considered.}
 figure for selection of normalization methods
 }
 \description{
-Selection of normalization methods based on golden standards
+Function for boxplot of FDR and FNR based on the DEA from the golden benchmark (typically
+the data set \code{\link{data.benchmark}}) and the normalized test dataset (typically the
+normalized or raw data set \code{\link{data.test}})
 }

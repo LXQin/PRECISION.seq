@@ -16,7 +16,7 @@ Must be a list including
 }}
 
 \item{truth.DEA}{Gold standard (assumed truth) for differential expression.
-Must be of the same type as \code{DEA}.}
+Must be in the same format as \code{DEA}.}
 
 \item{title}{optional Figure title}
 

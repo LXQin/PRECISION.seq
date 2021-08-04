@@ -122,99 +122,20 @@ full.pipeline <- function(bench.data, test.data, groups.data,
                                                   "RLE for benchmark")))
 
     # CAT plot
-
-    ## CAT plot function copied from DANA project
-    # Comcordance at the top plot
-    #
-    # Function for generating concordance at the top plot, which compares the
-    # concordance of the p-values for given differential expression analyzes
-    # to an assumed truth (a benchmark).
-    #
-    # @param DEA result for the data under study
-    # @param truth.DEA DEA result for the assumed truth (the gold standard)
-    # @param title Plot title
-    # @param maxrank Optionally specify the maximum size of top-ranked items
-    # that you want to plot.
-    # @param subset vector of a subset of genes/markers for this analysis
-    #
-    # @return a list of values about TPR, FPR, FDR, FNR
-
-    plot.CAT <- function(DEA, truth.DEA, title="", maxrank=100, subset=NULL){
-      # Subset DEAs to a given set of miRNAs
-      if (!is.null(subset)) {
-        DEA <- DEA[subset, ]
-        truth.DEA <- truth.DEA[subset, ]
-      }
-      # Reduce Data to named p.values
-      truth <- truth.DEA$p.val
-      names(truth) <- truth.DEA$id.list
-      compare <- list()
-      for(i in 1:length(DEA)) {
-        compare <- append(compare, list(DEA[[i]]$p.val))
-        names(compare[[i]]) <- DEA[[i]]$id.list
-      }
-      names(compare) <- names(DEA)
-
-      catplots <- list()
-      for(i in 1:length(compare)) {
-        catplots <- append(catplots,
-                           list(CATplot(compare[[i]], truth,
-                                        maxrank = maxrank, make.plot=FALSE)))
-      }
-      names(catplots) <- names(compare)
-
-      data_cat <- data.frame(x = numeric(), y = numeric(), curve = character())
-      for(i in 1:length(catplots)){
-        y = catplots[[i]][,2]
-        x = 1:length(y)
-        data_cat = rbind(data_cat, data.frame(x, y, curve = names(catplots)[i]))
-      }
-      data_cat$curve = factor(data_cat$curve)
-
-      return(ggplot(data_cat, aes(x, y, color = curve, linetype = curve)) +
-               theme(legend.title = element_blank()) +
-               geom_line(size=.75) +
-               ylab("Rate of Agreement with Benchmark") +
-               xlab("Significance Rank") +
-               theme(legend.title=element_blank()) +
-               ggtitle(title) +
-               ylim(c(0,1)) +
-               theme_bw())
-    }
-    p.CAT <- plot.CAT(test.DE, bench.DE, title="Corncordance at the top")
+    p.CAT <- fig.CAT(test.DE, bench.DE, title="Corncordance at the top")
 
     # Scatterplot (FNR-FDR)
-    test.DEA.res <- data.frame(method=names(test.DE.stats),
-                               FDR=sapply(test.DE.stats, function(x) x$FDR),
-                               FNR=sapply(test.DE.stats, function(x) x$FNR))
-    p.FNR_FDR <- ggplot(test.DEA.res, aes(x=FNR, y=FDR, label=method)) +
-      theme_bw() +
-      geom_point(alpha=1, color = "red") +
-      xlab("FNR") + # True positive rate(1-FNR)
-      ylab("FDR") + # Positive predictive value (1-FDR)
-      geom_text_repel(aes(label = method)) +
-      scale_x_continuous(labels = scales::percent, limits=c(0,1),
-                         breaks = scales::pretty_breaks(n = 4)) +
-      scale_y_continuous(labels = scales::percent, limits = c(0,1))
+    p.FNR_FDR <- fig.FDR_FNR(test.DE, bench.DE, title="FNR vs. FDR")
 
     # Dendrogram
-    genes <- rownames(test.data)
-    pval_frame <- data.frame(sapply(test.DE, function(x) x$p.val[genes]))
-    hc <- hclust(dist(t(-log10(pval_frame))), method = "ward.D")
-    p.dendro <- ggdendrogram(hc, rotate = FALSE, size = 2)
-    rm(genes, pval_frame, hc)
+    p.dendro <- fig.dendrogram(lapply(test.DE, function(x) x$p.val), title = "")
 
     # Venn Diagrams
     p.venn <- vector("list", length(test.DE))
-    bench.sig <- (bench.DE$p.val < Pval)
-    test.sig <- lapply(test.DE, function (x) (x$p.val[names(bench.sig)] < Pval))
-    for(i in 1:length(test.sig)) {
-      p.venn[[i]] <- as.ggplot(function() vennDiagram(
-        vennCounts(cbind(bench.sig, test.sig[[i]])),
-        names = c("Benchmark", names(test.sig)[i]),
-        cex = 1.5, counts.col = rainbow(1)))
+    for(i in 1:length(test.DE)) {
+      p.venn[[i]] <- fig.venn(bench.DE$p.val, test.DE[[i]]$p.val, Pvalue = Pval, title = paste0("Venn diagram for ", names(test.DE)[i]))
     }
-    names(p.venn) <- names(test.sig)
+    names(p.venn) <- names(test.norm)
 
     # List of return values
     res <- list(data.norm=test.norm,

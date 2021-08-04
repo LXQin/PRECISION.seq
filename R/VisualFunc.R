@@ -106,7 +106,7 @@ fig.RLE = function(data, groups, title) {
 #'   \item{p.val}{p-values for differential expression}
 #' }
 #' @param truth.DEA Gold standard (assumed truth) for differential expression.
-#' Must be of the same type as \code{DEA}.
+#' Must be in the same format as \code{DEA}.
 #' @param title optional Figure title
 #' @param maxrank optional specify the maximum size of top-ranked items that you want to plot.
 #' @param subset optional vector of a subset of genes/markers for this analysis
@@ -170,6 +170,10 @@ fig.CAT <- function(DEA, truth.DEA, title, maxrank=100, subset=NULL){
 
 #' Selection of normalization methods based on golden standards
 #'
+#' Function for boxplot of FDR and FNR based on the DEA from the golden benchmark (typically
+#' the data set \code{\link{data.benchmark}}) and the normalized test dataset (typically the
+#' normalized or raw data set \code{\link{data.test}})
+#'
 #' @param DEA a list of differential expression analysis results with the element names to be the normalization methods
 #' @param truth.DEA differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)
 #' @param title Figure title
@@ -201,7 +205,11 @@ fig.FDR_FNR <- function(DEA, truth.DEA, title, subset=NULL) {
   stat <- data.frame(FNR = FNR, FDR = FDR, names = names(DE.stats))
   p <- ggplot(stat, aes(FNR, FDR, label = names)) + geom_point(color = "red") +
     geom_text_repel() + theme_bw() +
-    ggtitle(title)
+    ggtitle(title)+
+    scale_x_continuous(labels = scales::percent, limits=c(0,1),
+                       breaks = scales::pretty_breaks(n = 4)) +
+    scale_y_continuous(labels = scales::percent, limits = c(0,1))
+
 
   return(p)
 }
@@ -210,11 +218,12 @@ fig.FDR_FNR <- function(DEA, truth.DEA, title, subset=NULL) {
 #' Venn diagram for p-values
 #'
 #' Venn diagram is used to identify the performance of different normalization methods based on intersection of differential expressed genes.
-#' @param truth.DEA differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)
-#' @param DEA.res p-values as a result from prior differential expression
+#' @param truth.DEA.pval p-values of differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)
+#' @param DEA.res.pval p-values as a result from prior differential expression
 #' analysis, e.g. using \code{\link{DE.voom}} or \code{\link{DE.edgeR}}.
 #' @param Pvalue Cut-off point for p-values for identifying significant
 #' differential expression.
+#' @param title optional, figure title
 #'
 #' @return A Venn diagram
 #' @import limma
@@ -225,14 +234,18 @@ fig.FDR_FNR <- function(DEA, truth.DEA, title, subset=NULL) {
 #' @examples
 #' benchmark.voom <- DE.voom(RC = data.benchmark, groups = data.group, P = 0.01)
 #' test.voom <- DE.voom(RC = data.test, groups = data.group, P = 0.01)
-#' fig.venn(benchmark.voom$p.val, test.voom$p.val, 0.01)
-fig.venn <- function(truth.DEA, DEA.res, Pvalue){
-  bench.sig <- (truth.DEA$p.val < Pvalue)
-  test.sig <- (DEA.res$p.val[names(truth.DEA$p.val)] < Pvalue)
+#' fig.venn(truth.DEA = benchmark.voom$p.val, DEA.res = test.voom$p.val, Pvalue = 0.01)
+fig.venn <- function(truth.DEA.pval, DEA.res.pval, Pvalue, title){
+  if(missing(title)) {
+    title <- ""
+  }
+  bench.sig <- (truth.DEA.pval < Pvalue)
+  test.sig <- (DEA.res.pval[names(truth.DEA.pval)] < Pvalue)
   venn <- vennCounts(cbind(bench.sig, test.sig))
   p <- as.ggplot(function() vennDiagram(venn,
                                         names = c("Benchmark", "Test"),
-                                        cex = 1.5, counts.col = rainbow(1)))
+                                        cex = 1.5, counts.col = rainbow(1))) +
+    ggtitle(title)
 
   return(p)
 }
@@ -242,7 +255,7 @@ fig.venn <- function(truth.DEA, DEA.res, Pvalue){
 #'
 #' Function for clustering normalization methods based on the p-values pattern calculated from the same dataset.
 #'
-#' @param DEA A list of differential expression analysis results with the element names to be the normalization methods
+#' @param DEA.pval.list A list of p-values from differential expression analysis results with the element names to be the normalization methods
 #' @param title optional Figure title
 #' @param subset optional Vector of a subset of markers.
 #' If given, the dendrogram analysis will be limited to the given subset
@@ -257,16 +270,16 @@ fig.venn <- function(truth.DEA, DEA.res, Pvalue){
 #' t <-  runif(1033)
 #' names(t) <-  rownames(data.test)
 #' fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)
-fig.dendrogram <- function(DEA, title, subset=NULL){
+fig.dendrogram <- function(DEA.pval.list, title, subset=NULL){
   if(missing(title)) {
     title <- ""
   }
   if(is.null(subset)){
-    genes <- names(DEA[[1]]$p.val)
+    genes <- names(DEA.pval.list[[1]])
   } else{
     genes <- subset
   }
-  pval_frame <- data.frame(sapply(DEA, function(x) x$p.val[genes]))
+  pval_frame <- data.frame(sapply(DEA.pval.list, function(x) x[genes]))
   hc <- hclust(dist(t(-log10(pval_frame))), method = "ward.D")
   p.dendro <- ggdendrogram(hc, rotate = FALSE, size = 2) + ggtitle(title)
   rm(genes, pval_frame, hc)
@@ -275,6 +288,9 @@ fig.dendrogram <- function(DEA, title, subset=NULL){
 
 
 #' Boxplot of FDR and FNR for Simulated data
+#'
+#' Function for the boxplots of FDR and FNR based on golden truth (typically the simulated benchmark data set \code{\link{simulated.data()}})
+#' and the differential expression analysis (typically the results from the simulated normalized test data set \code{\link{simulated.data()}}).
 #'
 #' @param DEA.list A list with each element as a normalization method including the differential expression analysis (DEA) results from multiple simulated data
 #' @param truth.DEA.list A list of DEA results of benchmark data for multiple simulated dataset

@@ -4,16 +4,18 @@
 \alias{fig.venn}
 \title{Venn diagram for p-values}
 \usage{
-fig.venn(truth.DEA, DEA.res, Pvalue)
+fig.venn(truth.DEA.pval, DEA.res.pval, Pvalue, title)
 }
 \arguments{
-\item{truth.DEA}{differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)}
+\item{truth.DEA.pval}{p-values of differential expression analysis results from the benchmark (gold standard) obtained from DE.voom, DE.edge, or any method from the users by storing the results as same as DE methods in the package (including DE genes, p-values and log2 fold changes)}
 
-\item{DEA.res}{p-values as a result from prior differential expression
+\item{DEA.res.pval}{p-values as a result from prior differential expression
 analysis, e.g. using \code{\link{DE.voom}} or \code{\link{DE.edgeR}}.}
 
 \item{Pvalue}{Cut-off point for p-values for identifying significant
 differential expression.}
+
+\item{title}{optional, figure title}
 }
 \value{
 A Venn diagram
@@ -24,5 +26,5 @@ Venn diagram is used to identify the performance of different normalization meth
 \examples{
 benchmark.voom <- DE.voom(RC = data.benchmark, groups = data.group, P = 0.01)
 test.voom <- DE.voom(RC = data.test, groups = data.group, P = 0.01)
-fig.venn(benchmark.voom$p.val, test.voom$p.val, 0.01)
+fig.venn(truth.DEA = benchmark.voom$p.val, DEA.res = test.voom$p.val, Pvalue = 0.01)
 }

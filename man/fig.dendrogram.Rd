@@ -4,10 +4,10 @@
 \alias{fig.dendrogram}
 \title{Dendrogram for clustering p-values}
 \usage{
-fig.dendrogram(DEA, title, subset = NULL)
+fig.dendrogram(DEA.pval.list, title, subset = NULL)
 }
 \arguments{
-\item{DEA}{A list of differential expression analysis results with the element names to be the normalization methods}
+\item{DEA.pval.list}{A list of p-values from differential expression analysis results with the element names to be the normalization methods}
 
 \item{title}{optional Figure title}
 

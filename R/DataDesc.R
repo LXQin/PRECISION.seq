@@ -89,7 +89,8 @@ simulated.data <- function(proportion, median, numsets){
     simulated_benchmark <-  benchmark_simu[, s[i,]]
     simulated_test <-  test_simu[, s[i,]]
     data.simulated[[i]] <- list(simulated_benchmark = simulated_benchmark,
-                                simulated_test = simulated_test)
+                                simulated_test = simulated_test,
+                                simulated_group = c(rep('MXF',27),rep('PMFH',27)))
   }
   return(data.simulated)
 }

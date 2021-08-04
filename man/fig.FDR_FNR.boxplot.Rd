@@ -19,5 +19,6 @@ fig.FDR_FNR.boxplot(DEA.list, truth.DEA.list, title, subset = NULL)
 
 }
 \description{
-Boxplot of FDR and FNR for Simulated data
+Function for the boxplots of FDR and FNR based on golden truth (typically the simulated benchmark data set \code{\link{simulated.data()}})
+and the differential expression analysis (typically the results from the simulated normalized test data set \code{\link{simulated.data()}}).
 }
