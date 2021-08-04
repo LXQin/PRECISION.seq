@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -133,14 +133,14 @@
     <p>Function for clustering normalization methods based on the p-values pattern calculated from the same dataset.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>fig.dendrogram</span><span class='op'>(</span><span class='va'>DEA</span>, <span class='va'>title</span>, subset <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>fig.dendrogram</span><span class='op'>(</span><span class='va'>DEA.pval.list</span>, <span class='va'>title</span>, subset <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>DEA</th>
-      <td><p>A list of differential expression analysis results with the element names to be the normalization methods</p></td>
+      <th>DEA.pval.list</th>
+      <td><p>A list of p-values from differential expression analysis results with the element names to be the normalization methods</p></td>
     </tr>
     <tr>
       <th>title</th>
@@ -162,7 +162,7 @@ of markers. Leave <code>NULL</code> if all markers should be considered.</p></td
     <pre class="examples"><div class='input'><span class='va'>t</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>1033</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>t</span><span class='op'>)</span> <span class='op'>&lt;-</span>  <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span><span class='op'>(</span><span class='va'>data.test</span><span class='op'>)</span>
 <span class='fu'>fig.dendrogram</span><span class='op'>(</span>MethodsCompare <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"norm.none"</span>, <span class='st'>"norm.TMM"</span>, <span class='st'>"norm.SVA"</span>, <span class='st'>"norm.TC"</span>, <span class='st'>"norm.RUVr"</span><span class='op'>)</span>, MethodNew <span class='op'>=</span> <span class='st'>"Example"</span>, pvalues <span class='op'>=</span> <span class='va'>t</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA",     "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t): unbenutzte Argumente (MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)</span></div></pre>
+</div><div class='output co'>#&gt; <span class='error'>Error in fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA",     "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t): unused arguments (MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
