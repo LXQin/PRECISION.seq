@@ -56,7 +56,7 @@ fig.RLE(data.test, data.group, "test without normalization")
 ## Venn Diagram
 Venn diagram is used to identify the performance of different normalization methods based on intersection of DE genes using a pair of data.
 ```{r warning=FALSE, message=FALSE}
-fig.venn(benchmark.DE, test.DE[[1]], Pvalue = 0.01)
+fig.venn(benchmark.DE$p.val, test.DE[[1]]$p.val, Pvalue = 0.01)
 ```
 
 
@@ -77,6 +77,6 @@ fig.CAT(test.DE, benchmark.DE, title = "")
 ## Dendrogram for Method Clustering 
 Dendrogram clusters the p-values for differential expression on the same dataset obtained through different normalization methods, which could be used to visualize the similarity among different normalization methods.
 ```{r warning=FALSE, message=FALSE}
-fig.dendrogram(test.DE, title="")
+fig.dendrogram(lapply(test.DE, function(x) x$p.val), title="")
 ```
 
