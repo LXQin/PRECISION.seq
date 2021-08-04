@@ -135,14 +135,14 @@
     <p>Function for clustering normalization methods based on the p-values pattern calculated from the same dataset.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fig.dendrogram</span><span class='op'>(</span><span class='va'>DEA</span>, <span class='va'>title</span>, subset <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>fig.dendrogram</span><span class='op'>(</span><span class='va'>DEA.pval.list</span>, <span class='va'>title</span>, subset <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>DEA</th>
-      <td><p>A list of differential expression analysis results with the element names to be the normalization methods</p></td>
+      <th>DEA.pval.list</th>
+      <td><p>A list of p-values from differential expression analysis results with the element names to be the normalization methods</p></td>
     </tr>
     <tr>
       <th>title</th>
