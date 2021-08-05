@@ -1,5 +1,5 @@
 ---
-title: "Introduction to PRECISION.SEQ Data"
+title: "Introduction to the Data in PRECISION.SEQ"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{The precision.seq Data}
@@ -20,12 +20,14 @@ library(precision.seq)
 library(limma)
 ```
 
-MicroRNA (miRNA) sequencing data is collected for two subtypes of soft tissue sarcoma: myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH). 27 MXF samples and 27 PMFH samples, which were newly diagnosed untreated tumors, were collected at Memorial Sloan Kettering Cancer Center between 2002 and 2012. These tumor samples were sequenced twice: once with uniform handling and balanced sample-to-library-assignment to minimize data artifact due to experimental handling and avoid their confounding with sample group (that is, tumor type); and a second time without, which exhibits data artifacts due to handling and requires normalization for removing obscuring variability. We call the former the benchmark data and the latter the test data. They are named as data.benchmark and data.test respectively in this package. We show how to examine the overall distribution and perform differential expression analysis for these data sets as well as how to simulate additional paired data sets by applying a novel data permutation algorithm to the paired data sets.
+MicroRNA (miRNA) sequencing data were collected for two subtypes of soft tissue sarcoma: myxofibrosarcoma (MXF) and pleomorphic malignant fibrous histiocytoma (PMFH). 27 MXF samples and 27 PMFH samples were collected from newly diagnosed untreated tumors at Memorial Sloan Kettering Cancer Center between 2002 and 2012. These tumor samples were sequenced twice: once with uniform handling and balanced sample-to-library-assignment to minimize data artifacts due to experimental handling and avoid their confounding with  sample group (that is, tumor subtype); and a second time without, which resulted in excessive artifacts due to handling. The first dataset can be used to assess microRNAs’ differential expression status, serving as a benchmark; the second dataset can be used to test normalization methods against the benchmark. These two datsets are named as data.benchmark and data.test in this package. 
+
+We show (1) how to examine the overall distribution of each dataset, (2) how to perform differential expression analysis for each data set and compare the results between the two, and (3) how to create additional paired data sets based on a novel data permutation algorithm and analyze them. 
 
 
 ## Benchmark Data Analysis
 ### Overall Data Distribution
-We examine the overall distribution of the log2 transformed benchmark data using sample-specific boxplots.
+We examine the overall distribution of the benchmark data (as log2 transformed read counts) using sample-specific boxplots.
 ```{r warning = FALSE, message = FALSE}
 benchmark.log <- log2(data.benchmark + 1)
 boxplot(benchmark.log, 
@@ -38,7 +40,7 @@ legend("topright",c("MXF", "PMFH"), bty = "n",
 ```  
 
 ### Differential Expression Analysis
-We assess evidence for differential expression in the benchmark data using the voom-limma method for the log2 transformed count data. The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average. Red dots indicate the genes which are significantly differentially expressed ($p < 0.01$).
+We assess evidence for differential expression in the benchmark data using the voom-limma method. The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average. Red dots indicate the microRNAs that are significantly differentially expressed ($p < 0.01$).
 ```{r warning=FALSE, message=FALSE}
 benchmark.voom <- DE.voom(RC = data.benchmark, groups = data.group, Pval = 0.01)
 DE.bench <- benchmark.voom$id.list
@@ -65,7 +67,7 @@ plot(rowMeans(benchmark.log),
 
 ## Test Data Analysis
 ### Overall Data Distribution
-We examine the overall distribution of the log2 transformed test data using sample-specific boxplots.
+We examine the overall distribution of the test data (as log2 transformed read counts) using sample-specific boxplots.
 ```{r warning = FALSE, message = FALSE}
 test.log <- log2(data.test + 1)
 boxplot(test.log, 
@@ -77,7 +79,7 @@ legend("topleft",c("MXF", "PMFH"), bty = "n",
 ```
 
 ### Differential Expression Analysis
-We assess evidence for differential expression in the test data using the voom-limma method (without any depth normalization). The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average. Red dots indicate the genes which are significantly differentially expressed ($p < 0.01$).
+We assess evidence for differential expression in the test data using the voom-limma method (without depth normalization). The analysis results are displayed with the volcano plot and the scatter plot of group mean difference versus group mean average. Red dots indicate the microRNAs that are significantly differentially expressed ($p < 0.01$).
 ```{r warning=FALSE, message=FALSE}
 test.voom <- DE.voom(RC = data.test, groups = data.group, Pval = 0.01)
 test.voom.dat <- data.frame(dm = test.voom$log2.FC,
@@ -90,8 +92,8 @@ with(test.voom.dat, plot(dm, -log10(p.value), cex = .5, pch = 16,
 abline(h = 2, lty = 2)
 ```
 
-### Comparison of Differential Expression Between Benchmark Data and Test Data
-Significance for differential expression is claimed using a p-value cutoff of 0.01 for both the benchmark data and the test data. They are compared with each other using the Venn diagram.
+### Comparison of Differential Expression Status Between Benchmark Data and Test Data
+Significance of differential expression is claimed using a p-value cutoff of 0.01 for both the benchmark data and the test data. They are compared with each other using the Venn diagram.
 ```{r warning=FALSE, message=FALSE}
 pval.bench.test <- data.frame(cbind(bench.pval = benchmark.voom$p.val, 
                                     test.pval = test.voom$p.val[names(benchmark.voom$p.val)]))
@@ -105,7 +107,7 @@ vennDiagram(vennCounts(venn2),
 ```
 
 ### Comparison of Estimated Group Means Between Benchmark Data and Test Data
-Scatterplot for the relationship between group means of benchmark and test data for MXF and PMFH.
+Scatterplot for the estimated group means for MXF and PMFH between benchmark data and test data.
 ```{r warning=FALSE, message=FALSE}
 benchmark.log.MXF.mean <- rowMeans(benchmark.log[, grepl("MXF", colnames(benchmark.log))])
 plot(benchmark.log.MXF.mean,
@@ -126,7 +128,7 @@ abline(0,1)
 
 
 ## Simulation
-We then describe how to use `simulated.data()` function to generate additional pairs of data sets by permuting the paired data sets to achieve a pre-specified level of differential expression. As an example, we show how to generate data sets with the proportion of differential expression around 0.02 (more specifically, in the range of 0.0175 and 0.0225) and the median of mean differences (for log2 counts) around 0 (more specifically, in the range of -0.5 and 0.5).
+We use `simulated.data()` function to generate additional pairs of data sets by permuting the paired data sets to achieve a pre-specified proportion and magnitude of differential expression. As an example, we show how to generate data sets with the proportion of differential expression around 0.02 (more specifically, in the range of 0.0175 and 0.0225) and the median of mean differences (for log2 counts) around 0 (more specifically, in the range of -0.5 and 0.5).
 ```{r warning=FALSE, message=FALSE}
 simulated <- simulated.data(proportion = c(0.0175, 0.0225), median = c(-0.5, 0.5), numsets = 100)
 
