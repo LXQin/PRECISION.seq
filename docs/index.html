@@ -54,7 +54,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/Intro_Data.html">Introduction to PRECISION.SEQ Data</a>
+      <a href="articles/Intro_Data.html">Introduction to the Data in PRECISION.SEQ</a>
     </li>
     <li>
       <a href="articles/Intro_Figure.html">Introduction to PRECISION.SEQ Figure Functions</a>
@@ -80,17 +80,10 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="precisionseq-an-r-package-for-comparison-of-depth-normalization-methods" class="section level1">
+<div id="precisionseq-an-r-package-for-performance-assessment-of-depth-normalization-methods-in-microrna-sequencing" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#precisionseq-an-r-package-for-comparison-of-depth-normalization-methods" class="anchor"></a>precision.seq: An R Package for Comparison of Depth Normalization Methods</h1></div>
-<p>We propose the well-prepared datasets and pack commonly used normalization methods/functions in this package. This package provides a pipeline for evaluting depth normalization methods, especially for small RNA sequencing. The general workflow of this package is:</p>
-<ul>
-<li>Input dataset in the format of data frame or matrix with columns for samples and rows for genes;</li>
-<li>Indicate the group for each sample using a vector of characters;</li>
-<li>Select the normalization and DEA method for analysis;</li>
-<li>Obtain the output including the DE genes and p-values for each gene;</li>
-<li>Visualize the outputs for methods comparision.</li>
-</ul>
+<a href="#precisionseq-an-r-package-for-performance-assessment-of-depth-normalization-methods-in-microrna-sequencing" class="anchor"></a>PRECISION.seq: An R Package for Performance Assessment of Depth Normalization Methods in MicroRNA Sequencing</h1></div>
+<p>We make available a new R package PRECISION.seq (PaiREd miCrorna analysIs of differential expresSION for sequencing) for assessing the performance of depth normalization methods in microRNA sequencing based on differential expression status. The package provides a pair of microRNA sequencing data sets for the same set of tumor samples, additional simulated pairs of data sets under various patterns of differential expression, and a collection of numerical and graphical tools for normalization assessment. More specifically, for the same set of tumor samples, one data set was collected using uniform handling and balanced library assignment and the second was collected over time and without such careful study design; the former can be used to assess microRNAs’ differential expression status, serving as a benchmark; the latter can be used to test normalization methods against the benchmark. PRECISION.seq enables an objective and systemic evaluation of depth normalization methods in microRNA sequencing using realistically distributed and robustly benchmarked data. Users can easily assess their own normalization method and compare its performance to nine popular methods already implemented in the package.</p>
 <p>The package can be installed in R. The full <em>package documentation</em> can be found <a href="https://lxqin.github.io/PRECISION.seq/">here</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"LXQin/precision.seq"</span><span class="op">)</span></code></pre></div>
@@ -111,7 +104,7 @@
         <span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="va">new.pkg</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="op">}</span>
 <span class="fu">Bioconductor.packages</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"DESeq2"</span>, <span class="st">"edgeR"</span>, <span class="st">"affy"</span>, <span class="st">"sva"</span>, <span class="st">"RUVSeq"</span>, <span class="st">"EDASeq"</span>, <span class="st">"limma"</span>, <span class="st">"preprocessCore"</span>, <span class="st">"ffpe"</span>, <span class="st">"Biobase"</span>, <span class="st">"vsn"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>The original R code and figures for the paper <a href="https://pubmed.ncbi.nlm.nih.gov/32598180/"><em>Statistical Assessment of Depth Normalization for Small RNA Sequencing</em></a> are included in the article <em>Pipeline of the Paper</em> for reference.</p>
+<p>The original R code along with the figures for the paper <a href="https://pubmed.ncbi.nlm.nih.gov/32598180/"><em>Statistical Assessment of Depth Normalization for Small RNA Sequencing</em></a> is included in the article <em>Pipeline of the Paper</em>.</p>
 </div>
   </div>
 
