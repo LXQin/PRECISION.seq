@@ -1,11 +1,6 @@
-# precision.seq: An R Package for Comparison of Depth Normalization Methods
+# precision.seq: An R Package for Performance Assessment of Depth Normalization Methods in MicroRNA Sequencing
 
-We propose the well-prepared datasets and pack commonly used normalization methods/functions in this package. This package provides a pipeline for evaluting depth normalization methods, especially for small RNA sequencing. The general workflow of this package is: 
-* Input dataset in the format of data frame or matrix with columns for samples and rows for genes;
-* Indicate the group for each sample using a vector of characters;
-* Select the normalization and DEA method for analysis;
-* Obtain the output including the DE genes and p-values for each gene;
-* Visualize the outputs for methods comparision.
+We make available a new R package PRECISION.seq (PaiREd miCrorna analysIs of differential expresSION for sequencing) for assessing the performance of depth normalization methods based on differential expression status in microRNA sequencing. The package provides a pair of microRNA sequencing data sets for the same set of tumor samples, additional simulated pairs of data sets under various patterns of differential expression, and a collection of numerical and graphical tools for normalization assessment. Users can easily assess their own normalization method and compare its performance to nine popular methods already implemented in the package. PRECISION.seq enables an objective and systemic evaluation of depth normalization methods in microRNA sequencing using realistically distributed and robustly benchmarked data. 
 
 The package can be installed in R. The full *package documentation* can be found [here](https://lxqin.github.io/PRECISION.seq/).
 
@@ -33,4 +28,4 @@ Bioconductor.packages <- function(pkg){
 Bioconductor.packages(c("DESeq2", "edgeR", "affy", "sva", "RUVSeq", "EDASeq", "limma", "preprocessCore", "ffpe", "Biobase", "vsn"))
 ```
 
-The original R code and figures for the paper [*Statistical Assessment of Depth Normalization for Small RNA Sequencing*](https://pubmed.ncbi.nlm.nih.gov/32598180/) are included in the article *Pipeline of the Paper* for reference.
+The original R code along with the figures for the paper [*Statistical Assessment of Depth Normalization for Small RNA Sequencing*](https://pubmed.ncbi.nlm.nih.gov/32598180/) is included in the article *Pipeline of the Paper*.
