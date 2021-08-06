@@ -73,3 +73,17 @@ A function is included in the package for connecting the step of depth normaliza
 res.norm <- pip.norm(data.test, data.group, "norm.TMM")
 res.DE <- pip.norm.DE(data.test, data.group, "norm.TMM")
 ```
+
+## Example usage for SVA Normalization
+Some normalization methods, such as the SVA method, compute "adjustment" instead of normalized counts. For illustration, we repeat the PRECISION.seq analysis using SVA.
+
+```{r message=FALSE, echo = T, results = 'hide'}
+# Compute normalization 
+sva.norm <- norm.SVA(data.test, data.group)
+# sva.norm contains the 
+res.sva <- precision.seq(sva.norm$dat.normed, 
+                         method.name="sva", 
+                         adjust.factors=sva.norm$adjust.factor, 
+                         DE.method="DE.voom", 
+                         Pval=0.01)
+```
