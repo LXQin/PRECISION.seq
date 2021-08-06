@@ -14,10 +14,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Introduction and Overview
+# Overview
 
-In this vignette, we demonstrate an example usage of the PRECISION.SEQ package.
-We assess the normalization performance of the "variance stabilization"(vsn) normalization method, which is provided by the R package `vsn`, and compare its performance against other popular normalization methods.
+In this vignette, we demonstrate an example usage of functions in the PRECISION.seq package. It assesses the performance of the "variance stabilization normalization" (VSN) method, which is provided by the R package `vsn`, in comparison with nine other normalization methods.
 
 The analysis pipeline works as follows:
 We first assess evidence of differential expression in the [benchmark data](../reference/data.benchmark.html) without normalization using `voom`.
@@ -34,10 +33,10 @@ For simplicity, all of these steps have been packaged into a simple pipeline con
 
 The [`precision.seq`](../reference/precision.seq.html) function performs the full normalization assessment and returns a comparison to all included normalization methods.
 
-# Example usage for Variance Stabilizing Normalization (vsn)
 
-First, we load the PRECISION.SEQ package as well as the Biobase and vsn packages.
+# Package Installation
 
+First, we load the PRECISION.seq package as well as the Biobase and vsn packages.
 
 ```{r setup, warning = FALSE, message = FALSE}
 library(precision.seq)
@@ -46,11 +45,10 @@ library(vsn)
 ```
 
 
-## VSN Normalization
+# VSN Normalization
 
-The [test data](../reference/data.test.html) is normalized by Variance Stabilizing Normalization (VSN) using the function `justvsn` from the R package `vsn`. 
-If there are any unwanted negative counts in the normalized data, we set them to 1.
-Any of the negative normalized counts are set to 1.
+The [test data](../reference/data.test.html) is normalized by VSN using the function `justvsn` from the R package `vsn`. 
+If there are any unwanted negative counts in the normalized data, they are set to 1.
 
 ```{r message = FALSE, echo = T, results = 'hide'}
 vsn.norm <- justvsn(data.test)  # Normalize data
@@ -58,22 +56,13 @@ vsn.norm <- ifelse(vsn.norm<0, 1, vsn.norm)  # Handle negative counts
 vsn.norm <- 2^(vsn.norm)-1  # Reverse log2-transformation
 ```
 
+# Performance Assessment of VSN Normalization using Empirical Data
 
-## precision.seq Normalization Assessment
-
-We perform the full PRECISION.SEQ normalization assessment using the [`precision.seq`](../reference/precision.seq.html) function.
-This includes:
-
-- Normalization of the test data using all included reference normalization methods.
-- Differential expression analysis using voom or edgeR.
-- Comparison of the differential expression statuses between the normalized test data and the benchmark data.
-- Visualization and numerical quantification of the results.
+We assess the performance of VSN using the [`precision.seq`](../reference/precision.seq.html) function. It includes (1) normalization of the test data using VSN and nine other  normalization methods that are implemented in the package, (2) differential expression analysis using voom or edgeR for the normalized data and for the unnormalized benchmark data, (3) comparison of the differential expression statuses between the normalized test data and the benchmark data, and (4) graphical display and numerical summary of the comparison.
 
 ```{r message=FALSE, echo = T, results = 'hide'}
 res.vsn <- precision.seq(vsn.norm, method.name="vsn")
 ```
-
-We investigate some results.
 
 ```{r fig.width=5, fig.height=5}
 # Relative log expression
@@ -88,19 +77,14 @@ print(res.vsn$p.venn$vsn)
 print(res.vsn$p.FNR_FDR)
 ```
 
+# Performance Assessment of VSN Normalization using Simulated Data
 
-## Simulation Data Analysis
+The assessment is extended to simulated data reflecting various patterns of differential expression. For a full description of the simulation algorithm, please refer to the paper [*Statistical Assessment of Depth Normalization for Small RNA Sequencing*](https://pubmed.ncbi.nlm.nih.gov/32598180/).
 
-Finally, we extend out analysis using simulated data.
-For a full description of the data simulation algorithm, please refer to the paper [*Statistical Assessment of Depth Normalization for Small RNA Sequencing*](https://pubmed.ncbi.nlm.nih.gov/32598180/).
 
-### Data Simulation
+## Extract Simulated Data
 
-We first sample 100 simulated data sets using the function [`simulated.data`](../reference/simulated.data.html).
-These new data sets have been simulated in advance and the `simulated.data` function returns a random subset of these data sets.
-To filter the total number of 20,000 pairs of test and benchmark data sets, the user can specify two ranges: (1) a range for the proportion of differentially expressed markers, and (2) a range for the median of the mean differences.
-We set the proportion of differentially expressed markers to 15% to 25%, and the range of the median of mean differences to between 2 to 4.
-The simulated data sets are of the same size as the test and benchmark data sets, each containing 27 MXF and 27 PMFH samples.
+20,000 simulated pairs of test data and benchmark data sets were generated in advance. The user can specify: (1) a range for the proportion of differentially expressed markers, and (2) a range for the median of the mean differences, and use the function [`simulated.data`](../reference/simulated.data.html) to extract the simulated data set pairs that fall into these two ranges. In the example shown here, the proportion of differentially expressed markers is set to 15% to 25% and the range of the median of mean differences is set to between 2 to 4.
 
 ```{r}
 set.seed(12345)
@@ -115,12 +99,9 @@ simulated <- simulated.data(proportion = c(0.15, 0.25),
                             numsets = num.sets) 
 ```
 
-### Boxplot for FDR and FNR
+## Boxplot for FDR and FNR
 
-We normalize each simulated test data set using `vsn` normaliztion.
-We then use the pipeline function [`pip.simulated.data`](../reference/pip.simulated.data.html) to compute the agreement of differential expression statuses for each simulated data set.
-The results are summarized in a boxplot diagram, which is returned by the pipeline function.
-
+Each simulated test data set is normalized with VSN. The pipeline function [`pip.simulated.data`](../reference/pip.simulated.data.html) is then used to compute the agreement of differential expression statuses for simulated test data set with that for its paired simulated benchmark data set.
 
 ```{r warning = FALSE, message = FALSE, results = FALSE}
 vsn.norm <- list()
@@ -162,28 +143,6 @@ print(res$p.boxplot)
 
 <!-- fig.FDR_FNR.boxplot(test.DE.list, benchmark.DE.list, title = "DE = 20%, median mean-diff = 3") -->
 <!-- ``` -->
-
-
-# Example usage for SVA Normalization
-
-Some normalization methods compute "adjustment" or "scaling" factors instead of normalized counts.
-In this case, the input of the \code{\link{precision.seq}} function changes slightly.
-For illustration, we repeat the PRECISION.SEQ analysis for a method that computes adjusting factors for the normalization. 
-We use the (already included) method "sva", for which a wrapper function \code{\link{norm.SVA}} is provided.
-
-```{r message=FALSE, echo = T, results = 'hide'}
-# Compute normalization 
-sva.norm <- norm.SVA(data.test, data.group)
-# sva.norm contains the 
-res.sva <- precision.seq(sva.norm$dat.normed, 
-                         method.name="sva", 
-                         adjust.factors=sva.norm$adjust.factor, 
-                         DE.method="DE.voom", 
-                         Pval=0.01)
-```
-
-
-
 
 
 
