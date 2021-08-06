@@ -191,6 +191,20 @@
 <code class="sourceCode R"><span class="va">res.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.norm.html">pip.norm</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"norm.TMM"</span><span class="op">)</span>
 <span class="va">res.DE</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.norm.DE.html">pip.norm.DE</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span>, <span class="st">"norm.TMM"</span><span class="op">)</span></code></pre></div>
 </div>
+<div id="example-usage-for-sva-normalization" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example-usage-for-sva-normalization" class="anchor" aria-hidden="true"></a>Example usage for SVA Normalization</h2>
+<p>Some normalization methods, such as the SVA method, compute “adjustment” instead of normalized counts. For illustration, we repeat the PRECISION.seq analysis using SVA.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Compute normalization </span>
+<span class="va">sva.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/norm.SVA.html">norm.SVA</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span><span class="op">)</span>
+<span class="co"># sva.norm contains the </span>
+<span class="va">res.sva</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/precision.seq.html">precision.seq</a></span><span class="op">(</span><span class="va">sva.norm</span><span class="op">$</span><span class="va">dat.normed</span>, 
+                         method.name<span class="op">=</span><span class="st">"sva"</span>, 
+                         adjust.factors<span class="op">=</span><span class="va">sva.norm</span><span class="op">$</span><span class="va">adjust.factor</span>, 
+                         DE.method<span class="op">=</span><span class="st">"DE.voom"</span>, 
+                         Pval<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span></code></pre></div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

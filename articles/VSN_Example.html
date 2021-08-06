@@ -87,10 +87,10 @@
 
     
     
-<div id="introduction-and-overview" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction-and-overview" class="anchor" aria-hidden="true"></a>Introduction and Overview</h1>
-<p>In this vignette, we demonstrate an example usage of the PRECISION.SEQ package. We assess the normalization performance of the “variance stabilization”(vsn) normalization method, which is provided by the R package <code>vsn</code>, and compare its performance against other popular normalization methods.</p>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor" aria-hidden="true"></a>Overview</h2>
+<p>In this vignette, we demonstrate an example usage of functions in the PRECISION.seq package. It assesses the performance of the “variance stabilization normalization” (VSN) method, which is provided by the R package <code>vsn</code>, in comparison with nine other normalization methods.</p>
 <p>The analysis pipeline works as follows: We first assess evidence of differential expression in the <a href="../reference/data.benchmark.html">benchmark data</a> without normalization using <code>voom</code>. The benchmark data was collected using uniform handling to minimize any handling effects and, hence, differential expression in the benchmark data serves as a “gold standard”. On the other hand, the <a href="../reference/data.test.html">test data</a> contains the same samples as the benchmark data, however it was sequenced over multiple years without careful study design, resulting in unwanted depth variations. We then assess differential expression in the dest data before and after normalization and compare it with the gold standard. The agreement of this comparison in summarized using graphically using various plots, and numerically using measures such as the false negative rate (FNR) and the false discovery rate (FDR). See also <a href="Intro_Data.html">this vignette</a> for more information on the data sets.</p>
 <p>For simplicity, all of these steps have been packaged into a simple pipeline consisting of the following 2 steps:</p>
 <ol style="list-style-type: decimal">
@@ -99,36 +99,30 @@
 </ol>
 <p>The <a href="../reference/precision.seq.html"><code>precision.seq</code></a> function performs the full normalization assessment and returns a comparison to all included normalization methods.</p>
 </div>
-<div id="example-usage-for-variance-stabilizing-normalization-vsn" class="section level1">
-<h1 class="hasAnchor">
-<a href="#example-usage-for-variance-stabilizing-normalization-vsn" class="anchor" aria-hidden="true"></a>Example usage for Variance Stabilizing Normalization (vsn)</h1>
-<p>First, we load the PRECISION.SEQ package as well as the Biobase and vsn packages.</p>
+<div id="package-installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#package-installation" class="anchor" aria-hidden="true"></a>Package Installation</h2>
+<p>First, we load the PRECISION.seq package as well as the Biobase and vsn packages.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">precision.seq</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biobase" class="external-link">Biobase</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.r-project.org" class="external-link">vsn</a></span><span class="op">)</span></code></pre></div>
+</div>
 <div id="vsn-normalization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#vsn-normalization" class="anchor" aria-hidden="true"></a>VSN Normalization</h2>
-<p>The <a href="../reference/data.test.html">test data</a> is normalized by Variance Stabilizing Normalization (VSN) using the function <code>justvsn</code> from the R package <code>vsn</code>. If there are any unwanted negative counts in the normalized data, we set them to 1. Any of the negative normalized counts are set to 1.</p>
+<p>The <a href="../reference/data.test.html">test data</a> is normalized by VSN using the function <code>justvsn</code> from the R package <code>vsn</code>. If there are any unwanted negative counts in the normalized data, they are set to 1.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vsn/man/justvsn.html" class="external-link">justvsn</a></span><span class="op">(</span><span class="va">data.test</span><span class="op">)</span>  <span class="co"># Normalize data</span>
 <span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">vsn.norm</span><span class="op">&lt;</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="va">vsn.norm</span><span class="op">)</span>  <span class="co"># Handle negative counts</span>
 <span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">^</span><span class="op">(</span><span class="va">vsn.norm</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span>  <span class="co"># Reverse log2-transformation</span></code></pre></div>
 </div>
-<div id="precision-seq-normalization-assessment" class="section level2">
+<div id="performance-assessment-of-vsn-normalization-using-empirical-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#precision-seq-normalization-assessment" class="anchor" aria-hidden="true"></a>precision.seq Normalization Assessment</h2>
-<p>We perform the full PRECISION.SEQ normalization assessment using the <a href="../reference/precision.seq.html"><code>precision.seq</code></a> function. This includes:</p>
-<ul>
-<li>Normalization of the test data using all included reference normalization methods.</li>
-<li>Differential expression analysis using voom or edgeR.</li>
-<li>Comparison of the differential expression statuses between the normalized test data and the benchmark data.</li>
-<li>Visualization and numerical quantification of the results.</li>
-</ul>
+<a href="#performance-assessment-of-vsn-normalization-using-empirical-data" class="anchor" aria-hidden="true"></a>Performance Assessment of VSN Normalization using Empirical Data</h2>
+<p>We assess the performance of VSN using the <a href="../reference/precision.seq.html"><code>precision.seq</code></a> function. It includes (1) normalization of the test data using VSN and nine other normalization methods that are implemented in the package, (2) differential expression analysis using voom or edgeR for the normalized data and for the unnormalized benchmark data, (3) comparison of the differential expression statuses between the normalized test data and the benchmark data, and (4) graphical display and numerical summary of the comparison.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res.vsn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/precision.seq.html">precision.seq</a></span><span class="op">(</span><span class="va">vsn.norm</span>, method.name<span class="op">=</span><span class="st">"vsn"</span><span class="op">)</span></code></pre></div>
-<p>We investigate some results.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Relative log expression</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.vsn</span><span class="op">$</span><span class="va">p.RLE</span><span class="op">$</span><span class="va">noNorm</span><span class="op">)</span>
@@ -154,14 +148,14 @@
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.vsn</span><span class="op">$</span><span class="va">p.FNR_FDR</span><span class="op">)</span></code></pre></div>
 <p><img src="VSN_Example_files/figure-html/unnamed-chunk-4-6.png" width="480"></p>
 </div>
-<div id="simulation-data-analysis" class="section level2">
+<div id="performance-assessment-of-vsn-normalization-using-simulated-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#simulation-data-analysis" class="anchor" aria-hidden="true"></a>Simulation Data Analysis</h2>
-<p>Finally, we extend out analysis using simulated data. For a full description of the data simulation algorithm, please refer to the paper <a href="https://pubmed.ncbi.nlm.nih.gov/32598180/" class="external-link"><em>Statistical Assessment of Depth Normalization for Small RNA Sequencing</em></a>.</p>
-<div id="data-simulation" class="section level3">
+<a href="#performance-assessment-of-vsn-normalization-using-simulated-data" class="anchor" aria-hidden="true"></a>Performance Assessment of VSN Normalization using Simulated Data</h2>
+<p>The assessment is extended to simulated data reflecting various patterns of differential expression. For a full description of the simulation algorithm, please refer to the paper <a href="https://pubmed.ncbi.nlm.nih.gov/32598180/" class="external-link"><em>Statistical Assessment of Depth Normalization for Small RNA Sequencing</em></a>.</p>
+<div id="extract-simulated-data" class="section level3">
 <h3 class="hasAnchor">
-<a href="#data-simulation" class="anchor" aria-hidden="true"></a>Data Simulation</h3>
-<p>We first sample 100 simulated data sets using the function <a href="../reference/simulated.data.html"><code>simulated.data</code></a>. These new data sets have been simulated in advance and the <code>simulated.data</code> function returns a random subset of these data sets. To filter the total number of 20,000 pairs of test and benchmark data sets, the user can specify two ranges: (1) a range for the proportion of differentially expressed markers, and (2) a range for the median of the mean differences. We set the proportion of differentially expressed markers to 15% to 25%, and the range of the median of mean differences to between 2 to 4. The simulated data sets are of the same size as the test and benchmark data sets, each containing 27 MXF and 27 PMFH samples.</p>
+<a href="#extract-simulated-data" class="anchor" aria-hidden="true"></a>Extract Simulated Data</h3>
+<p>20,000 simulated pairs of test data and benchmark data sets were generated in advance. The user can specify: (1) a range for the proportion of differentially expressed markers, and (2) a range for the median of the mean differences, and use the function <a href="../reference/simulated.data.html"><code>simulated.data</code></a> to extract the simulated data set pairs that fall into these two ranges. In the example shown here, the proportion of differentially expressed markers is set to 15% to 25% and the range of the median of mean differences is set to between 2 to 4.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span>
 
@@ -177,7 +171,7 @@
 <div id="boxplot-for-fdr-and-fnr" class="section level3">
 <h3 class="hasAnchor">
 <a href="#boxplot-for-fdr-and-fnr" class="anchor" aria-hidden="true"></a>Boxplot for FDR and FNR</h3>
-<p>We normalize each simulated test data set using <code>vsn</code> normaliztion. We then use the pipeline function <a href="../reference/pip.simulated.data.html"><code>pip.simulated.data</code></a> to compute the agreement of differential expression statuses for each simulated data set. The results are summarized in a boxplot diagram, which is returned by the pipeline function.</p>
+<p>Each simulated test data set is normalized with VSN. The pipeline function <a href="../reference/pip.simulated.data.html"><code>pip.simulated.data</code></a> is then used to compute the agreement of differential expression statuses for simulated test data set with that for its paired simulated benchmark data set.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">num.sets</span><span class="op">)</span> <span class="op">{</span>
@@ -215,22 +209,6 @@
 <!-- benchmark.DE.list <- lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_benchmark, groups = sim.groups)) -->
 <!-- fig.FDR_FNR.boxplot(test.DE.list, benchmark.DE.list, title = "DE = 20%, median mean-diff = 3") -->
 <!-- ``` -->
-</div>
-</div>
-</div>
-<div id="example-usage-for-sva-normalization" class="section level1">
-<h1 class="hasAnchor">
-<a href="#example-usage-for-sva-normalization" class="anchor" aria-hidden="true"></a>Example usage for SVA Normalization</h1>
-<p>Some normalization methods compute “adjustment” or “scaling” factors instead of normalized counts. In this case, the input of the  function changes slightly. For illustration, we repeat the PRECISION.SEQ analysis for a method that computes adjusting factors for the normalization. We use the (already included) method “sva”, for which a wrapper function  is provided.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Compute normalization </span>
-<span class="va">sva.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/norm.SVA.html">norm.SVA</a></span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span><span class="op">)</span>
-<span class="co"># sva.norm contains the </span>
-<span class="va">res.sva</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/precision.seq.html">precision.seq</a></span><span class="op">(</span><span class="va">sva.norm</span><span class="op">$</span><span class="va">dat.normed</span>, 
-                         method.name<span class="op">=</span><span class="st">"sva"</span>, 
-                         adjust.factors<span class="op">=</span><span class="va">sva.norm</span><span class="op">$</span><span class="va">adjust.factor</span>, 
-                         DE.method<span class="op">=</span><span class="st">"DE.voom"</span>, 
-                         Pval<span class="op">=</span><span class="fl">0.01</span><span class="op">)</span></code></pre></div>
 <!-- Test data is normalized by Variance Stabilizing Normalization (VSN) using function `justvsn`, and the negative normalized values are set to 1. Voom-limma is used for the differential expression analysis. -->
 <!-- ```{r} -->
 <!-- vsn.norm <- justvsn(data.test) -->
@@ -303,6 +281,7 @@
 <!-- benchmark.DE.list <- lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_benchmark, groups = sim.groups)) -->
 <!-- fig.FDR_FNR.boxplot(test.DE.list, benchmark.DE.list, title = "DE = 20%, median mean-diff = 3") -->
 <!-- ``` -->
+</div>
 </div>
   </div>
 
