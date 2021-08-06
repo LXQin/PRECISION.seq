@@ -1,5 +1,5 @@
 ---
-title: "Introduction to PRECISION.SEQ Figure Functions"
+title: "Introduction to the Plotting Functions in PRECISION.seq"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{The precision.seq Plotting Functions}
@@ -23,12 +23,12 @@ library(limma)
 library(ggplotify)
 ```
 
-We include a number of functions for comparing the data distribution and differential-expression-analysis results for the test data (before and after normalization) with these for the benchmark data in this package.
+The package includes a number of plotting functions for comparing the data distribution and analysis results for the test data (before and after normalization) with these for the benchmark data. These functions take one or more of the following three types of objects: (1) sequencing count data, (2) a single set of differential expression analysis results, and (3) a list of multiple sets of differential expression analysis results, with one set for one normalization method being assessed. Besides the nine normalization methods included in this package, users can also assess additional methods by inputting its associated differential expression analysis results.
 
-## Differential Expression Analysis List
-There are three types of objects needed for figures -- 1) raw data; 2) single list of DEA results; 3) list of multiple DEA results for different normalization methods.
+
+## Differential Expression Analysis Results
 ```{r}
-## Normalize test data using internal normalization functions
+## Normalize test data using normalization functions included in the package
 test.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
 test.DE <- list(
   TMM = DE.voom(RC=test.norm$TMM$dat.normed, groups = data.group),
@@ -47,36 +47,31 @@ benchmark.DE <- DE.voom(RC=data.benchmark, groups = data.group)
 ```
 
 ## Relative Log Expression Plot
-Relative log expression plot is the sample-specific boxplots showing the data deviation of each sample from the median counts across all samples.
+Relative log expression plot is the sample-specific boxplots displaying the data deviation of each sample from the median counts across all samples.
 ```{r}
 fig.RLE(data.test, data.group, "test without normalization")
 ```
 
-
 ## Venn Diagram
-Venn diagram is used to identify the performance of different normalization methods based on intersection of DE genes using a pair of data.
+Venn diagram is used to compare the differential expression status based on the test data (before or after normalization) with that based on the benchmark data.
 ```{r warning=FALSE, message=FALSE}
 fig.venn(benchmark.DE$p.val, test.DE[[1]]$p.val, Pvalue = 0.01)
 ```
 
-
 ## Scatterplot for FNR and FDR
-False Negative Rate (FNR) and False Discovery Rate (FDR) are calculated for each normalization method in the test data by comparing against the differential expression status based on the benchmark data as a gold standard. Scatter plot is used to plot the FNRs and FDRs among the normalization methods under study. Besides the benchmark-data-based gold standard, users also have the option of inputting an alternative golden standard (in the form of a list of miRNA/marker names). 
+False Negative Rate (FNR) and False Discovery Rate (FDR) are calculated for the test data (before or after normalization) treating the differential expression status based on the benchmark data as a gold standard. Besides the benchmark-data-based gold standard, users also have the option of inputting an alternative golden standard (in the form of a list of miRNA/marker names). Scatter plot is used to plot the FNRs and FDRs among the normalization methods under study. 
 ```{r warning=FALSE, message=FALSE}
 fig.FDR_FNR(test.DE, benchmark.DE, title = "")
 ```
 
-
 ## Concordance at The Top Plot
-Concordance at the top plot compares the concordance of the p-values for differential expression assessed in the test data (before and after normalization) versus that in the benchmark data. Besides the nine normalization methods included in this package, additional normalization methods implemented by the user can also be used and assessed against the benchmark through inputting the p-values of DEA.
+Concordance at the top plot compares the concordance of the ranking for the differential expression p-values based on the test data (before and after normalization) versus that in the benchmark data. 
 ```{r warning=FALSE, message=FALSE}
 fig.CAT(test.DE, benchmark.DE, title = "")
 ```
 
-
 ## Dendrogram for Method Clustering 
-Dendrogram clusters the p-values for differential expression on the same dataset obtained through different normalization methods, which could be used to visualize the similarity among different normalization methods.
+Dendrogram clusters the differential expression p-values for various normalization methods applied to the test data.
 ```{r warning=FALSE, message=FALSE}
 fig.dendrogram(lapply(test.DE, function(x) x$p.val), title="")
 ```
-
