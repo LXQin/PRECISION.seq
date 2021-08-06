@@ -1,5 +1,5 @@
 ---
-title: "Introduction to the Data in PRECISION.SEQ"
+title: "Introduction to the Data in PRECISION.seq"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{The precision.seq Data}
