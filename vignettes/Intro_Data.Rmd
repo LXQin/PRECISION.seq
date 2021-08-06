@@ -26,6 +26,7 @@ We show (1) how to examine the overall distribution of each dataset, (2) how to 
 
 
 ## Benchmark Data Analysis
+
 ### Overall Data Distribution
 We examine the overall distribution of the benchmark data (as log2 transformed read counts) using sample-specific boxplots.
 ```{r warning = FALSE, message = FALSE}
@@ -66,6 +67,7 @@ plot(rowMeans(benchmark.log),
 
 
 ## Test Data Analysis
+
 ### Overall Data Distribution
 We examine the overall distribution of the test data (as log2 transformed read counts) using sample-specific boxplots.
 ```{r warning = FALSE, message = FALSE}
