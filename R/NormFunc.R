@@ -153,7 +153,7 @@ norm.DESeq <- function(raw, groups) {
 #' @examples
 #' test.PoissonSeq <- norm.PoissonSeq(data.test)
 norm.PoissonSeq <- function(raw) {
-  scaling.factor <- PS.Est.Depth(raw)
+  invisible(capture.output(scaling.factor <- PS.Est.Depth(raw)))
   dat.normed <- t(t(raw)/scaling.factor)
   return(list(dat.normed = dat.normed,
               scaling.factor = scaling.factor))
@@ -215,7 +215,8 @@ norm.SVA <- function(raw, groups) {
   mod1 <- model.matrix(~ groups)
   mod0 <- cbind(mod1[,1])
   dat0 <- as.matrix(dat.sva)
-  svseq <- svaseq(dat0, mod1, mod0, n.sv = 1)$sv
+#  svseq <- svaseq(dat0, mod1, mod0, n.sv = 1)$sv
+  invisible(capture.output(svseq <- svaseq(dat0, mod1, mod0, n.sv = 1)$sv))
   adjust <- cbind(mod1, svseq)
   hat <- solve(t(adjust) %*% adjust) %*% t(adjust)
   beta <- (hat %*% t(raw))
@@ -263,7 +264,7 @@ norm.RUVg <- function(raw, groups) {
   fit <- glmFit(y, design)
   lrt <- glmLRT(fit, coef = 2)
   top <- topTags(lrt, n = nrow(set))$table
-  spikes <- rownames(set)[which(!(rownames(set) %in% rownames(top)[1:0.15*nrow(raw)]))]
+  spikes <- rownames(set)[which(!(rownames(set) %in% rownames(top)[1:(0.15*nrow(raw))]))]
 
 
   t <- RUVg(set, spikes, k = 1)
@@ -310,7 +311,7 @@ norm.RUVs <- function(raw, groups) {
   fit <- glmFit(y, design)
   lrt <- glmLRT(fit, coef = 2)
   top <- topTags(lrt, n = nrow(set))$table
-  spikes <- rownames(set)[which(!(rownames(set) %in% rownames(top)[1:0.15*nrow(raw)]))]
+  spikes <- rownames(set)[which(!(rownames(set) %in% rownames(top)[1:(0.15*nrow(raw))]))]
 
   differences <- makeGroups(condition)
   controls <- rownames(dat.ruv)
@@ -358,7 +359,7 @@ norm.RUVr <- function(raw, groups) {
   fit <- glmFit(y, design)
   lrt <- glmLRT(fit, coef = 2)
   top <- topTags(lrt, n = nrow(set))$table
-  spikes <- rownames(set)[which(!(rownames(set) %in% rownames(top)[1:0.15*nrow(raw)]))]
+  spikes <- rownames(set)[which(!(rownames(set) %in% rownames(top)[1:(0.15*nrow(raw))]))]
 
   design <- model.matrix(~ condition, data = pData(set))
   y <- DGEList(counts = DESeq2::counts(set), group = condition)
