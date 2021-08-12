@@ -1,14 +1,14 @@
 Package: precision.seq
 Title: Comparison of Depth Normalization Methods
-Version: 0.1.1
-Date: 2020-07-11
+Version: 0.2.0
+Date: 2021-08-12
 Authors@R: as.person(c( 
     "Jian Zou <jian.zou@pitt.edu> [aut, cre]",
     "Yannick Duren <yannick.dueren@rub.de> [aut]",
     "Li-Xuan Qin <qinl@mskcc.org> [aut, ths]"))
 Description: We propose the well-prepared datasets and pack commonly used normalization methods/functions in this package. The workflow of this package is: (1) Input dataset in the format of data frame or matrix with with columns for samples and raws for genes; (2) Indicate the group for each sample using a vector of characters; (3) Ensure the normalization and DEA method; (4) Obtain the output including the DE genes and p values for each gene.
 License: GPL-2
-Depends: R (>= 3.6.0)
+Depends: R (>= 4.0.2)
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
@@ -35,7 +35,9 @@ Imports:
     tidyr,
     dplyr,
     ggplotify,
-    cluster
+    cluster,
+    Biobase,
+    BiocGenerics
 Suggests: 
     knitr,
     rmarkdown

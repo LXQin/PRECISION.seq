@@ -240,6 +240,7 @@ norm.SVA <- function(raw, groups) {
 #' @import edgeR
 #' @import RUVSeq
 #' @import Biobase
+#' @import BiocGenerics
 #' @export
 #'
 #' @references \href{http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf}{RUVSeq Tutorial}
@@ -247,6 +248,12 @@ norm.SVA <- function(raw, groups) {
 #' @examples
 #' test.RUVg <- norm.RUV(data.test, data.group)
 norm.RUVg <- function(raw, groups) {
+  if (!require("Biobase")) {
+    stop("Package \"Biobase\" needed for this function to work. Please install it.",
+         call. = FALSE
+    )
+  }
+
   filter <- apply(raw, 1, function(x) length(x[x > 5]) >= 2)
   dat.ruv <- raw[filter, ]
   genes <- rownames(dat.ruv)
@@ -287,6 +294,7 @@ norm.RUVg <- function(raw, groups) {
 #' @import edgeR
 #' @import RUVSeq
 #' @import Biobase
+#' @import BiocGenerics
 #' @export
 #'
 #' @references \href{http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf}{RUVSeq Tutorial}
@@ -294,6 +302,12 @@ norm.RUVg <- function(raw, groups) {
 #' @examples
 #' test.RUVs <- norm.RUVs(data.test, data.group)
 norm.RUVs <- function(raw, groups) {
+  if (!require("Biobase")) {
+    stop("Package \"Biobase\" needed for this function to work. Please install it.",
+         call. = FALSE
+    )
+  }
+
   filter <- apply(raw, 1, function(x) length(x[x > 5]) >= 2)
   dat.ruv <- raw[filter, ]
   genes <- rownames(dat.ruv)
@@ -335,6 +349,7 @@ norm.RUVs <- function(raw, groups) {
 #' @import edgeR
 #' @import RUVSeq
 #' @import Biobase
+#' @import BiocGenerics
 #' @export
 #'
 #' @references \href{http://www.bioconductor.org/packages/devel/bioc/vignettes/RUVSeq/inst/doc/RUVSeq.pdf}{RUVSeq Tutorial}
@@ -342,6 +357,12 @@ norm.RUVs <- function(raw, groups) {
 #' @examples
 #' test.RUVr <- norm.RUVr(data.test, data.group)
 norm.RUVr <- function(raw, groups) {
+  if (!require("Biobase")) {
+    stop("Package \"Biobase\" needed for this function to work. Please install it.",
+         call. = FALSE
+    )
+  }
+
   filter <- apply(raw, 1, function(x) length(x[x > 5]) >= 2)
   dat.ruv <- raw[filter, ]
   genes <- rownames(dat.ruv)
