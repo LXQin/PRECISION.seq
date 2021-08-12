@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">precision.seq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -223,21 +223,21 @@
 <code class="sourceCode R"><span class="va">simulated</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulated.data.html">simulated.data</a></span><span class="op">(</span>proportion <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.0175</span>, <span class="fl">0.0225</span><span class="op">)</span>, median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>, numsets <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">simulated</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">simulated_benchmark</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-<span class="co">#&gt;                   D7    D8    D9    E2     E5</span>
-<span class="co">#&gt; hsa-let-7a-2*      2     6     2     1     11</span>
-<span class="co">#&gt; hsa-let-7a(3)  30934 18756 57395 30760 268842</span>
-<span class="co">#&gt; hsa-let-7a*(2)   216   154   142   108   1517</span>
-<span class="co">#&gt; hsa-let-7b      8395  3001 14939  9509  77765</span>
-<span class="co">#&gt; hsa-let-7b*       50    23    74    33    607</span>
-<span class="co">#&gt; hsa-let-7c      5633  5961 12911  2361  65477</span>
+<span class="co">#&gt;                   D9    D7   D13    E7   E19</span>
+<span class="co">#&gt; hsa-let-7a-2*      2     2     4     6    12</span>
+<span class="co">#&gt; hsa-let-7a(3)  57395 30934 61856 44134 74964</span>
+<span class="co">#&gt; hsa-let-7a*(2)   142   216   486   320   373</span>
+<span class="co">#&gt; hsa-let-7b     14939  8395 17117 11211 15081</span>
+<span class="co">#&gt; hsa-let-7b*       74    50    96    91    82</span>
+<span class="co">#&gt; hsa-let-7c     12911  5633 43551 13305 11911</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">simulated</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">simulated_test</span><span class="op">)</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-<span class="co">#&gt;                   D7    D8     D9    E2     E5</span>
-<span class="co">#&gt; hsa-let-7a-2*      2     0      0     4      2</span>
-<span class="co">#&gt; hsa-let-7a(3)  89726 62888 127231 36445 253696</span>
-<span class="co">#&gt; hsa-let-7a*(2)   368   593    240   158   1162</span>
-<span class="co">#&gt; hsa-let-7b     17546  4863  25940 11564  93419</span>
-<span class="co">#&gt; hsa-let-7b*       48    46     59    63    258</span>
-<span class="co">#&gt; hsa-let-7c     11921 20689  28152  2388  71733</span></code></pre></div>
+<span class="co">#&gt;                    D9    D7   D13    E7   E19</span>
+<span class="co">#&gt; hsa-let-7a-2*       0     2     0     2     2</span>
+<span class="co">#&gt; hsa-let-7a(3)  127231 89726 84773 20525 21420</span>
+<span class="co">#&gt; hsa-let-7a*(2)    240   368  3392   119    80</span>
+<span class="co">#&gt; hsa-let-7b      25940 17546  8844  4405  2966</span>
+<span class="co">#&gt; hsa-let-7b*        59    48    29    10    23</span>
+<span class="co">#&gt; hsa-let-7c      28152 11921 27704  5990  2609</span></code></pre></div>
 </div>
   </div>
 
