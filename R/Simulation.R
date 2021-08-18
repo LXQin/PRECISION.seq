@@ -8,6 +8,7 @@
 #' @export
 #'
 #' @examples simulation.plan <- simulation.algorithm(data.benchmark)
+#' @keywords internal
 simulation.algorithm <- function(benchmark){
   set.seed(12345)
   colnames(benchmark) = sub(".*_", "", colnames(benchmark))

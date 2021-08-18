@@ -5,7 +5,7 @@
 #' factor for the original count data.
 #'
 #' @param RC Data in the format of a data frame or matrix, with columns for samples and rows for genes.
-#' @param groups Vector of characters indicating the group for each sample.
+#' @param groups Vector of characters indicating the group label for each sample.
 #' @param Pval Cut-off point for p-values to identify differentially expressed genes.
 #' @param normalized Logical, whether the data is provided as normalized counts.
 #' If set to FALSE, adjustment factors must be provided using the \code{adjust}

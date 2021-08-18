@@ -2,7 +2,7 @@
 #'
 #' Normalize the dataset using TMM, and return the normalized dataset with scaling factor scaled by 1e6.
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and rows for genes.
 #' @param groups vector of characters indicating the group for each sample.
 #'
 #' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) for each sample.
@@ -28,9 +28,9 @@ norm.TMM <- function(raw, groups) {
 
 #' Normalization By Total Count (TC)
 #'
-#' Normalize the dataset using TC, and return the normalized dataset with scaling factor.
+#' Normalize the dataset using TC, and return the normalized dataset with scaling factor scaled by 1e6..
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and rows for genes.
 #' @param groups vector of characters indicating the group for each sample.
 #'
 #' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) scaled by 1e6 for each sample.
@@ -55,9 +55,9 @@ norm.TC <- function(raw, groups) {
 
 #' Normalization By Upper Quantile (UQ)
 #'
-#' Normalize the dataset using UQ, and return the normalized dataset with scaling factor.
+#' Normalize the dataset using UQ, and return the normalized dataset with scaling factor scaled by 1e6..
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and rows for genes.
 #' @param groups vector of characters indicating the group for each sample.
 #'
 #' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) scaled by 1e6 for each sample.
@@ -83,9 +83,9 @@ norm.UQ <- function(raw, groups) {
 
 #' Normalization By Median (Med)
 #'
-#' Normalize the dataset using Med, and return the normalized dataset with scaling factor.
+#' Normalize the dataset using Med, and return the normalized dataset with scaling factor scaled by 1e6.
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and rows for genes.
 #' @param groups vector of characters indicating the group for each sample.
 #'
 #' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) scaled by 1e6 for each sample.
@@ -113,7 +113,7 @@ norm.med <- function(raw, groups) {
 #'
 #' Normalize the dataset using DESeq, and return the normalized dataset with scaling factor.
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and rows for genes.
 #' @param groups vector of characters indicating the group for each sample.
 #'
 #' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) for each sample.
@@ -141,7 +141,7 @@ norm.DESeq <- function(raw, groups) {
 #'
 #' Normalize the dataset using PoissonSeq, and return the normalized dataset with scaling factor.
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and rows for genes.
 #'
 #' @return list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) for each sample.
 #'
@@ -164,7 +164,7 @@ norm.PoissonSeq <- function(raw) {
 #'
 #' Normalize the dataset using QN, and return the normalized dataset with scaling factor.
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and rows for genes.
 #' @param filter whether filter before normalization
 #'
 #' @return list, containing \code{dat.normed} (normalized dataset).
@@ -195,7 +195,7 @@ norm.QN <- function(raw, filter = FALSE) {
 #'
 #' Normalize the dataset using SVA, and return the normalized dataset with adjusting factor.
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and rows for genes.
 #' @param groups vector of characters indicating the group for each sample.
 #' @param calibrator whether the raw dataset includes the known negative control genes which should contain "cali" in the gene names.
 #'
@@ -231,7 +231,7 @@ norm.SVA <- function(raw, groups) {
 #'
 #' Normalize the dataset using RUV Using Control Genes, and return the normalized dataset with adjusting factor.
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and rows for genes.
 #' @param groups vector of characters indicating the group for each sample.
 
 #' @return list, containing \code{dat.normed} (normalized dataset), and the \code{adjust.factor} (adjusting factors) for the design matrix. The normalized dataset could only used for exploration, and adjusting factors are recommended as a covariate in the downstream analysis.
@@ -285,7 +285,7 @@ norm.RUVg <- function(raw, groups) {
 #'
 #' Normalize the dataset using RUV using replicate samples, and return the normalized dataset with adjusting factor.
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and rows for genes.
 #' @param groups vector of characters indicating the group for each sample.
 
 #' @return list, containing \code{dat.normed} (normalized dataset), and the \code{adjust.factor} (adjusting factors) for the design matrix. The normalized dataset could only used for exploration, and adjusting factors are recommended as a covariate in the downstream analysis.
@@ -318,7 +318,7 @@ norm.RUVs <- function(raw, groups) {
                                                     row.names = colnames(dat.ruv)))
   design <- model.matrix(~ condition, data = data.frame(condition,
                                                         row.names = colnames(dat.ruv)))
-  y <- DGEList(counts = counts(set), group = condition)
+  y <- DGEList(counts = DESeq2::counts(set), group = condition)
   y <- calcNormFactors(y, method = "upperquartile")
   y <- estimateGLMCommonDisp(y, design)
   y <- estimateGLMTagwiseDisp(y, design)
@@ -340,7 +340,7 @@ norm.RUVs <- function(raw, groups) {
 #'
 #' Normalize the dataset using RUV using residuals, and return the normalized dataset with adjusting factor.
 #'
-#' @param raw raw count data in the format of data frame or matrix, with columns for samples and raws for genes.
+#' @param raw raw count data in the format of data frame or matrix, with columns for samples and rows for genes.
 #' @param groups vector of characters indicating the group for each sample.
 
 #' @return list, containing \code{dat.normed} (normalized dataset), and the \code{adjust.factor} (adjusting factors) for the design matrix. The normalized dataset could only used for exploration, and adjusting factors are recommended as a covariate in the downstream analysis.

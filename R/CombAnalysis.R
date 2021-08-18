@@ -244,6 +244,9 @@ precision.seq <- function(norm.counts, adjust.factors, method.name,
 
 #' Normalization for RNASeq Data
 #'
+#' This is a pipeline function for performing the available normalization methods in this package.
+#' The users can perform all the normalization methods at the same time or select the method they prefer to use.
+#'
 #' @param raw raw count data in the format of data frame or matrix, with columns
 #' for samples and raws for genes.
 #' @param groups vector of characters indicating the group for each sample
@@ -300,6 +303,9 @@ pip.norm <- function(raw, groups, norm.method="all",
 
 
 #' Pipeline of Differential Expression Analysis for RNASeq Data
+#'
+#' This is a pipeline function performing the DEA starting from the data normalization.
+#' Users can select the normalization method and DE method by themselves.
 #'
 #' @param raw raw count data in the format of data frame or matrix, with columns
 #' for samples and raws for genes.

@@ -48,8 +48,7 @@
 #'
 #' @param proportion the range of proportion of DE for simulated dataset filtering
 #' @param median the range of median of mean difference for simulated dataset filtering
-#' @param median_R the highest median of mean difference for simulated dataset filtering
-#' @param numsets number of simulated datasets requested for returning (randomly drawn from the available sets). If it exceeds the maximum of availiable datasets, all the availiable sets will be returned.
+#' @param numsets number of simulated datasets requested for returning (randomly drawn from the available sets). If it exceeds the maximum number of available datasets, all the available sets will be returned.
 #'
 #' @return list containing list of simulated benchmark data and test data
 #' @import magrittr
@@ -57,7 +56,7 @@
 #' @export
 #'
 #' @examples
-#' simulated <- simulated.data(0.0175, 0.0225, -0.5, 0.5, 10)
+#' simulated <- simulated.data(c(0.0175, 0.0225), c(-0.5, 0.5), 10)
 simulated.data <- function(proportion, median, numsets){
 
   proportion_L <- proportion[1]

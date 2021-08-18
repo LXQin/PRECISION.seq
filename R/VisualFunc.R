@@ -119,6 +119,23 @@ fig.RLE = function(data, groups, title) {
 #' @export
 #'
 #' @examples
+#' voom.benchmark <- DE.voom(data.benchmark, data.group)
+#' test.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
+#' test.DE <- list(
+#' TMM = DE.voom(RC=test.norm$TMM$dat.normed, groups = data.group),
+#' TC = DE.voom(RC=test.norm$TC$dat.normed, groups = data.group),
+#' UQ = DE.voom(RC=test.norm$UQ$dat.normed, groups = data.group),
+#' med = DE.voom(RC=test.norm$med$dat.normed, groups = data.group),
+#' DESeq = DE.voom(RC=test.norm$DESeq$dat.normed, groups = data.group),
+#' PoissonSeq = DE.voom(RC=test.norm$PoissonSeq$dat.normed, groups = data.group),
+#' QN = DE.voom(RC=test.norm$QN$dat.normed, groups = data.group),
+#' RUVg = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVg$adjust.factor),
+#' RUVs = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVs$adjust.factor),
+#' RUVr = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVr$adjust.factor),
+#' SVA = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$SVA$adjust.factor),
+#' noNorm = DE.voom(RC=data.test, groups = data.group))
+#'
+#' fig.CAT(DEA = test.DE, truth.DEA = voom.benchmark, title = "Example of CAT plot")
 fig.CAT <- function(DEA, truth.DEA, title, maxrank=100, subset=NULL){
   if(missing(title)) {
     title <- ""
@@ -168,7 +185,7 @@ fig.CAT <- function(DEA, truth.DEA, title, maxrank=100, subset=NULL){
 }
 
 
-#' Selection of normalization methods based on golden standards
+#' Selection of normalization methods based on golden standards (FDR and FNR)
 #'
 #' Function for boxplot of FDR and FNR based on the DEA from the golden benchmark (typically
 #' the data set \code{\link{data.benchmark}}) and the normalized test dataset (typically the
@@ -189,6 +206,23 @@ fig.CAT <- function(DEA, truth.DEA, title, maxrank=100, subset=NULL){
 #' @export
 #'
 #' @examples
+#' voom.benchmark <- DE.voom(data.benchmark, data.group)
+#' test.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
+#' test.DE <- list(
+#' TMM = DE.voom(RC=test.norm$TMM$dat.normed, groups = data.group),
+#' TC = DE.voom(RC=test.norm$TC$dat.normed, groups = data.group),
+#' UQ = DE.voom(RC=test.norm$UQ$dat.normed, groups = data.group),
+#' med = DE.voom(RC=test.norm$med$dat.normed, groups = data.group),
+#' DESeq = DE.voom(RC=test.norm$DESeq$dat.normed, groups = data.group),
+#' PoissonSeq = DE.voom(RC=test.norm$PoissonSeq$dat.normed, groups = data.group),
+#' QN = DE.voom(RC=test.norm$QN$dat.normed, groups = data.group),
+#' RUVg = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVg$adjust.factor),
+#' RUVs = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVs$adjust.factor),
+#' RUVr = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVr$adjust.factor),
+#' SVA = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$SVA$adjust.factor),
+#' noNorm = DE.voom(RC=data.test, groups = data.group))
+#'
+#' fig.FDR_FNR(DEA = test.DE, truth.DEA = voom.benchmark, title = "Example of FDR FNR scatterplot")
 fig.FDR_FNR <- function(DEA, truth.DEA, title, subset=NULL) {
   DE.stats <- list()
   for(DE.res in DEA) {
@@ -267,9 +301,25 @@ fig.venn <- function(truth.DEA.pval, DEA.res.pval, Pvalue, title){
 #' @export
 #'
 #' @examples
-#' t <-  runif(1033)
-#' names(t) <-  rownames(data.test)
-#' fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)
+#'
+#' test.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
+#' test.DE <- list(
+#' TMM = DE.voom(RC=test.norm$TMM$dat.normed, groups = data.group),
+#' TC = DE.voom(RC=test.norm$TC$dat.normed, groups = data.group),
+#' UQ = DE.voom(RC=test.norm$UQ$dat.normed, groups = data.group),
+#' med = DE.voom(RC=test.norm$med$dat.normed, groups = data.group),
+#' DESeq = DE.voom(RC=test.norm$DESeq$dat.normed, groups = data.group),
+#' PoissonSeq = DE.voom(RC=test.norm$PoissonSeq$dat.normed, groups = data.group),
+#' QN = DE.voom(RC=test.norm$QN$dat.normed, groups = data.group),
+#' RUVg = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVg$adjust.factor),
+#' RUVs = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVs$adjust.factor),
+#' RUVr = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVr$adjust.factor),
+#' SVA = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$SVA$adjust.factor),
+#' noNorm = DE.voom(RC=data.test, groups = data.group))
+#' test.DE.pval <- lapply(1:12, function(x) test.DE[[x]]$p.val)
+#' names(test.DE.pval) <- names(test.DE)
+#'
+#' fig.dendrogram(DEA.pval.list = test.DE.pval, title = "Example of dendrogram")
 fig.dendrogram <- function(DEA.pval.list, title, subset=NULL){
   if(missing(title)) {
     title <- ""
@@ -302,6 +352,18 @@ fig.dendrogram <- function(DEA.pval.list, title, subset=NULL){
 #' @export
 #'
 #' @examples
+#' simulated <- simulated.data(proportion = c(0.15, 0.25),  median = c(2, 4), numsets = 10)
+#' norm.methods <- c("norm.TMM", "norm.TC", "norm.UQ", "norm.med")
+#' test.DEA.list <- list()
+#' for (i in norm.methods){
+#' temp = lapply(1:10, function(x) pip.norm.DE(raw = simulated[[x]]$simulated_test,
+#'                                             groups = simulated[[x]]$simulated_group, norm.method = i))
+#' test.DEA.list <- append(test.DEA.list, list(temp))
+#' }
+#' names(test.DEA.list) = norm.methods
+#' benchmark.DEA.list <- lapply(1:10, function(x) DE.voom(RC = simulated[[x]]$simulated_benchmark,
+#'                                                        groups = simulated[[x]]$simulated_group, P = 0.01))
+#' fig.FDR_FNR.boxplot(DEA.list = test.DEA.list, truth.DEA.list = benchmark.DEA.list, title = "Example of FDR and FNR boxplot")
 fig.FDR_FNR.boxplot <- function(DEA.list, truth.DEA.list, title, subset=NULL){
   DE.stats <- list()
   num.simulated.sets <- length(truth.DEA.list)
