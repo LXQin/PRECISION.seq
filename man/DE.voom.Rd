@@ -9,7 +9,7 @@ DE.voom(RC, groups, Pval = 0.01, normalized = TRUE, adjust = NULL)
 \arguments{
 \item{RC}{Data in the format of a data frame or matrix, with columns for samples and rows for genes.}
 
-\item{groups}{Vector of characters indicating the group for each sample.}
+\item{groups}{Vector of characters indicating the group label for each sample.}
 
 \item{Pval}{Cut-off point for p-values to identify differentially expressed genes.}
 

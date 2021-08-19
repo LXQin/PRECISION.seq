@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Selection of normalization methods based on golden standards — fig.FDR_FNR • precision.seq</title>
+<title>Selection of normalization methods based on golden standards (FDR and FNR) — fig.FDR_FNR • precision.seq</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Selection of normalization methods based on golden standards — fig.FDR_FNR" />
+<meta property="og:title" content="Selection of normalization methods based on golden standards (FDR and FNR) — fig.FDR_FNR" />
 <meta property="og:description" content="Function for boxplot of FDR and FNR based on the DEA from the golden benchmark (typically
 the data set data.benchmark) and the normalized test dataset (typically the
 normalized or raw data set data.test)" />
@@ -126,7 +126,7 @@ normalized or raw data set data.test)" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Selection of normalization methods based on golden standards</h1>
+    <h1>Selection of normalization methods based on golden standards (FDR and FNR)</h1>
     
     <div class="hidden name"><code>fig.FDR_FNR.Rd</code></div>
     </div>
@@ -166,6 +166,25 @@ of markers. Leave <code>NULL</code> if all markers should be considered.</p></td
 
     <p>figure for selection of normalization methods</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='va'>voom.benchmark</span> <span class='op'>&lt;-</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span><span class='va'>data.benchmark</span>, <span class='va'>data.group</span><span class='op'>)</span>
+<span class='va'>test.norm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='pip.norm.html'>pip.norm</a></span><span class='op'>(</span>raw<span class='op'>=</span><span class='va'>data.test</span>, groups<span class='op'>=</span><span class='va'>data.group</span>, norm.method <span class='op'>=</span> <span class='st'>"all"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>converting counts to integer mode</span></div><div class='input'><span class='va'>test.DE</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+TMM <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>test.norm</span><span class='op'>$</span><span class='va'>TMM</span><span class='op'>$</span><span class='va'>dat.normed</span>, groups <span class='op'>=</span> <span class='va'>data.group</span><span class='op'>)</span>,
+TC <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>test.norm</span><span class='op'>$</span><span class='va'>TC</span><span class='op'>$</span><span class='va'>dat.normed</span>, groups <span class='op'>=</span> <span class='va'>data.group</span><span class='op'>)</span>,
+UQ <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>test.norm</span><span class='op'>$</span><span class='va'>UQ</span><span class='op'>$</span><span class='va'>dat.normed</span>, groups <span class='op'>=</span> <span class='va'>data.group</span><span class='op'>)</span>,
+med <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>test.norm</span><span class='op'>$</span><span class='va'>med</span><span class='op'>$</span><span class='va'>dat.normed</span>, groups <span class='op'>=</span> <span class='va'>data.group</span><span class='op'>)</span>,
+DESeq <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>test.norm</span><span class='op'>$</span><span class='va'>DESeq</span><span class='op'>$</span><span class='va'>dat.normed</span>, groups <span class='op'>=</span> <span class='va'>data.group</span><span class='op'>)</span>,
+PoissonSeq <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>test.norm</span><span class='op'>$</span><span class='va'>PoissonSeq</span><span class='op'>$</span><span class='va'>dat.normed</span>, groups <span class='op'>=</span> <span class='va'>data.group</span><span class='op'>)</span>,
+QN <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>test.norm</span><span class='op'>$</span><span class='va'>QN</span><span class='op'>$</span><span class='va'>dat.normed</span>, groups <span class='op'>=</span> <span class='va'>data.group</span><span class='op'>)</span>,
+RUVg <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>data.test</span>, groups <span class='op'>=</span> <span class='va'>data.group</span>, normalized<span class='op'>=</span><span class='cn'>FALSE</span>, adjust<span class='op'>=</span><span class='va'>test.norm</span><span class='op'>$</span><span class='va'>RUVg</span><span class='op'>$</span><span class='va'>adjust.factor</span><span class='op'>)</span>,
+RUVs <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>data.test</span>, groups <span class='op'>=</span> <span class='va'>data.group</span>, normalized<span class='op'>=</span><span class='cn'>FALSE</span>, adjust<span class='op'>=</span><span class='va'>test.norm</span><span class='op'>$</span><span class='va'>RUVs</span><span class='op'>$</span><span class='va'>adjust.factor</span><span class='op'>)</span>,
+RUVr <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>data.test</span>, groups <span class='op'>=</span> <span class='va'>data.group</span>, normalized<span class='op'>=</span><span class='cn'>FALSE</span>, adjust<span class='op'>=</span><span class='va'>test.norm</span><span class='op'>$</span><span class='va'>RUVr</span><span class='op'>$</span><span class='va'>adjust.factor</span><span class='op'>)</span>,
+SVA <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>data.test</span>, groups <span class='op'>=</span> <span class='va'>data.group</span>, normalized<span class='op'>=</span><span class='cn'>FALSE</span>, adjust<span class='op'>=</span><span class='va'>test.norm</span><span class='op'>$</span><span class='va'>SVA</span><span class='op'>$</span><span class='va'>adjust.factor</span><span class='op'>)</span>,
+noNorm <span class='op'>=</span> <span class='fu'><a href='DE.voom.html'>DE.voom</a></span><span class='op'>(</span>RC<span class='op'>=</span><span class='va'>data.test</span>, groups <span class='op'>=</span> <span class='va'>data.group</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>fig.FDR_FNR</span><span class='op'>(</span>DEA <span class='op'>=</span> <span class='va'>test.DE</span>, truth.DEA <span class='op'>=</span> <span class='va'>voom.benchmark</span>, title <span class='op'>=</span> <span class='st'>"Example of FDR FNR scatterplot"</span><span class='op'>)</span>
+</div><div class='img'><img src='fig.FDR_FNR-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

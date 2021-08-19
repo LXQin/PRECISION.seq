@@ -22,7 +22,23 @@ Figure of dendrogram
 Function for clustering normalization methods based on the p-values pattern calculated from the same dataset.
 }
 \examples{
-t <-  runif(1033)
-names(t) <-  rownames(data.test)
-fig.dendrogram(MethodsCompare = c("norm.none", "norm.TMM", "norm.SVA", "norm.TC", "norm.RUVr"), MethodNew = "Example", pvalues = t)
+
+test.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
+test.DE <- list(
+TMM = DE.voom(RC=test.norm$TMM$dat.normed, groups = data.group),
+TC = DE.voom(RC=test.norm$TC$dat.normed, groups = data.group),
+UQ = DE.voom(RC=test.norm$UQ$dat.normed, groups = data.group),
+med = DE.voom(RC=test.norm$med$dat.normed, groups = data.group),
+DESeq = DE.voom(RC=test.norm$DESeq$dat.normed, groups = data.group),
+PoissonSeq = DE.voom(RC=test.norm$PoissonSeq$dat.normed, groups = data.group),
+QN = DE.voom(RC=test.norm$QN$dat.normed, groups = data.group),
+RUVg = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVg$adjust.factor),
+RUVs = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVs$adjust.factor),
+RUVr = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVr$adjust.factor),
+SVA = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$SVA$adjust.factor),
+noNorm = DE.voom(RC=data.test, groups = data.group))
+test.DE.pval <- lapply(1:12, function(x) test.DE[[x]]$p.val)
+names(test.DE.pval) <- names(test.DE)
+
+fig.dendrogram(DEA.pval.list = test.DE.pval, title = "Example of dendrogram")
 }

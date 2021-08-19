@@ -30,7 +30,8 @@ If method="all" the list contains the normalized data set and
 scaling/adjusting factors for all provided methods.
 }
 \description{
-Normalization for RNASeq Data
+This is a pipeline function for performing the available normalization methods in this package.
+The users can perform all the normalization methods at the same time or select the method they prefer to use.
 }
 \examples{
 res <- pip.norm(data.test, data.group, "norm.TMM")

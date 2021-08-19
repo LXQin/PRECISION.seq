@@ -7,7 +7,7 @@
 norm.QN(raw, filter = FALSE)
 }
 \arguments{
-\item{raw}{raw count data in the format of data frame or matrix, with columns for samples and raws for genes.}
+\item{raw}{raw count data in the format of data frame or matrix, with columns for samples and rows for genes.}
 
 \item{filter}{whether filter before normalization}
 }

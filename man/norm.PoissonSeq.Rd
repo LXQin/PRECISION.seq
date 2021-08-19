@@ -7,7 +7,7 @@
 norm.PoissonSeq(raw)
 }
 \arguments{
-\item{raw}{raw count data in the format of data frame or matrix, with columns for samples and raws for genes.}
+\item{raw}{raw count data in the format of data frame or matrix, with columns for samples and rows for genes.}
 }
 \value{
 list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) for each sample.

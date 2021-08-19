@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Normalization By Upper Quantile (UQ) — norm.UQ" />
-<meta property="og:description" content="Normalize the dataset using UQ, and return the normalized dataset with scaling factor." />
+<meta property="og:description" content="Normalize the dataset using UQ, and return the normalized dataset with scaling factor scaled by 1e6.." />
 
 
 
@@ -130,7 +130,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Normalize the dataset using UQ, and return the normalized dataset with scaling factor.</p>
+    <p>Normalize the dataset using UQ, and return the normalized dataset with scaling factor scaled by 1e6..</p>
     </div>
 
     <pre class="usage"><span class='fu'>norm.UQ</span><span class='op'>(</span><span class='va'>raw</span>, <span class='va'>groups</span><span class='op'>)</span></pre>
@@ -140,7 +140,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>raw</th>
-      <td><p>raw count data in the format of data frame or matrix, with columns for samples and raws for genes.</p></td>
+      <td><p>raw count data in the format of data frame or matrix, with columns for samples and rows for genes.</p></td>
     </tr>
     <tr>
       <th>groups</th>

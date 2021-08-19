@@ -11,9 +11,7 @@ simulated.data(proportion, median, numsets)
 
 \item{median}{the range of median of mean difference for simulated dataset filtering}
 
-\item{numsets}{number of simulated datasets requested for returning (randomly drawn from the available sets). If it exceeds the maximum of availiable datasets, all the availiable sets will be returned.}
-
-\item{median_R}{the highest median of mean difference for simulated dataset filtering}
+\item{numsets}{number of simulated datasets requested for returning (randomly drawn from the available sets). If it exceeds the maximum number of available datasets, all the available sets will be returned.}
 }
 \value{
 list containing list of simulated benchmark data and test data
@@ -23,5 +21,5 @@ Function for providing simulated datasets according to different proportions of 
 The range of DE proportion available is between 0 and 0.387, and the range of median of mean difference is between -2.52 and 4.59.
 }
 \examples{
-simulated <- simulated.data(0.0175, 0.0225, -0.5, 0.5, 10)
+simulated <- simulated.data(c(0.0175, 0.0225), c(-0.5, 0.5), 10)
 }

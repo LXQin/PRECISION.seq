@@ -2,7 +2,7 @@
 % Please edit documentation in R/VisualFunc.R
 \name{fig.FDR_FNR}
 \alias{fig.FDR_FNR}
-\title{Selection of normalization methods based on golden standards}
+\title{Selection of normalization methods based on golden standards (FDR and FNR)}
 \usage{
 fig.FDR_FNR(DEA, truth.DEA, title, subset = NULL)
 }
@@ -24,4 +24,23 @@ figure for selection of normalization methods
 Function for boxplot of FDR and FNR based on the DEA from the golden benchmark (typically
 the data set \code{\link{data.benchmark}}) and the normalized test dataset (typically the
 normalized or raw data set \code{\link{data.test}})
+}
+\examples{
+voom.benchmark <- DE.voom(data.benchmark, data.group)
+test.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all")
+test.DE <- list(
+TMM = DE.voom(RC=test.norm$TMM$dat.normed, groups = data.group),
+TC = DE.voom(RC=test.norm$TC$dat.normed, groups = data.group),
+UQ = DE.voom(RC=test.norm$UQ$dat.normed, groups = data.group),
+med = DE.voom(RC=test.norm$med$dat.normed, groups = data.group),
+DESeq = DE.voom(RC=test.norm$DESeq$dat.normed, groups = data.group),
+PoissonSeq = DE.voom(RC=test.norm$PoissonSeq$dat.normed, groups = data.group),
+QN = DE.voom(RC=test.norm$QN$dat.normed, groups = data.group),
+RUVg = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVg$adjust.factor),
+RUVs = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVs$adjust.factor),
+RUVr = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVr$adjust.factor),
+SVA = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$SVA$adjust.factor),
+noNorm = DE.voom(RC=data.test, groups = data.group))
+
+fig.FDR_FNR(DEA = test.DE, truth.DEA = voom.benchmark, title = "Example of FDR FNR scatterplot")
 }

@@ -150,11 +150,7 @@ The range of DE proportion available is between 0 and 0.387, and the range of me
     </tr>
     <tr>
       <th>numsets</th>
-      <td><p>number of simulated datasets requested for returning (randomly drawn from the available sets). If it exceeds the maximum of availiable datasets, all the availiable sets will be returned.</p></td>
-    </tr>
-    <tr>
-      <th>median_R</th>
-      <td><p>the highest median of mean difference for simulated dataset filtering</p></td>
+      <td><p>number of simulated datasets requested for returning (randomly drawn from the available sets). If it exceeds the maximum number of available datasets, all the available sets will be returned.</p></td>
     </tr>
     </table>
 
@@ -163,8 +159,8 @@ The range of DE proportion available is between 0 and 0.387, and the range of me
     <p>list containing list of simulated benchmark data and test data</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>simulated</span> <span class='op'>&lt;-</span> <span class='fu'>simulated.data</span><span class='op'>(</span><span class='fl'>0.0175</span>, <span class='fl'>0.0225</span>, <span class='op'>-</span><span class='fl'>0.5</span>, <span class='fl'>0.5</span>, <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in simulated.data(0.0175, 0.0225, -0.5, 0.5, 10): unbenutzte Argumente (0.5, 10)</span></div></pre>
+    <pre class="examples"><div class='input'><span class='va'>simulated</span> <span class='op'>&lt;-</span> <span class='fu'>simulated.data</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.0175</span>, <span class='fl'>0.0225</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>0.5</span>, <span class='fl'>0.5</span><span class='op'>)</span>, <span class='fl'>10</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -7,7 +7,7 @@
 norm.med(raw, groups)
 }
 \arguments{
-\item{raw}{raw count data in the format of data frame or matrix, with columns for samples and raws for genes.}
+\item{raw}{raw count data in the format of data frame or matrix, with columns for samples and rows for genes.}
 
 \item{groups}{vector of characters indicating the group for each sample.}
 }
@@ -15,7 +15,7 @@ norm.med(raw, groups)
 list, containing \code{dat.normed} (normalized dataset) and \code{scaling.factor} (scaling factor) scaled by 1e6 for each sample.
 }
 \description{
-Normalize the dataset using Med, and return the normalized dataset with scaling factor.
+Normalize the dataset using Med, and return the normalized dataset with scaling factor scaled by 1e6.
 }
 \examples{
 test.med <- norm.med(data.test, data.group)

@@ -42,7 +42,8 @@ normaliztion methods vontaining containing \code{id.list} (names of DE genes),
 \code{p.val}, and \code{log2.FC} each.
 }
 \description{
-Pipeline of Differential Expression Analysis for RNASeq Data
+This is a pipeline function performing the DEA starting from the data normalization.
+Users can select the normalization method and DE method by themselves.
 }
 \examples{
 res <- pip.norm.DE(data.test, data.group, "norm.TMM")

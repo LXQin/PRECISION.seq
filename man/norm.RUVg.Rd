@@ -7,7 +7,7 @@
 norm.RUVg(raw, groups)
 }
 \arguments{
-\item{raw}{raw count data in the format of data frame or matrix, with columns for samples and raws for genes.}
+\item{raw}{raw count data in the format of data frame or matrix, with columns for samples and rows for genes.}
 
 \item{groups}{vector of characters indicating the group for each sample.}
 }
