@@ -52,8 +52,7 @@ If there are any unwanted negative counts in the normalized data, they are set t
 
 ```{r message = FALSE, echo = T, results = 'hide'}
 vsn.norm <- justvsn(data.test)  # Normalize data
-vsn.norm <- ifelse(vsn.norm<0, 1, vsn.norm)  # Handle negative counts
-vsn.norm <- 2^(vsn.norm)-1  # Reverse log2-transformation
+vsn.norm <- 2^(vsn.norm)  # Reverse log2-transformation
 ```
 
 ## Performance Assessment of VSN Normalization using Empirical Data
@@ -108,8 +107,7 @@ vsn.norm <- list()
 for (i in 1:num.sets) {
   vsn.norm <- append(vsn.norm, list(justvsn(simulated[[i]]$simulated_test)))
 }
-vsn.norm <- lapply(vsn.norm, function(x) ifelse(x<0, 1, x))
-vsn.norm <- lapply(vsn.norm, function(x) 2^(x)-1)
+vsn.norm <- lapply(vsn.norm, function(x) 2^(x))
 res <- pip.simulated.data(data=simulated, groups=sim.groups, norm.counts=vsn.norm, method.name="vsn")
 print(res$p.boxplot)
 ```
