@@ -20,4 +20,3 @@ This algorithm is tailored for the data.benchmark included in this package.
 \examples{
 simulation.plan <- simulation.algorithm(data.benchmark)
 }
-\keyword{internal}
