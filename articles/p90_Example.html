@@ -59,7 +59,7 @@
       <a href="../articles/Intro_Functions.html">Introduction to Normaliztion and Differential Expression Analysis Functions in PRECISION.seq</a>
     </li>
     <li>
-      <a href="../articles/VSN_Example.html">PRECISION.SEQ Example Usage</a>
+      <a href="../articles/p90_Example.html">PRECISION.SEQ Example Usage</a>
     </li>
   </ul>
 </li>
@@ -74,14 +74,14 @@
 
       
 
-      </header><script src="VSN_Example_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="p90_Example_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>PRECISION.SEQ Example Usage</h1>
             
       
       
-      <div class="hidden name"><code>VSN_Example.Rmd</code></div>
+      <div class="hidden name"><code>p90_Example.Rmd</code></div>
 
     </div>
 
@@ -90,7 +90,7 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor" aria-hidden="true"></a>Overview</h2>
-<p>In this vignette, we demonstrate an example usage of functions in the PRECISION.seq package. It assesses the performance of the “variance stabilization normalization” (VSN) method, which is provided by the R package <code>vsn</code>, in comparison with nine other normalization methods.</p>
+<p>In this vignette, we demonstrate an example usage of functions in the PRECISION.seq package. It assesses the performance of the 90th percentile normalization (p90) method, which normalizes the dataset using 90th percentile (similar to upper quantile normalization), in comparison with nine other normalization methods.</p>
 <p>The analysis pipeline works as follows: We first assess evidence of differential expression in the <a href="../reference/data.benchmark.html">benchmark data</a> without normalization using <code>voom</code>. The benchmark data was collected using uniform handling to minimize any handling effects and, hence, differential expression in the benchmark data serves as a “gold standard”. On the other hand, the <a href="../reference/data.test.html">test data</a> contains the same samples as the benchmark data, however it was sequenced over multiple years without careful study design, resulting in unwanted depth variations. We then assess differential expression in the dest data before and after normalization and compare it with the gold standard. The agreement of this comparison in summarized using graphically using various plots, and numerically using measures such as the false negative rate (FNR) and the false discovery rate (FDR). See also <a href="Intro_Data.html">this vignette</a> for more information on the data sets.</p>
 <p>For simplicity, all of these steps have been packaged into a simple pipeline consisting of the following 2 steps:</p>
 <ol style="list-style-type: decimal">
@@ -102,50 +102,58 @@
 <div id="package-installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#package-installation" class="anchor" aria-hidden="true"></a>Package Installation</h2>
-<p>First, we load the PRECISION.seq package as well as the Biobase and vsn packages.</p>
+<p>First, we load the PRECISION.seq package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">precision.seq</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/Biobase" class="external-link">Biobase</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.r-project.org" class="external-link">vsn</a></span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://bioinf.wehi.edu.au/edgeR" class="external-link">edgeR</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="vsn-normalization" class="section level2">
+<div id="th-percentile-normalization" class="section level2">
 <h2 class="hasAnchor">
-<a href="#vsn-normalization" class="anchor" aria-hidden="true"></a>VSN Normalization</h2>
+<a href="#th-percentile-normalization" class="anchor" aria-hidden="true"></a>90th Percentile Normalization</h2>
 <p>The <a href="../reference/data.test.html">test data</a> is normalized by VSN using the function <code>justvsn</code> from the R package <code>vsn</code>. If there are any unwanted negative counts in the normalized data, they are set to 1.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/vsn/man/justvsn.html" class="external-link">justvsn</a></span><span class="op">(</span><span class="va">data.test</span><span class="op">)</span>  <span class="co"># Normalize data</span>
-<span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fl">2</span><span class="op">^</span><span class="op">(</span><span class="va">vsn.norm</span><span class="op">)</span>  <span class="co"># Reverse log2-transformation</span></code></pre></div>
+<code class="sourceCode R"><span class="va">percentile_90_norm</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">raw</span>, <span class="va">groups</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">dat.DGE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/DGEList.html" class="external-link">DGEList</a></span><span class="op">(</span>counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">raw</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span><span class="op">)</span>,
+                     group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span>,
+                     genes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/row_colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">raw</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">q.factor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">dat.DGE</span><span class="op">$</span><span class="va">counts</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="va">x</span> <span class="op">!=</span> <span class="fl">0</span><span class="op">]</span>, probs <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">scaling.factor</span> <span class="op">&lt;-</span> <span class="va">q.factor</span><span class="op">/</span><span class="fl">1e6</span>
+  <span class="va">dat.normed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">raw</span><span class="op">)</span><span class="op">/</span><span class="va">scaling.factor</span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">dat.normed</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="va">percentile.norm</span> <span class="op">&lt;-</span> <span class="fu">percentile_90_norm</span><span class="op">(</span><span class="va">data.test</span>, <span class="va">data.group</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="performance-assessment-of-vsn-normalization-using-empirical-data" class="section level2">
+<div id="performance-assessment-of-90th-percentile-normalization-using-empirical-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#performance-assessment-of-vsn-normalization-using-empirical-data" class="anchor" aria-hidden="true"></a>Performance Assessment of VSN Normalization using Empirical Data</h2>
+<a href="#performance-assessment-of-90th-percentile-normalization-using-empirical-data" class="anchor" aria-hidden="true"></a>Performance Assessment of 90th Percentile Normalization using Empirical Data</h2>
 <p>We assess the performance of VSN using the <a href="../reference/precision.seq.html"><code>precision.seq</code></a> function. It includes (1) normalization of the test data using VSN and nine other normalization methods that are implemented in the package, (2) differential expression analysis using voom or edgeR for the normalized data and for the unnormalized benchmark data, (3) comparison of the differential expression statuses between the normalized test data and the benchmark data, and (4) graphical display and numerical summary of the comparison.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res.vsn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/precision.seq.html">precision.seq</a></span><span class="op">(</span><span class="va">vsn.norm</span>, method.name<span class="op">=</span><span class="st">"vsn"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">res.p90</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/precision.seq.html">precision.seq</a></span><span class="op">(</span><span class="va">percentile.norm</span>, method.name<span class="op">=</span><span class="st">"p90"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Relative log expression</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.vsn</span><span class="op">$</span><span class="va">p.RLE</span><span class="op">$</span><span class="va">noNorm</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.p90</span><span class="op">$</span><span class="va">p.RLE</span><span class="op">$</span><span class="va">noNorm</span><span class="op">)</span>
 <span class="co">#&gt; Warning: Removed 367 rows containing non-finite values (stat_boxplot).</span></code></pre></div>
-<p><img src="VSN_Example_files/figure-html/unnamed-chunk-4-1.png" width="480"></p>
+<p><img src="p90_Example_files/figure-html/unnamed-chunk-4-1.png" width="480"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.vsn</span><span class="op">$</span><span class="va">p.RLE</span><span class="op">$</span><span class="va">vsn</span><span class="op">)</span>
-<span class="co">#&gt; Warning: Removed 367 rows containing non-finite values (stat_boxplot).</span></code></pre></div>
-<p><img src="VSN_Example_files/figure-html/unnamed-chunk-4-2.png" width="480"></p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.p90</span><span class="op">$</span><span class="va">p.RLE</span><span class="op">$</span><span class="va">p90</span><span class="op">)</span>
+<span class="co">#&gt; Warning: Removed 1993 rows containing non-finite values (stat_boxplot).</span></code></pre></div>
+<p><img src="p90_Example_files/figure-html/unnamed-chunk-4-2.png" width="480"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Volcano plot for DE</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.vsn</span><span class="op">$</span><span class="va">p.volcano</span><span class="op">$</span><span class="va">vsn</span><span class="op">)</span></code></pre></div>
-<p><img src="VSN_Example_files/figure-html/unnamed-chunk-4-3.png" width="480"></p>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.p90</span><span class="op">$</span><span class="va">p.volcano</span><span class="op">$</span><span class="va">p90</span><span class="op">)</span></code></pre></div>
+<p><img src="p90_Example_files/figure-html/unnamed-chunk-4-3.png" width="480"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Venn Diagram of DE statuses</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.vsn</span><span class="op">$</span><span class="va">p.venn</span><span class="op">$</span><span class="va">noNorm</span><span class="op">)</span></code></pre></div>
-<p><img src="VSN_Example_files/figure-html/unnamed-chunk-4-4.png" width="480"></p>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.p90</span><span class="op">$</span><span class="va">p.venn</span><span class="op">$</span><span class="va">noNorm</span><span class="op">)</span></code></pre></div>
+<p><img src="p90_Example_files/figure-html/unnamed-chunk-4-4.png" width="480"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.vsn</span><span class="op">$</span><span class="va">p.venn</span><span class="op">$</span><span class="va">vsn</span><span class="op">)</span></code></pre></div>
-<p><img src="VSN_Example_files/figure-html/unnamed-chunk-4-5.png" width="480"></p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.p90</span><span class="op">$</span><span class="va">p.venn</span><span class="op">$</span><span class="va">p90</span><span class="op">)</span></code></pre></div>
+<p><img src="p90_Example_files/figure-html/unnamed-chunk-4-5.png" width="480"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># FNR-FDR plot</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.vsn</span><span class="op">$</span><span class="va">p.FNR_FDR</span><span class="op">)</span></code></pre></div>
-<p><img src="VSN_Example_files/figure-html/unnamed-chunk-4-6.png" width="480"></p>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.p90</span><span class="op">$</span><span class="va">p.FNR_FDR</span><span class="op">)</span></code></pre></div>
+<p><img src="p90_Example_files/figure-html/unnamed-chunk-4-6.png" width="480"></p>
 </div>
 <div id="performance-assessment-of-vsn-normalization-using-simulated-data" class="section level2">
 <h2 class="hasAnchor">
@@ -170,16 +178,15 @@
 <div id="boxplot-for-fdr-and-fnr" class="section level3">
 <h3 class="hasAnchor">
 <a href="#boxplot-for-fdr-and-fnr" class="anchor" aria-hidden="true"></a>Boxplot for FDR and FNR</h3>
-<p>Each simulated test data set is normalized with VSN. The pipeline function <a href="../reference/pip.simulated.data.html"><code>pip.simulated.data</code></a> is then used to compute the agreement of differential expression statuses for simulated test data set with that for its paired simulated benchmark data set.</p>
+<p>Each simulated test data set is normalized with 90th percentile. The pipeline function <a href="../reference/pip.simulated.data.html"><code>pip.simulated.data</code></a> is then used to compute the agreement of differential expression statuses for simulated test data set with that for its paired simulated benchmark data set.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">p90.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">num.sets</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/append.html" class="external-link">append</a></span><span class="op">(</span><span class="va">vsn.norm</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/vsn/man/justvsn.html" class="external-link">justvsn</a></span><span class="op">(</span><span class="va">simulated</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">simulated_test</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">p90.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/append.html" class="external-link">append</a></span><span class="op">(</span><span class="va">p90.norm</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">percentile_90_norm</span><span class="op">(</span><span class="va">simulated</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">simulated_test</span>, <span class="va">sim.groups</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> 
 <span class="op">}</span>
-<span class="va">vsn.norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">vsn.norm</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fl">2</span><span class="op">^</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.simulated.data.html">pip.simulated.data</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">simulated</span>, groups<span class="op">=</span><span class="va">sim.groups</span>, norm.counts<span class="op">=</span><span class="va">vsn.norm</span>, method.name<span class="op">=</span><span class="st">"vsn"</span><span class="op">)</span>
+<span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.simulated.data.html">pip.simulated.data</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">simulated</span>, groups<span class="op">=</span><span class="va">sim.groups</span>, norm.counts<span class="op">=</span><span class="va">p90.norm</span>, method.name<span class="op">=</span><span class="st">"p90"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">p.boxplot</span><span class="op">)</span></code></pre></div>
-<p><img src="VSN_Example_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="p90_Example_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <!-- ```{r warning = FALSE, message = FALSE, results = FALSE} -->
 <!-- test.norm.list = lapply(1:num.sets, function(x) pip.norm(raw=simulated[[x]]$simulated_test, groups=sim.groups, norm.method = "all")) -->
 <!-- for (i in 1:num.sets) { -->
