@@ -423,7 +423,7 @@ pip.simulated.data <- function(data, groups, norm.counts, adjust.factors, method
   if(!is.list(data)) {
     stop("Unknown data. Must be a list of pairs of data sets containing simulated_benchmark and simulated_test.")
   }
-  if(!c("simulated_benchmark", "simulated_test") %in% names(data[[1]])) {
+  if(!all(c("simulated_benchmark", "simulated_test") %in% names(simulated[[1]]))) {
     stop("Unknown data. Must be a list of pairs of data sets containing simulated_benchmark and simulated_test.")
   }
   num.datasets <- length(data)
