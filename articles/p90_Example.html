@@ -87,10 +87,10 @@
 
     
     
-<div id="overview" class="section level2">
+<div id="introduction" class="section level2">
 <h2 class="hasAnchor">
-<a href="#overview" class="anchor" aria-hidden="true"></a>Overview</h2>
-<p>In this vignette, we demonstrate an example usage of functions in the PRECISION.seq package. It assesses the performance of the 90th percentile normalization (p90) method, which normalizes the dataset using 90th percentile (similar to upper quantile normalization), in comparison with nine other normalization methods.</p>
+<a href="#introduction" class="anchor" aria-hidden="true"></a>Introduction</h2>
+<p>In this vignette, we demonstrate an example usage of functions in the PRECISION.seq package. It assesses the performance of the 90th percentile normalization (p90) method, which normalizes the dataset using the 90th percentile (similar to upper quantile normalization), in comparison with nine other normalization methods.</p>
 <p>The analysis pipeline works as follows: We first assess evidence of differential expression in the <a href="../reference/data.benchmark.html">benchmark data</a> without normalization using <code>voom</code>. The benchmark data was collected using uniform handling to minimize any handling effects and, hence, differential expression in the benchmark data serves as a “gold standard”. On the other hand, the <a href="../reference/data.test.html">test data</a> contains the same samples as the benchmark data, however it was sequenced over multiple years without careful study design, resulting in unwanted depth variations. We then assess differential expression in the dest data before and after normalization and compare it with the gold standard. The agreement of this comparison in summarized using graphically using various plots, and numerically using measures such as the false negative rate (FNR) and the false discovery rate (FDR). See also <a href="Intro_Data.html">this vignette</a> for more information on the data sets.</p>
 <p>For simplicity, all of these steps have been packaged into a simple pipeline consisting of the following 2 steps:</p>
 <ol style="list-style-type: decimal">
@@ -111,7 +111,7 @@
 <div id="th-percentile-normalization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#th-percentile-normalization" class="anchor" aria-hidden="true"></a>90th Percentile Normalization</h2>
-<p>The <a href="../reference/data.test.html">test data</a> is normalized by VSN using the function <code>justvsn</code> from the R package <code>vsn</code>. If there are any unwanted negative counts in the normalized data, they are set to 1.</p>
+<p>We fist define a function for normalization using the 90th percentile as a scaling factor for each sample. Then the we apply this p90 normalization to the test data in order to later compare it to the noramlization methods provided by the <code>precision.seq</code> package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">percentile_90_norm</span>  <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">raw</span>, <span class="va">groups</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">dat.DGE</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/DGEList.html" class="external-link">DGEList</a></span><span class="op">(</span>counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">raw</span>, ncol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span><span class="op">)</span>,
@@ -127,7 +127,7 @@
 <div id="performance-assessment-of-90th-percentile-normalization-using-empirical-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#performance-assessment-of-90th-percentile-normalization-using-empirical-data" class="anchor" aria-hidden="true"></a>Performance Assessment of 90th Percentile Normalization using Empirical Data</h2>
-<p>We assess the performance of VSN using the <a href="../reference/precision.seq.html"><code>precision.seq</code></a> function. It includes (1) normalization of the test data using VSN and nine other normalization methods that are implemented in the package, (2) differential expression analysis using voom or edgeR for the normalized data and for the unnormalized benchmark data, (3) comparison of the differential expression statuses between the normalized test data and the benchmark data, and (4) graphical display and numerical summary of the comparison.</p>
+<p>We assess the performance of p90 using the <a href="../reference/precision.seq.html"><code>precision.seq</code></a> function. It includes (1) normalization of the test data using p90 and nine other normalization methods that are implemented in the package, (2) differential expression analysis using voom or edgeR for the normalized data and for the unnormalized benchmark data, (3) comparison of the differential expression statuses between the normalized test data and the benchmark data, and (4) graphical display and numerical summary of the comparison.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">res.p90</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/precision.seq.html">precision.seq</a></span><span class="op">(</span><span class="va">percentile.norm</span>, method.name<span class="op">=</span><span class="st">"p90"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -155,9 +155,9 @@
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res.p90</span><span class="op">$</span><span class="va">p.FNR_FDR</span><span class="op">)</span></code></pre></div>
 <p><img src="p90_Example_files/figure-html/unnamed-chunk-4-6.png" width="480"></p>
 </div>
-<div id="performance-assessment-of-vsn-normalization-using-simulated-data" class="section level2">
+<div id="performance-assessment-of-p90-normalization-using-simulated-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#performance-assessment-of-vsn-normalization-using-simulated-data" class="anchor" aria-hidden="true"></a>Performance Assessment of VSN Normalization using Simulated Data</h2>
+<a href="#performance-assessment-of-p90-normalization-using-simulated-data" class="anchor" aria-hidden="true"></a>Performance Assessment of p90 Normalization using Simulated Data</h2>
 <p>The assessment is extended to simulated data reflecting various patterns of differential expression. For a full description of the simulation algorithm, please refer to the paper <a href="https://pubmed.ncbi.nlm.nih.gov/32598180/" class="external-link"><em>Statistical Assessment of Depth Normalization for Small RNA Sequencing</em></a>.</p>
 <div id="extract-simulated-data" class="section level3">
 <h3 class="hasAnchor">
@@ -187,105 +187,6 @@
 <span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/pip.simulated.data.html">pip.simulated.data</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">simulated</span>, groups<span class="op">=</span><span class="va">sim.groups</span>, norm.counts<span class="op">=</span><span class="va">p90.norm</span>, method.name<span class="op">=</span><span class="st">"p90"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">p.boxplot</span><span class="op">)</span></code></pre></div>
 <p><img src="p90_Example_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<!-- ```{r warning = FALSE, message = FALSE, results = FALSE} -->
-<!-- test.norm.list = lapply(1:num.sets, function(x) pip.norm(raw=simulated[[x]]$simulated_test, groups=sim.groups, norm.method = "all")) -->
-<!-- for (i in 1:num.sets) { -->
-<!--   vsn.norm <- justvsn(simulated[[i]]$simulated_test) -->
-<!--   test.norm.list[[i]]$VSN$dat.normed = ifelse(vsn.norm<0, 1, vsn.norm) -->
-<!-- } -->
-<!-- test.DE.list <- list( -->
-<!--   TMM = lapply(1:num.sets, function(x) DE.voom(RC=test.norm.list[[x]]$TMM$dat.normed, groups = sim.groups)), -->
-<!--   TC = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$TC$dat.normed, groups = sim.groups)), -->
-<!--   UQ = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$UQ$dat.normed, groups = sim.groups)), -->
-<!--   med = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$med$dat.normed, groups = sim.groups)), -->
-<!--   DESeq = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$DESeq$dat.normed, groups = sim.groups)), -->
-<!--   PoissonSeq = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$PoissonSeq$dat.normed, groups = sim.groups)), -->
-<!--   QN = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$QN$dat.normed, groups = sim.groups)), -->
-<!--   RUVg = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE, -->
-<!--                                           adjust=test.norm.list[[x]]$RUVg$adjust.factor)), -->
-<!--   RUVs = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE, -->
-<!--                                           adjust=test.norm.list[[x]]$RUVs$adjust.factor)), -->
-<!--   RUVr = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups, normalized=FALSE, -->
-<!--                                           adjust=test.norm.list[[x]]$RUVr$adjust.factor)), -->
-<!--   SVA = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE, -->
-<!--                                          adjust=test.norm.list[[x]]$SVA$adjust.factor)), -->
-<!--   noNorm = lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups)), -->
-<!--   VSN = lapply(1:num.sets, function(x)DE.voom(RC=test.norm.list[[x]]$VSN$dat.normed, groups = sim.groups))) -->
-<!-- benchmark.DE.list <- lapply(1:num.sets, function(x)DE.voom(RC=simulated[[x]]$simulated_benchmark, groups = sim.groups)) -->
-<!-- fig.FDR_FNR.boxplot(test.DE.list, benchmark.DE.list, title = "DE = 20%, median mean-diff = 3") -->
-<!-- ``` -->
-<!-- Test data is normalized by Variance Stabilizing Normalization (VSN) using function `justvsn`, and the negative normalized values are set to 1. Voom-limma is used for the differential expression analysis. -->
-<!-- ```{r} -->
-<!-- vsn.norm <- justvsn(data.test) -->
-<!-- vsn.norm <- ifelse(vsn.norm<0, 1, vsn.norm) -->
-<!-- vsn.pval <- DE.voom(vsn.norm, data.group) -->
-<!-- test.norm <- pip.norm(raw=data.test, groups=data.group, norm.method = "all") -->
-<!-- test.DE <- list( -->
-<!--   TMM = DE.voom(RC=test.norm$TMM$dat.normed, groups = data.group), -->
-<!--   TC = DE.voom(RC=test.norm$TC$dat.normed, groups = data.group), -->
-<!--   UQ = DE.voom(RC=test.norm$UQ$dat.normed, groups = data.group), -->
-<!--   med = DE.voom(RC=test.norm$med$dat.normed, groups = data.group), -->
-<!--   DESeq = DE.voom(RC=test.norm$DESeq$dat.normed, groups = data.group), -->
-<!--   PoissonSeq = DE.voom(RC=test.norm$PoissonSeq$dat.normed, groups = data.group), -->
-<!--   QN = DE.voom(RC=test.norm$QN$dat.normed, groups = data.group), -->
-<!--   RUVg = DE.voom(RC=data.test, groups = data.group,normalized=FALSE, adjust=test.norm$RUVg$adjust.factor), -->
-<!--   RUVs = DE.voom(RC=data.test, groups = data.group,normalized=FALSE, adjust=test.norm$RUVs$adjust.factor), -->
-<!--   RUVr = DE.voom(RC=data.test, groups = data.group, normalized=FALSE, adjust=test.norm$RUVr$adjust.factor), -->
-<!--   SVA = DE.voom(RC=data.test, groups = data.group,normalized=FALSE, adjust=test.norm$SVA$adjust.factor), -->
-<!--   noNorm = DE.voom(RC=data.test, groups = data.group), -->
-<!--   VSN = vsn.pval) -->
-<!-- benchmark.DE <- DE.voom(RC=data.benchmark, groups = data.group) -->
-<!-- ``` -->
-<!-- # Empirical Data Analysis -->
-<!-- ## Relative Log Expression Plot -->
-<!-- ```{r} -->
-<!-- fig.RLE(data.test, data.group, "test without normalization") -->
-<!-- fig.RLE(vsn.norm, data.group, "test with VSN normalization") -->
-<!-- ``` -->
-<!-- ## Scatterplot for FNR and FDR -->
-<!-- ```{r} -->
-<!-- fig.FDR_FNR(test.DE, benchmark.DE, title = "") -->
-<!-- ``` -->
-<!-- ## Concordance at The Top Plot -->
-<!-- ```{r} -->
-<!-- fig.CAT(test.DE, benchmark.DE, title = "") -->
-<!-- ``` -->
-<!-- ## Dendrogram for clustering p-values -->
-<!-- ```{r} -->
-<!-- fig.dendrogram(test.DE, title = "") -->
-<!-- ``` -->
-<!-- # Simulation Data Analysis -->
-<!-- ## Data Simulation -->
-<!-- ```{r} -->
-<!-- set.seed(12345) -->
-<!-- sim.groups = c(rep('MXF',27),rep('PMFH',27)) -->
-<!-- simulated <- simulated.data(proportion = c(0.15, 0.25),  median = c(2, 4), numsets = 100) -->
-<!-- ``` -->
-<!-- ## Boxplot for FDR and FNR -->
-<!-- ```{r warning = FALSE, message = FALSE, results = FALSE} -->
-<!-- test.norm.list = lapply(1:100, function(x) pip.norm(raw=simulated[[x]]$simulated_test, groups=sim.groups, norm.method = "all")) -->
-<!-- for (i in 1:100){vsn.norm <- justvsn(simulated[[i]]$simulated_test);test.norm.list[[i]]$VSN$dat.normed = ifelse(vsn.norm<0, 1, vsn.norm)} -->
-<!-- test.DE.list <- list( -->
-<!--   TMM = lapply(1:100, function(x) DE.voom(RC=test.norm.list[[x]]$TMM$dat.normed, groups = sim.groups)), -->
-<!--   TC = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$TC$dat.normed, groups = sim.groups)), -->
-<!--   UQ = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$UQ$dat.normed, groups = sim.groups)), -->
-<!--   med = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$med$dat.normed, groups = sim.groups)), -->
-<!--   DESeq = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$DESeq$dat.normed, groups = sim.groups)), -->
-<!--   PoissonSeq = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$PoissonSeq$dat.normed, groups = sim.groups)), -->
-<!--   QN = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$QN$dat.normed, groups = sim.groups)), -->
-<!--   RUVg = lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE, -->
-<!--                                           adjust=test.norm.list[[x]]$RUVg$adjust.factor)), -->
-<!--   RUVs = lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE, -->
-<!--                                           adjust=test.norm.list[[x]]$RUVs$adjust.factor)), -->
-<!--   RUVr = lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups, normalized=FALSE, -->
-<!--                                           adjust=test.norm.list[[x]]$RUVr$adjust.factor)), -->
-<!--   SVA = lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups,normalized=FALSE, -->
-<!--                                          adjust=test.norm.list[[x]]$SVA$adjust.factor)), -->
-<!--   noNorm = lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_test, groups = sim.groups)), -->
-<!--   VSN = lapply(1:100, function(x)DE.voom(RC=test.norm.list[[x]]$VSN$dat.normed, groups = sim.groups))) -->
-<!-- benchmark.DE.list <- lapply(1:100, function(x)DE.voom(RC=simulated[[x]]$simulated_benchmark, groups = sim.groups)) -->
-<!-- fig.FDR_FNR.boxplot(test.DE.list, benchmark.DE.list, title = "DE = 20%, median mean-diff = 3") -->
-<!-- ``` -->
 </div>
 </div>
   </div>
